@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" >
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+  <title>排序算法笔记 | NOWHERE</title>
+  <meta name="description" content="Some stories." />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="MobileOptimized" content="320" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link rel="stylesheet" type="text/css" href="/css/screen.css" />
+  <link href="https://fonts.googleapis.com/css?family=Noto+Sans:400,700|Noto+Serif:400,700|PT+Mono" rel="stylesheet">
+
+  <meta name="generator" content="NOWHERE">
+
+  
+  
+  
+</head>
+
+
+<body class="post-template">
+
+  <header class="site-head"  style="background-image: url(/images/blog/cover.jpg)" >
+    <div class="vertical">
+        <div class="site-head-content inner">
+             <a class="blog-logo" href="/"><img src="/images/blog/avatar.png" alt="Blog Logo"/></a> 
+            <h1 class="blog-title">NOWHERE</h1>
+            <h2 class="blog-description">Some stories.</h2>
+        </div>
+    </div>
+</header>
+  
+
+<main class="content" role="main">
+  <article class="post">
+    <span class="post-meta">
+      <time datetime="2018-02-05T06:12:16.000Z" itemprop="datePublished">
+          2018-02-04
+      </time>
+    
+    
+    | 
+    <a href='/tags/coding/'>coding</a>,
+    
+    <a href='/tags/note/'>note</a>
+    
+    
+</span>
+    <h1 class="post-title">排序算法笔记</h1>
+    <section class="post-content">
+      <p>从接触算法就开始说的排序，这里总结一下。</p>
+<h1 id="Bubble-Sort"><a href="#Bubble-Sort" class="headerlink" title="Bubble Sort"></a>Bubble Sort</h1><p>冒泡排序是最基础的排序了，主要有三个基本步骤：</p>
+<ul>
+<li>每次比较两个值</li>
+<li>如果左边的值更大，则交换两个值的位置，以将更大的值排到右边</li>
+<li>向右移动一个位置</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">bubble_sort</span><span class="params">(data: [int])</span>:</span></span><br><span class="line">    <span class="keyword">for</span> out_idx <span class="keyword">in</span> range(len(data) - <span class="number">1</span>, <span class="number">0</span>, <span class="number">-1</span>):</span><br><span class="line">        <span class="keyword">for</span> in_idx <span class="keyword">in</span> range(<span class="number">0</span>, out_idx):</span><br><span class="line">            <span class="keyword">if</span> data[in_idx] &gt; data[in_idx + <span class="number">1</span>]:</span><br><span class="line">                data[in_idx], data[in_idx + <span class="number">1</span>] = data[in_idx + <span class="number">1</span>], data[in_idx]</span><br></pre></td></tr></table></figure>
+<p>对一个长度为 n 的数组，worst-case 下需要执行交换的次数为 n(n - 1)/2，需要比较的次数也为 n(n - 1)/2。冒泡排序的时间复杂度为 O(n^2)。冒泡排序是稳定的。</p>
+<h1 id="Selection-Sort"><a href="#Selection-Sort" class="headerlink" title="Selection Sort"></a>Selection Sort</h1><p>选择排序比冒泡排序快一点，主要有两个基本步骤：</p>
+<ul>
+<li>选择最小的值</li>
+<li>把它和最左边的元素交换</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">selection_sort</span><span class="params">(data: [int])</span>:</span></span><br><span class="line">    <span class="keyword">for</span> out_idx <span class="keyword">in</span> range(<span class="number">0</span>, len(data) - <span class="number">1</span>):</span><br><span class="line">        <span class="comment"># set initial min value's index</span></span><br><span class="line">        minimum = out_idx</span><br><span class="line">        <span class="comment"># select a new minimum value's index</span></span><br><span class="line">        <span class="keyword">for</span> in_idx <span class="keyword">in</span> range(out_idx + <span class="number">1</span>, len(data)):</span><br><span class="line">            <span class="keyword">if</span> data[in_idx] &lt; data[minimum]:</span><br><span class="line">                <span class="comment"># if new min, reset index</span></span><br><span class="line">                minimum = in_idx</span><br><span class="line">        <span class="keyword">if</span> out_idx != minimum:</span><br><span class="line">            data[out_idx], data[minimum] = data[minimum], data[out_idx]</span><br></pre></td></tr></table></figure>
+<p>对一个长度为 n 的数组，worst-case 下需要执行交换的次数为 n - 1，需要比较的次数为 n(n - 1)/2。选择排序的时间复杂度为 O(n^2)。选择排序是不稳定的。</p>
+<h1 id="Insertion-Sort"><a href="#Insertion-Sort" class="headerlink" title="Insertion Sort"></a>Insertion Sort</h1><p>插入排序比前两个都快，插入排序的关键在于有一条想象的分界线。主要思路是：</p>
+<ul>
+<li>分界线左边的元素都排好序了</li>
+<li>分界线右边的第一个元素需要被插到左边的一个恰当位置中<ul>
+<li>首先，把右边第一个元素的值存到一个临时变量中</li>
+<li>把左边的元素全部向右移一位，从而可以有一个位置来放要插入的值</li>
+<li>找到位置后，插入临时变量中的值</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">insertion_sort</span><span class="params">(data: [int])</span>:</span></span><br><span class="line">    <span class="keyword">for</span> out_idx <span class="keyword">in</span> range(<span class="number">1</span>, len(data)):</span><br><span class="line">        temp = data[out_idx]</span><br><span class="line">        in_idx = out_idx</span><br><span class="line">        <span class="comment"># go backward in the left side of the line</span></span><br><span class="line">        <span class="comment"># shift the values</span></span><br><span class="line">        <span class="keyword">while</span> in_idx &gt; <span class="number">0</span> <span class="keyword">and</span> data[in_idx - <span class="number">1</span>] &gt;= temp:</span><br><span class="line">            data[in_idx] = data[in_idx - <span class="number">1</span>]</span><br><span class="line">            in_idx -= <span class="number">1</span></span><br><span class="line">        <span class="keyword">if</span> out_idx != in_idx:</span><br><span class="line">            data[in_idx] = temp</span><br></pre></td></tr></table></figure>
+<p>对一个长度为 n 的数组，worst-case 下需要比较的次数为 n(n - 1) / 2，如果是随机分布的数组则表现会更好。插入排序最坏的情况下复杂度为 O(n^2)，最好的情况下为 O(n)（输入数组已经排好序的情况下）。插入排序也是稳定的。</p>
+<h1 id="Merge-Sort"><a href="#Merge-Sort" class="headerlink" title="Merge Sort"></a>Merge Sort</h1><p>归并排序的思路是 divide and conquer algorithms 的一个生动的例子。归并排序的思路为：</p>
+<ul>
+<li>用归并排序排好前一半</li>
+<li>用归并排序排好后一半</li>
+<li>归并排好序的两半</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># function that merges two parts</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">merge</span><span class="params">(a: [int], b: [int])</span> -&gt; [int]:</span></span><br><span class="line">    merged = []</span><br><span class="line">    <span class="keyword">while</span> a <span class="keyword">and</span> b:</span><br><span class="line">        <span class="keyword">if</span> a[<span class="number">0</span>] &lt; b[<span class="number">0</span>]:</span><br><span class="line">            merged.append(a.pop(<span class="number">0</span>))</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            merged.append(b.pop(<span class="number">0</span>))</span><br><span class="line">    <span class="keyword">if</span> a:</span><br><span class="line">        merged += a</span><br><span class="line">    <span class="keyword">if</span> b:</span><br><span class="line">        merged += b</span><br><span class="line">    <span class="keyword">return</span> merged</span><br><span class="line"><span class="comment"># mergesort</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">merge_sort</span><span class="params">(unsorted: [int])</span> -&gt; [int]:</span></span><br><span class="line">    <span class="comment"># base case</span></span><br><span class="line">    <span class="keyword">if</span> len(unsorted) &lt;= <span class="number">1</span>:</span><br><span class="line">        <span class="keyword">return</span> unsorted</span><br><span class="line">    mid = int(len(unsorted) / <span class="number">2</span>)</span><br><span class="line">    <span class="comment"># create left array</span></span><br><span class="line">    left = unsorted[:mid]</span><br><span class="line">    <span class="comment"># create right array</span></span><br><span class="line">    right = unsorted[mid:]</span><br><span class="line">    <span class="comment"># call itself with left half</span></span><br><span class="line">    left = merge_sort(left)</span><br><span class="line">    <span class="comment"># call itself with right half</span></span><br><span class="line">    right = merge_sort(right)</span><br><span class="line">    <span class="comment"># merge</span></span><br><span class="line">    <span class="keyword">return</span> merge(left, right)</span><br></pre></td></tr></table></figure>
+<p>归并排序的时间复杂度为 O(n log n)，空间复杂度为 O(n)，是稳定的。</p>
+<h1 id="Quick-Sort"><a href="#Quick-Sort" class="headerlink" title="Quick Sort"></a>Quick Sort</h1><p>快速排序的思路主要有三步：</p>
+<ul>
+<li>把数组分成左半部分（较小值）和右半部分（较大值）</li>
+<li>用快速排序排序左半部分</li>
+<li>用快速排序排序右半部分</li>
+</ul>
+<p>中心思想就是 partitioning，需要选择一个 pivot value 来决定每个值属于哪个部分。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">partition_helper</span><span class="params">(arr: [int], left: int, right: int, pivot: int)</span> -&gt; int:</span></span><br><span class="line">    left_ptr = left</span><br><span class="line">    right_ptr = right</span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        <span class="keyword">while</span> arr[left_ptr] &lt; pivot:</span><br><span class="line">            left_ptr += <span class="number">1</span></span><br><span class="line">        <span class="keyword">while</span> right_ptr &gt; <span class="number">0</span> <span class="keyword">and</span> arr[right_ptr] &gt; pivot:</span><br><span class="line">            right_ptr -= <span class="number">1</span></span><br><span class="line">        <span class="keyword">if</span> left_ptr &gt;= right_ptr:</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            arr[left_ptr], arr[right_ptr] = arr[right_ptr], arr[left_ptr]</span><br><span class="line">    <span class="keyword">return</span> left_ptr</span><br><span class="line"><span class="comment"># quick sort helper</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">quick_sort_helper</span><span class="params">(unsorted: [int], left: int, right: int)</span>:</span></span><br><span class="line">    <span class="comment"># base case</span></span><br><span class="line">    <span class="keyword">if</span> left &gt;= right:</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    <span class="comment"># last value is pivot</span></span><br><span class="line">    pivot = unsorted[right]</span><br><span class="line">    partition = partition_helper(unsorted, left, right, pivot)</span><br><span class="line">    quick_sort_helper(unsorted, left, partition - <span class="number">1</span>)</span><br><span class="line">    quick_sort_helper(unsorted, partition + <span class="number">1</span>, right)</span><br><span class="line"><span class="comment"># quick sort function</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">quick_sort</span><span class="params">(unsorted: [int])</span>:</span></span><br><span class="line">    quick_sort_helper(unsorted, <span class="number">0</span>, len(unsorted) - <span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+<p>这是一种原位置排序的实现。利用 Python 语言的特性，我们可以给出一种远远更为简洁的实现：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">quick_sort</span><span class="params">(unsorted: [int])</span> -&gt; [int]:</span></span><br><span class="line">    <span class="keyword">if</span> len(unsorted) &lt;= <span class="number">1</span>:</span><br><span class="line">        <span class="keyword">return</span> unsorted</span><br><span class="line">    <span class="comment"># initialize arrays</span></span><br><span class="line">    left = []</span><br><span class="line">    right = []</span><br><span class="line">    <span class="comment"># pick pivot value</span></span><br><span class="line">    pivot = unsorted.pop()</span><br><span class="line">    <span class="keyword">for</span> x <span class="keyword">in</span> unsorted:</span><br><span class="line">        <span class="keyword">if</span> x &lt; pivot:</span><br><span class="line">            left.append(x)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            right.append(x)</span><br><span class="line">    <span class="comment"># call itself</span></span><br><span class="line">    <span class="keyword">return</span> quick_sort(left) + [pivot] + quick_sort(right)</span><br></pre></td></tr></table></figure>
+<p>快速排序的时间复杂度为 O(n log n)。根据下面和大佬同学 <a href="https://dinglisa.com/blog/" target="_blank" rel="noopener">@LisaDing</a> 的讨论，原地快速排序的空间复杂度一般可以为 O(log n)（即递归深度，因为每次保存常数信息，栈帧里总共就会有 log n，具体讨论可见 <a href="https://stackoverflow.com/questions/12573330/why-does-quicksort-use-ologn-extra-space" target="_blank" rel="noopener">这里</a>），worst case 为 O(n)。第二种非原地的快速排序空间复杂度为 O(n log n)（具体见 <a href="https://stackoverflow.com/questions/38487269/space-complexity-of-quick-sort" target="_blank" rel="noopener">stackoverflow 的这个帖子</a>）。因此，快速排序的空间复杂度和具体实现关系很大。快速排序是不稳定的。</p>
+
+    </section>
+    <footer class="post-footer">
+      <section class="author">
+    <h4>Yubo Qin</h4>
+    <p>及时行乐</p>
+</section>
+      <section class="share">
+    <h4>Share this post</h4>
+    <a class="icon-twitter" href="http://twitter.com/share?url=https://xnth97.github.io/2018/02/04/sorting-algorithms/"
+       onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+        <span class="hidden">Twitter</span>
+    </a>
+    <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://xnth97.github.io/2018/02/04/sorting-algorithms/"
+       onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+        <span class="hidden">Facebook</span>
+    </a>
+    <a class="icon-google-plus" href="https://plus.google.com/share?url=https://xnth97.github.io/2018/02/04/sorting-algorithms/"
+       onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+        <span class="hidden">Google+</span>
+    </a>
+</section>
+    </footer>
+  </article>
+  <nav class="pagination" role="pagination">
+    
+    <a class="newer-posts" href="/2018/03/25/so-far-so-good/">
+        ← So Far So Good
+    </a>
+    
+    <span class="page-number">•</span>
+    
+    <a class="older-posts" href="/2017/12/19/data-structure-note/">
+        数据结构笔记 →
+    </a>
+    
+</nav>
+  <div id="comment" class="comments-area">
+    <h1 class="title"><a href="#disqus_comments" name="disqus_comments">Comments</a></h1>
+
+    <div id="disqus_thread"></div>
+    <script>
+    // var disqus_config = function () {
+    // this.page.url = page.permalink;  // Replace PAGE_URL with your page's canonical URL variable
+    // this.page.identifier = page.title; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    // };
+    (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = 'https://xnth97.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+</div>
+</main>
+
+
+  
+<footer class="site-footer">
+  
+  <div class="inner">
+     <section class="copyright">All content copyright <a href="/">NOWHERE</a> &copy; 2018 &bull; All rights reserved.</section>
+  </div>
+</footer>
+
+  <script type="text/javascript" src="/js/jquery.fitvids.js"></script>
+<script type="text/javascript" src="/js/index.js"></script>
+
+</body>
+</html>
