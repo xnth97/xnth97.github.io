@@ -86,7 +86,7 @@
 <h2 id="玩耍"><a href="#玩耍" class="headerlink" title="玩耍"></a>玩耍</h2><p>玩耍方面虽然乍一看 Windows Store 的清冷实在无法和 App Store 相比，不过咱可是正经的 Windows 10 Pro 啊。Steam 开起来，PPSSPP 开起来，Dolphin 开起来，Xbox 手柄插起来…Steam 上大量的独立游戏、像素风游戏又不需要 GTX 1080，跑的很是欢脱。模拟器游戏由于年代久远，对显卡压力也不大。当然这块 HD 515 GPU 也是有点出乎我意料了，4x 分辨率下模拟铁拳 6，全程 60 fps 非常稳定，瞬间就告别学习了。</p>
 <h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>多年后重用 Windows，不得不承认其生态越发完善，去除 iOS/macOS 开发和写 Swift 的部分，我使用 Windows 进行开发工作基本是没什么问题的。当然由于业界广泛使用 macOS/Linux，Windows 的兼容性还是有些欠缺，比如读取文件需要 <code>open(&#39;file&#39;, &#39;rb&#39;)</code> 以保证不受换行影响，比如 wget 下来的脚本经常不能使用需要使用 Chrome 访问 URL 再另存为…</p>
 <p>从 macOS 使用习惯转移到 Windows，最难以适应的其实是快捷键 cmd 和 control 的差异。后来发现可以通过注册表设置 scancode map，交换左 Alt 和 Ctrl 的键位，实现 macOS cmd 键的效果。在编辑器里新建文本文件：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Windows Registry Editor Version 5.00</span><br><span class="line">[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Keyboard Layout]</span><br><span class="line">&quot;Scancode Map&quot;=hex:00,00,00,00,00,00,00,00,03,00,00,00,38,00,1D,00,1D,00,38,00,00,00,00,00</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Windows Registry Editor Version 5.00</span><br><span class="line">[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Keyboard Layout]</span><br><span class="line">&quot;Scancode Map&quot;&#x3D;hex:00,00,00,00,00,00,00,00,03,00,00,00,38,00,1D,00,1D,00,38,00,00,00,00,00</span><br></pre></td></tr></table></figure>
 <p>修改扩展名为 reg，在 Windows 中打开导入注册表，重启后生效。</p>
 <p>使用田牌给我最大的惊喜是硬件。Surface Pen 是 Surface 的精华，其设计充满微软风格的实用主义。不需要为光洁的外表牺牲功能，磁力吸附、笔夹、橡皮擦、拖拽键、Windows Ink 呼出…配合脚本，你甚至可以用它当成 PPT 翻页笔使用。电池我使用了一个多月仍然是 100%，更换电池的一旋一拔也是非常优雅的设计。Type cover 触控板颠覆了我对 Windows 产品触控板的认知，大面积玻璃恍然间有小尺寸 Mac 的感觉，舒适的按键和键盘背光更是吊打 iPad Pro 的所谓键盘，能够保证在使用 Surface 外出时真的可以进行写作/coding 等工作。Windows Hello 识别迅速而准确，看一眼即可解锁/付款认证，高科技的未来感甩出 Touch ID 等传统指纹识别几条街。无风扇的 Core m3 处理器在保证续航和发热的同时达到了很不错的性能，对于轻度使用、尤其是 VS Code 编辑代码这种轻度专业使用的场景非常合适。屏幕尺寸和比例都很舒适，分辨率极高，色彩准确讨喜（但比 MacBook Pro 偏冷），PixelSense 加成使得在 Surface Pro 上进行内容消费很是合适。</p>
 <p>田牌平板成在微软赖以成家的 Windows。创新的硬件和自家 OS 的软硬结合带来一种异乎 iOS 而更为丰富的体验，高度的可扩展性也让 Surface Pro 真正成了一个可以关键时刻救急的工作设备而非 iPad Pro 那样明显在现有生态下轻办公重娱乐的优雅玩具。田牌的败笔却也在 Windows。Windows 10 和 Surface 固件小问题比较令人头痛，如触屏失灵、Windows Hello 不识别、电池电量不更新等。虽然频率非常低，但一旦出现问题需要重启还是异常烦人的。Surface 的电量由于 Windows 系统的一些问题也非常不稳，不知道后台跑着什么可能迅速就尿崩。</p>
@@ -153,7 +153,7 @@
 <footer class="site-footer">
   
   <div class="inner">
-     <section class="copyright">All content copyright <a href="/">NOWHERE</a> &copy; 2018 &bull; All rights reserved.</section>
+     <section class="copyright">All content copyright <a href="/">NOWHERE</a> &copy; 2020 &bull; All rights reserved.</section>
   </div>
 </footer>
 
