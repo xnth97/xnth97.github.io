@@ -8,10 +8,11 @@
   <meta name="description" content="Some stories." />
   <meta name="HandheldFriendly" content="True" />
   <meta name="MobileOptimized" content="320" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
   <link rel="stylesheet" type="text/css" href="/css/screen.css" />
-  <link href="https://fonts.googleapis.com/css?family=Noto+Sans:400,700|Noto+Serif:400,700|PT+Mono" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@200;300;400;500;600;700;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
 
   <meta name="generator" content="NOWHERE">
 
@@ -52,8 +53,8 @@
     <h1 class="post-title">Surface Pro 体验</h1>
     <section class="post-content">
       <p>之前由于 iPad Air 2 的尺寸和生产力不能适应我笔记、阅读、撸码和 Steam 的需要，搞了一台 Surface Pro Core m3 版本作为廉价 iPad Super-Pro 使用。阔别很久，再度长期使用 Windows 系统，感觉整体生态已和往日不可同日而语，故分享一下自己在 Windows 环境下的一些使用和配置。</p>
-<h1 id="开发环境"><a href="#开发环境" class="headerlink" title="开发环境"></a>开发环境</h1><h2 id="终端"><a href="#终端" class="headerlink" title="终端"></a>终端</h2><p>终端环境基本是我最早没有 Mac 时使用 Ubuntu 的主要原因。cmd.exe 实在是太难用了，后续的 PowerShell 个人感觉也没有好到哪里去。内在是改不了了，壳还是可以换下的。<a href="http://cmder.net" target="_blank" rel="noopener">cmder</a> 就是 Windows 下一款非常不错的终端模拟器，提供了非常多的自定义选项，也有非常不错的字体和主题支持。最关键的一点是它的 full 版本在 Windows 下实现了 *nix 的常用命令！终于可以在 Windows 下随意的 <code>ls</code>、<code>cat</code>、<code>grep</code> 了，甚至还支持管道的写法，基本上和日常使用 *nix 系统的命令无异。单凭这一点就大大拉近了我和 Windows 的距离。</p>
-<h2 id="包管理器"><a href="#包管理器" class="headerlink" title="包管理器"></a>包管理器</h2><p>Windows 上对于命令行工具的安装/升级/管理一直都是个头疼的问题，像 Ubuntu 有 apt-get、macOS 有 Homebrew 一样，Windows 也需要一个成熟完善的包管理器。我目前在使用 <a href="https://chocolatey.org" target="_blank" rel="noopener">Chocolatey</a>，能够很方便的帮你处理安装包、设置环境变量、更新升级等脏活累活，基本使用方法也和 apt-get、Homebrew 大同小异。我现在很多工具都使用 Chocolatey 安装，比如 Python，node.js，jre，nginx，以及 Windows 下很重要的 Mingw。包管理器确实节省了很多配置环境、寻找更新升级包的痛苦。</p>
+<h1 id="开发环境"><a href="#开发环境" class="headerlink" title="开发环境"></a>开发环境</h1><h2 id="终端"><a href="#终端" class="headerlink" title="终端"></a>终端</h2><p>终端环境基本是我最早没有 Mac 时使用 Ubuntu 的主要原因。cmd.exe 实在是太难用了，后续的 PowerShell 个人感觉也没有好到哪里去。内在是改不了了，壳还是可以换下的。<a target="_blank" rel="noopener" href="http://cmder.net/">cmder</a> 就是 Windows 下一款非常不错的终端模拟器，提供了非常多的自定义选项，也有非常不错的字体和主题支持。最关键的一点是它的 full 版本在 Windows 下实现了 *nix 的常用命令！终于可以在 Windows 下随意的 <code>ls</code>、<code>cat</code>、<code>grep</code> 了，甚至还支持管道的写法，基本上和日常使用 *nix 系统的命令无异。单凭这一点就大大拉近了我和 Windows 的距离。</p>
+<h2 id="包管理器"><a href="#包管理器" class="headerlink" title="包管理器"></a>包管理器</h2><p>Windows 上对于命令行工具的安装/升级/管理一直都是个头疼的问题，像 Ubuntu 有 apt-get、macOS 有 Homebrew 一样，Windows 也需要一个成熟完善的包管理器。我目前在使用 <a target="_blank" rel="noopener" href="https://chocolatey.org/">Chocolatey</a>，能够很方便的帮你处理安装包、设置环境变量、更新升级等脏活累活，基本使用方法也和 apt-get、Homebrew 大同小异。我现在很多工具都使用 Chocolatey 安装，比如 Python，node.js，jre，nginx，以及 Windows 下很重要的 Mingw。包管理器确实节省了很多配置环境、寻找更新升级包的痛苦。</p>
 <h1 id="IDE-编辑器"><a href="#IDE-编辑器" class="headerlink" title="IDE/编辑器"></a>IDE/编辑器</h1><h2 id="Visual-Studio-Code"><a href="#Visual-Studio-Code" class="headerlink" title="Visual Studio Code"></a>Visual Studio Code</h2><p>赞美 Electron，借助它跨平台的特性很多我常用的应用都可以有与 macOS 平台一致的无缝体验，比如 GitHub Desktop，Visual Studio Code，Atom，Slack 等。VS Code 确实是一个非常优秀的文本编辑器，以前我主力使用 Atom，仅使用 VS Code 打开大文件用。使用 Surface Pro 后发现 Core m3 真的带不动 Atom，而在 VS Code 下基本能够有流畅的体验。而且现在 VS Code 的插件生态日趋成熟，对中国下载友好的支持、强大的调试器、优秀的 IntelliSense 和性能表现，让我现在选择 VS Code 作为唯一的编辑器。我现在主要使用的插件有：</p>
 <ul>
 <li>Beautify：美化代码格式</li>
@@ -70,15 +71,16 @@
 <h2 id="Visual-Studio"><a href="#Visual-Studio" class="headerlink" title="Visual Studio"></a>Visual Studio</h2><p>宇宙第一 IDE，感慨一下最早接触编程还是初中必须学的 VB，最早接触 App 开发竟然还是 C# + XAML 写 Windows 8 的 Metro 应用。上次用 Visual Studio 应该是大一什么都不懂学 C++ 时，然而现在又用 Visual Studio 写 C/C++ 了。毕竟田牌自家，VS 2017 在项目规模不大的情况下在孱弱的 Surface 上跑的还是很流畅的，启动速度也明显快过 JetBrains 全家桶。UI 感觉是 Windows 下全场最佳了，IntelliSense 也毕竟是老牌强项，代码提示、补全、重构、改正等都非常优秀，爆出写 Swift 会卡到高亮都没有的 Xcode 几条街。由于我自己使用不深入，只能评价 VS 2017 很适合 C/C++ 的开发。但是由于使用习惯和整体环境的差异，我应该还是倾向于 Xcode 的。VS 2017 新增了对 Python 的支持，简单用了一下代码补全和 PyCharm 还是差距很大。</p>
 <h2 id="WSL"><a href="#WSL" class="headerlink" title="WSL"></a>WSL</h2><p>WSL 全称 <strong>W</strong>indows <strong>S</strong>ubsystem for <strong>L</strong>inux，又称作 lxss，即 <strong>L</strong>inu<strong>x</strong> <strong>S</strong>ub<strong>s</strong>ystem。简单来讲，由于 NT 架构可以方便的扩展 Windows 的子系统层，WSL 相当于在 Windows 里跑了一个 Ubuntu，兼容 POSIX 的 API，同时又能获得较小的性能损耗。WSL 在开启后通过 <code>bash</code> 命令进入，前述的 cmder 对 WSL 有相当好的支持，可以在设置里新建一个 task 为 <code>bash.exe -cur_console:p</code>，即可从 cmder 直接进入 WSL 同时获得正确的光标操作。我在 WSL 里安装了 oh-my-zsh，然后在 <code>~/.bashrc</code> 里加上了默认执行 <code>zsh</code> 的代码：</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="built_in">test</span> -t 1; <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">exec</span> zsh</span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
+
 <p>就可以把 WSL 当作一个普通的 Ubuntu 使用了。WSL + cmder 带来的一个好处是 Ubuntu 下的 ssh 能够保证连到 Ubuntu 系统的 VPS 时格式不出错，如果直接用 Windows 下的 cmd.exe 和 ssh，在 VPS 上运行了别的 text window manager（比如我用了 byobu）时终端直接就乱掉了。</p>
 <p>WSL 最黑科技的是可以安装好 Ubuntu 桌面相关软件包后，让 Ubuntu 的桌面运行在 Windows 的 X11 中。效果如下所示：</p>
-<p><img src="/images/170710/wsl.png" alt=""></p>
+<p><img src="/images/170710/wsl.png"></p>
 <p>WSL 提供了和 Win32 相互调用的接口，然而目前各开发工具的支持还不完善。不过可以预见的是，完全可以在 Windows 桌面环境下写代码，然后在 WSL 的 Linux 环境里编译、运行和调试，到时候可能很多开发者的工作流会更加的无缝和顺畅。</p>
 <h1 id="生产力"><a href="#生产力" class="headerlink" title="生产力"></a>生产力</h1><h2 id="阅读"><a href="#阅读" class="headerlink" title="阅读"></a>阅读</h2><p>阅读属于我搞 Surface 的核心需求，12.3 寸 2736x1824 的屏幕捧起来看书确实比我 iPad Air 2 的体验好出不少，3：2 的比例乍看奇怪，竖直捧起来时又非常合适。准确的色彩还原、舒适的大小、清晰的分辨率配合随时批注的 Surface Pen，阅读体验还是比较出色的。最近经常高铁出行，关闭 WiFi 打开节电模式看书，基本上一小时耗电 10%，足够长途旅行使用。唯一不足是 Windows 10 的触控体验还是远不如 iOS 顺滑，更不用说 ProMotion 加持的新 iPad Pro 了。</p>
 <p>单纯进行阅读和笔记时我使用预装的 Drawboard PDF，笔迹舒适，功能丰富，性能尚可，非常适合一手端着 Surface 一手提着笔边读书边写写画画。然而 Drawboard PDF 启动速度很慢，检索速度也很差，而且经常打开3、4个较大 PDF 就提示已无法再打开（可能与我 Surface 捉急的 RAM 有关系）。因此如果在传统桌面下，我还是使用 SumatraPDF，免费轻便而性能优异。不足之处当然就是由于不是 UWP 对触控的优化极差，手感非常不舒服，只能使用鼠标操作了。</p>
-<p><img src="/images/170710/book.png" alt=""></p>
+<p><img src="/images/170710/book.png"></p>
 <h2 id="笔记"><a href="#笔记" class="headerlink" title="笔记"></a>笔记</h2><p>拿到 Surface 后，我这个多年 OneNote 用户总算是头顶青天了。OneNote 的 UWP 做的非常优秀，UI 简约而功能丰富，手指触控和电磁笔书写都丝般顺滑（体验过新的 iPad Pro 120Hz ProMotion 以后再也不敢用这个词了），远超 Drawboard PDF 的书写体验。毕竟是软爹第一方出品，笔记的记录和管理流程都比较优秀。导出功能有些问题，不过还好提供了全功能的 OneNote 2016，流畅度略逊于 UWP，不过功能全面增强，传统的“打印”对话框也让导出功能强大了很多。</p>
-<p><img src="/images/170710/onenote.png" alt=""></p>
+<p><img src="/images/170710/onenote.png"></p>
 <p>另一个我在尝试的工具是 MyScript 的 Nebo，这个在 iPad Pro 上也是非常出名的 App。MyScript 最早做了手写计算器，优秀的笔记识别让我印象深刻，这次趁 Windows Store 打折 20 块就收了下来。整体还在体验中，书写迟滞感较为明显，然而转 Word 识别准确率非常高，尤其是手画图表转成排好版的电子格式的功能让我非常印象深刻。手写转数学公式也很有用，不过对于我个人还是偏向于 LaTeX。整体笔记本管理也比较方便，直接手写笔迹导出 HTML 也远胜于 OneNote 的打印，然而由于同步不方便，应该主要还是辅助 OneNote 使用。</p>
 <h1 id="图像处理"><a href="#图像处理" class="headerlink" title="图像处理"></a>图像处理</h1><p>以前出门旅行会带着 Sony NEX 相机和 iPad，玩耍一天后通过 PlayMemories App 将相机里的照片利用 WiFi 发送到 iPad 上进行观看/筛选/编辑/发社交网路的流程。换用 Surface 后，观看和筛选的过程大为便捷：仅需要带着一根 USB 线，相机连接 Surface 即可以直接观看筛选照片，略去了 iPad 等待照片无线传输的漫长过程。同时对照片文件有更自由的操作，比如如果存储卡不够了可以直接拷贝出来存储到 Surface 里，而 iPad 如果作为存储扩展还需要考虑之后如何导出的麻烦问题。我打算采取的更佳方案是用 MicroSD + SD 卡套的方式替代相机 SD 卡，这样拍摄完成后直接把 MicroSD 插入 Surface 即可浏览，省去携带一根线的麻烦似乎并不麻烦。</p>
 <p>在 Surface 的高分辨率色彩准确的 PixelSense 屏幕上观看照片确实很享受，后续过程却没有那么舒心。在 iPad 上我可以方便的使用 Enlight，Snapseed，泼辣修图进行图像处理，这些 App 提供了适合触屏的操作同时又具有较为专业的功能，而想在 Windows 平台上找到对等的 UWP 可就比较难了。泼辣修图算非常良心的一个，我在 Mac 上趁降价购买了 Mac App Store 版泼辣修图，只需要注册账号并登录，在全平台的泼辣修图都可以解锁所有功能，在 UWP 上配合 Surface Pen 整体体验很不错。其他的就比较鸡肋了，属于残废等级。当然也可以搬出大杀器 Photoshop，不过电量可是会尿崩的。</p>
@@ -87,6 +89,7 @@
 <h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>多年后重用 Windows，不得不承认其生态越发完善，去除 iOS/macOS 开发和写 Swift 的部分，我使用 Windows 进行开发工作基本是没什么问题的。当然由于业界广泛使用 macOS/Linux，Windows 的兼容性还是有些欠缺，比如读取文件需要 <code>open(&#39;file&#39;, &#39;rb&#39;)</code> 以保证不受换行影响，比如 wget 下来的脚本经常不能使用需要使用 Chrome 访问 URL 再另存为…</p>
 <p>从 macOS 使用习惯转移到 Windows，最难以适应的其实是快捷键 cmd 和 control 的差异。后来发现可以通过注册表设置 scancode map，交换左 Alt 和 Ctrl 的键位，实现 macOS cmd 键的效果。在编辑器里新建文本文件：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Windows Registry Editor Version 5.00</span><br><span class="line">[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Keyboard Layout]</span><br><span class="line">&quot;Scancode Map&quot;&#x3D;hex:00,00,00,00,00,00,00,00,03,00,00,00,38,00,1D,00,1D,00,38,00,00,00,00,00</span><br></pre></td></tr></table></figure>
+
 <p>修改扩展名为 reg，在 Windows 中打开导入注册表，重启后生效。</p>
 <p>使用田牌给我最大的惊喜是硬件。Surface Pen 是 Surface 的精华，其设计充满微软风格的实用主义。不需要为光洁的外表牺牲功能，磁力吸附、笔夹、橡皮擦、拖拽键、Windows Ink 呼出…配合脚本，你甚至可以用它当成 PPT 翻页笔使用。电池我使用了一个多月仍然是 100%，更换电池的一旋一拔也是非常优雅的设计。Type cover 触控板颠覆了我对 Windows 产品触控板的认知，大面积玻璃恍然间有小尺寸 Mac 的感觉，舒适的按键和键盘背光更是吊打 iPad Pro 的所谓键盘，能够保证在使用 Surface 外出时真的可以进行写作/coding 等工作。Windows Hello 识别迅速而准确，看一眼即可解锁/付款认证，高科技的未来感甩出 Touch ID 等传统指纹识别几条街。无风扇的 Core m3 处理器在保证续航和发热的同时达到了很不错的性能，对于轻度使用、尤其是 VS Code 编辑代码这种轻度专业使用的场景非常合适。屏幕尺寸和比例都很舒适，分辨率极高，色彩准确讨喜（但比 MacBook Pro 偏冷），PixelSense 加成使得在 Surface Pro 上进行内容消费很是合适。</p>
 <p>田牌平板成在微软赖以成家的 Windows。创新的硬件和自家 OS 的软硬结合带来一种异乎 iOS 而更为丰富的体验，高度的可扩展性也让 Surface Pro 真正成了一个可以关键时刻救急的工作设备而非 iPad Pro 那样明显在现有生态下轻办公重娱乐的优雅玩具。田牌的败笔却也在 Windows。Windows 10 和 Surface 固件小问题比较令人头痛，如触屏失灵、Windows Hello 不识别、电池电量不更新等。虽然频率非常低，但一旦出现问题需要重启还是异常烦人的。Surface 的电量由于 Windows 系统的一些问题也非常不稳，不知道后台跑着什么可能迅速就尿崩。</p>
@@ -95,20 +98,20 @@
     </section>
     <footer class="post-footer">
       <section class="author">
-    <h4>Yubo Qin</h4>
-    <p>及时行乐</p>
+    <h4>doggieeh</h4>
+    <p>真不错</p>
 </section>
       <section class="share">
     <h4>Share this post</h4>
-    <a class="icon-twitter" href="http://twitter.com/share?url=https://xnth97.github.io/2017/07/10/surface-pro/"
+    <a class="icon-twitter" target="_blank" rel="noopener" href="http://twitter.com/share?url=https://xnth97.github.io/2017/07/10/surface-pro/"
        onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
         <span class="hidden">Twitter</span>
     </a>
-    <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://xnth97.github.io/2017/07/10/surface-pro/"
+    <a class="icon-facebook" target="_blank" rel="noopener" href="https://www.facebook.com/sharer/sharer.php?u=https://xnth97.github.io/2017/07/10/surface-pro/"
        onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
         <span class="hidden">Facebook</span>
     </a>
-    <a class="icon-google-plus" href="https://plus.google.com/share?url=https://xnth97.github.io/2017/07/10/surface-pro/"
+    <a class="icon-google-plus" target="_blank" rel="noopener" href="https://plus.google.com/share?url=https://xnth97.github.io/2017/07/10/surface-pro/"
        onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
         <span class="hidden">Google+</span>
     </a>
@@ -144,7 +147,7 @@
     (d.head || d.body).appendChild(s);
     })();
     </script>
-    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+    <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 </div>
 </main>
 
@@ -153,7 +156,7 @@
 <footer class="site-footer">
   
   <div class="inner">
-     <section class="copyright">All content copyright <a href="/">NOWHERE</a> &copy; 2020 &bull; All rights reserved.</section>
+     <section class="copyright">2020 &copy; doggieeh &bull; <a href="/about">About Me</a></section>
   </div>
 </footer>
 
