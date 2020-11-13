@@ -231,7 +231,7 @@ mark {
 
 code, tt {
     padding: 1px 3px;
-    font-family: 'PT Mono', monospace, sans-serif;
+    font-family: 'SF Mono', 'Roboto Mono', monospace, sans-serif;
     font-size: 0.85em;
     white-space: pre-wrap;
     border: 1px solid #E3EDF3;
@@ -246,7 +246,7 @@ pre {
     border: 1px solid #E3EDF3;
     width: 100%;
     padding: 10px;
-    font-family: 'PT Mono', monospace, sans-serif;
+    font-family: 'SF Mono', 'Roboto Mono', monospace, sans-serif;
     font-size: 0.9em;
     white-space: pre;
     overflow: auto;
