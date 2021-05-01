@@ -110,7 +110,8 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[hdd]</span><br><span class="line">path &#x3D; &#x2F;path&#x2F;to&#x2F;your&#x2F;hdd</span><br><span class="line">valid users &#x3D; pi</span><br><span class="line">browseable &#x3D; Yes</span><br><span class="line">writeable &#x3D; Yes</span><br><span class="line">writelist &#x3D; pi</span><br><span class="line">create mask &#x3D; 0777</span><br><span class="line">directory mask &#x3D; 0777</span><br></pre></td></tr></table></figure>
 
 <p>然后重启 samba 服务，并添加当前账户：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo &#x2F;etc&#x2F;init.d&#x2F;samba restart</span><br><span class="line">sudo smbpasswd -a pi</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo service smbd restart</span><br><span class="line">sudo smbpasswd -a pi</span><br></pre></td></tr></table></figure>
+
 <p>这样在局域网里就能够发现树莓派了。用 pi 的账号密码连接，就可以轻松挂载共享的文件夹。</p>
 <h2 id="流媒体服务器"><a href="#流媒体服务器" class="headerlink" title="流媒体服务器"></a>流媒体服务器</h2><p>流媒体服务器通过 DLNA 协议，首先安装 minidlna：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install minidlna</span><br></pre></td></tr></table></figure>
