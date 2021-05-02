@@ -148,6 +148,24 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.&#x2F;frpc -c .&#x2F;frpc.ini</span><br></pre></td></tr></table></figure>
 
 <p>最后在任意一台机器上连接 Minecraft 服务器，地址为 <code>服务器公网 IP:6000</code>。在我的两人生存服上树莓派的负载约为 10%，可以较为轻松的应对低版本 Minecraft 服务器的工作。</p>
+<h1 id="智能家居"><a href="#智能家居" class="headerlink" title="智能家居"></a>智能家居</h1><p>智能家居部分主要是运行了两个服务：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/homebridge/homebridge">HomeBridge</a>：将 IoT 设备桥接至 HomeKit</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/philippe44/AirConnect">AirConnect</a>：将 Chromecast 设备桥接至 AirPlay</li>
+</ul>
+<h2 id="安装-Node-js-及-pm2"><a href="#安装-Node-js-及-pm2" class="headerlink" title="安装 Node.js 及 pm2"></a>安装 Node.js 及 pm2</h2><p>我们使用 pm2 作为进程管理工具。首先安装 Node.js LTS，跟着<a target="_blank" rel="noopener" href="https://github.com/nodesource/distributions/blob/master/README.md">文档</a>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">curl -fsSL https:&#x2F;&#x2F;rpm.nodesource.com&#x2F;setup_lts.x | sudo bash -</span><br><span class="line">sudo apt-get install -y nodejs</span><br></pre></td></tr></table></figure>
+
+<p>然后安装 pm2：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo npm install -g pm2</span><br></pre></td></tr></table></figure>
+
+<h2 id="HomeBridge"><a href="#HomeBridge" class="headerlink" title="HomeBridge"></a>HomeBridge</h2><p>安装 HomeBridge 及 <code>homebridge-config-ui-x</code>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo npm install -g --unsafe-perm homebridge homebridge-config-ui-x</span><br></pre></td></tr></table></figure>
+
+<p>然后根据 <a target="_blank" rel="noopener" href="https://github.com/homebridge/homebridge/blob/master/config-sample.json">config-sample.json</a> 编写自己的配置文件，放到 <code>~/.homebridge/config.json</code>，之后运行 <code>homebridge</code> 命令启动，并使用 iOS 上的 Home 应用进行初始化。完成后即可通过 <code>pm2 start homebridge</code> 来使用 pm2 管理进程。</p>
+<h2 id="AirConnect"><a href="#AirConnect" class="headerlink" title="AirConnect"></a>AirConnect</h2><p>对于 AirConnect 我们只需要它的一个组件 <code>aircast</code>。作者提供了<a target="_blank" rel="noopener" href="https://github.com/philippe44/AirConnect/blob/master/bin/aircast-arm">编译好的 ARM 架构二进制</a>，直接下载后 scp 到树莓派上，修改权限后使用 <code>pm2 start aircast-arm</code> 即可。</p>
+<p>pm2 管理的进程初始化好之后，需要用 <code>pm2 save</code> 保存下配置，之后再次启动可以使用 <code>pm2 resurrect</code> 快速恢复。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>树莓派还是挺实用的，一个极低功耗的完整 Linux 设备，外加 MicroSD 卡可以扩展较大的存储（我使用的 256GB），可以在家里便捷地实现文件共享、简单的自动化等操作。期待以后能有性能更强的 Pi 可以更为流畅地负担日常任务。</p>
 
     </section>
     <footer class="post-footer">
