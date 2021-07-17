@@ -48,7 +48,6 @@
 .icon-google-plus:before,
 .icon-facebook:before {
     font-family: 'icons';
-    speak: none;
     font-style: normal;
     font-weight: normal;
     font-variant: normal;
@@ -377,6 +376,64 @@ margin on the iframe, cause it breaks stuff. */
     background-size: cover;
 }
 
+/* nav bar */
+
+.menu {
+    display: block;
+    position: absolute;
+    bottom: 5%;
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+    text-align: center;
+    width: fit-content;
+    background: rgba(255,255,255,.5);
+    backdrop-filter: saturate(200%) blur(20px);
+    border-radius: 24px;
+    box-sizing: border-box;
+    outline: 0;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0;
+    font-family: 'Noto Sans SC', sans-serif;
+}
+
+.nav-list-h {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: stretch;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.menu-item {
+    backdrop-filter: none;
+    flex-direction: column;
+    align-items: center;
+    padding: 12px 28px;
+    line-height: 24px;
+    border-radius: 24px;
+    border-bottom: none;
+    text-align: center;
+    align-content: flex-end;
+    color: rgba(68,68,68,.7);
+    font-size: 1.5rem;
+    flex: 1;
+    display: flex;
+    text-decoration: none;
+}
+
+.menu-item-active {
+    background: #fff;
+    box-shadow: 0 0 8px 4px rgb(0, 0, 0, 0.2);
+} 
+
 .blog-logo {
     text-decoration: none;
 }
@@ -519,6 +576,7 @@ margin on the iframe, cause it breaks stuff. */
     width: 80%;
     max-width: 700px;
     margin: 4rem auto;
+    font-family: 'Noto Sans SC', sans-serif;
 }
 
 #comment h1 a {
@@ -671,7 +729,7 @@ figure.highlight pre {
     margin: 0;
 }
 
-/* Theme: Solarized - Github
+/* Theme: One Light
  * More theme here: http://softwaremaniacs.org/media/soft/highlight/test.html
  */
 pre .comment,
@@ -986,7 +1044,7 @@ pre .chunk {
         -moz-box-sizing: border-box;
         box-sizing: border-box;
         height: auto;
-        min-height: 240px;
+        min-height: 320px;
         padding: 15% 0;
     }
 
