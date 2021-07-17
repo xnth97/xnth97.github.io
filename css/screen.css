@@ -29,51 +29,14 @@
    1. Icons - Sets up the icon font and respective classes
    ========================================================================== */
 
-/* Import the font file with the icons in it */
-@font-face {
-    font-family: 'icons';
-    src:url('../fonts/icons.eot');
-    src:url('../fonts/icons.eot?#iefix') format('embedded-opentype'),
-        url('../fonts/icons.woff') format('woff'),
-        url('../fonts/icons.ttf') format('truetype'),
-        url('../fonts/icons.svg#icons') format('svg');
-    font-weight: normal;
-    font-style: normal;
-}
 
-/* Apply these base styles to all icons */
-.icon-ghost:before,
-.icon-feed:before,
-.icon-twitter:before,
-.icon-google-plus:before,
-.icon-facebook:before {
-    font-family: 'icons';
-    font-style: normal;
-    font-weight: normal;
-    font-variant: normal;
-    text-transform: none;
-    line-height: 1;
-    -webkit-font-smoothing: antialiased;
-    text-decoration: none;
-}
-
-/* Each icon is created by inserting the corret character into the
-   content of the :before pseudo element. Like a boss. */
-.icon-ghost:before {
-    content: "\e000";
-}
-.icon-feed:before {
-    content: "\e001";
-}
-.icon-twitter:before {
-    content: "\e002";
-    font-size: 1.1em;
-}
-.icon-google-plus:before {
-    content: "\e003";
-}
-.icon-facebook:before {
-    content: "\e004";
+.icon {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    stroke-width: 0;
+    stroke: currentColor;
+    fill: currentColor;
 }
 
 
@@ -389,6 +352,7 @@ margin on the iframe, cause it breaks stuff. */
     width: fit-content;
     background: rgba(255,255,255,.5);
     backdrop-filter: saturate(200%) blur(20px);
+    -webkit-backdrop-filter: saturate(200%) blur(20px);
     border-radius: 24px;
     box-sizing: border-box;
     outline: 0;
@@ -656,7 +620,7 @@ margin on the iframe, cause it breaks stuff. */
     position: absolute;
     top: 4rem;
     right: 0;
-    width: 140px;
+    width: 160px;
 }
 
 .post-footer .share a {
