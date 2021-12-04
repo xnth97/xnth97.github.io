@@ -350,6 +350,25 @@ So far, so good: up to this point everything is all right.– Webster’s New Wo
   </div>
 </footer>
 
-  
+  <script src="https://cdn.jsdelivr.net/npm/darkmode-js@1.5.7/lib/darkmode-js.min.js"></script>
+<script>
+  const options = {
+    label: '🌓',
+    autoMatchOsTheme: true,
+  };
+  const darkMode = new Darkmode(options);
+
+  if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    darkMode.toggle();
+  }
+
+  window.matchMedia('(prefers-color-scheme: dark)').addListener('change', e => {
+    if (e.matches && !darkMode.isActivated()) {
+      darkMode.toggle();
+    } else if (darkMode.isActivated()) {
+      darkMode.toggle();
+    }
+  });
+</script>
 </body>
 </html>
