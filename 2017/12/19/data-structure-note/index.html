@@ -389,23 +389,16 @@
 
   <script src="https://cdn.jsdelivr.net/npm/darkmode-js@1.5.7/lib/darkmode-js.min.js"></script>
 <script>
-  const options = {
-    label: '🌓',
-    autoMatchOsTheme: true,
-  };
-  const darkMode = new Darkmode(options);
+  function addDarkmodeWidget() {
+    const options = {
+      label: '🌓',
+      autoMatchOsTheme: true
+    };
 
-  if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-    darkMode.toggle();
+    const darkmode = new Darkmode(options);
+    darkmode.showWidget();
   }
-
-  window.matchMedia('(prefers-color-scheme: dark)').addListener('change', e => {
-    if (e.matches && !darkMode.isActivated()) {
-      darkMode.toggle();
-    } else if (darkMode.isActivated()) {
-      darkMode.toggle();
-    }
-  });
+  window.addEventListener('load', addDarkmodeWidget);
 </script>
 </body>
 </html>
