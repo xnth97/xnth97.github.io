@@ -108,7 +108,7 @@
 <p><img src="/images/211204/speedtest.png"></p>
 <h2 id="虚拟机"><a href="#虚拟机" class="headerlink" title="虚拟机"></a>虚拟机</h2><p>其它所有的家庭服务，我通过 Hyper-V 上的三个虚拟机部署和管理。</p>
 <h3 id="家庭核心服务"><a href="#家庭核心服务" class="headerlink" title="家庭核心服务"></a>家庭核心服务</h3><p>之前介绍过我家有些服务跑在一台树莓派上，然而对于性能敏感的任务还是很捉急（比如 <code>ffmpeg</code> 解码 Ring 摄像头视频流传输到 HomeKit）。这次我开了一台 Ubuntu Server 2 CPU + 2GB RAM 的虚拟机来接手原来树莓派上智能家居相关服务，主要有负责桥接家里 IoT 设备的 <a target="_blank" rel="noopener" href="https://homebridge.io/">homebridge</a>，将 Chromecast 转为 AirPlay 的 <a target="_blank" rel="noopener" href="https://github.com/philippe44/AirConnect/tree/master/aircast">aircast</a>，和下载文件的 <code>aria2</code> 以及 <a target="_blank" rel="noopener" href="https://github.com/ziahamza/webui-aria2">webui-aria2</a> 作为 UI 管理后台。这些服务全部通过 <code>pm2</code> 来进行管理，在遇到问题时可以自动重启。</p>
-<h3 id="AdGuard-Home"><a href="#AdGuard-Home" class="headerlink" title="AdGuard Home"></a>AdGuard Home</h3><p><a target="_blank" rel="noopener" href="https://adguard.com/zh_cn/adguard-home/overview.html">AdGuard Home</a> 是一款开源 DNS 服务器，主要用来拦截广告和跟踪。在服务器上直接使用 snap 安装：</p>
+<h4 id="AdGuard-Home"><a href="#AdGuard-Home" class="headerlink" title="AdGuard Home"></a>AdGuard Home</h4><p><a target="_blank" rel="noopener" href="https://adguard.com/zh_cn/adguard-home/overview.html">AdGuard Home</a> 是一款开源 DNS 服务器，主要用来拦截广告和跟踪。在服务器上直接使用 snap 安装：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo snap install adguard-home</span><br></pre></td></tr></table></figure>
 
 <p>然后打开服务器的 3000 端口地址去进行初始化，一般在这一步会有 53 端口被占用的问题。首先停用 <code>systemd-resolved</code> 服务：</p>
