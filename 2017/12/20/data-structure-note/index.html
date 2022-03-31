@@ -306,7 +306,6 @@
 
 <h2 id="堆排序和优先队列"><a href="#堆排序和优先队列" class="headerlink" title="堆排序和优先队列"></a>堆排序和优先队列</h2><p>堆排序是一种非常有趣的排序方法，基本思路就是从未排序的数组一个个把元素丢到堆里，然后再一遍遍 <code>removeMax()</code> 或 <code>removeMin()</code>，就得到了排好序的数组。插入和移除操作的 worst-case 都是 O(n log n)。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">heap_sort</span>(<span class="params">unsorted: [<span class="built_in">int</span>]</span>) -&gt; [int]:</span></span><br><span class="line">    h = MinHeap()</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> unsorted:</span><br><span class="line">        h.insert(i)</span><br><span class="line">    ret = []</span><br><span class="line">    <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(unsorted)):</span><br><span class="line">        ret.append(h.remove_min())</span><br><span class="line">    <span class="keyword">return</span> ret</span><br></pre></td></tr></table></figure>
-
 <p>在 Java <code>Collections</code> 框架的实现中，<code>PriorityQueue</code> 类就是使用最小堆实现的。因此，遍历一个优先队列不能保证元素的顺序（因为堆是部分有序的），必须要一个个出队才能获得正确的顺序。</p>
 <h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><p>以上就是几种基础的数据结构和它们的简单实现。不同数据结构由于设计和实现的不同，在看似相同的方法背后有着截然不同的原理和复杂度。在日常开发过程中，一定要根据业务需求选择合适的数据结构，合理利用系统资源，提高总体运行效率。</p>
 
@@ -318,26 +317,26 @@
 </section>
       <section class="share">
   <h4>分享这篇文章</h4>
-  <a target="_blank" rel="noopener" href='https://www.linkedin.com/sharing/share-offsite/?url=https://xnth97.github.io/2017/12/19/data-structure-note/' onclick="window.open(this.href, 'linkedin-share', 'width=720,height=480');return false;">
+  <a target="_blank" rel="noopener" href='https://www.linkedin.com/sharing/share-offsite/?url=https://xnth97.github.io/2017/12/20/data-structure-note/' onclick="window.open(this.href, 'linkedin-share', 'width=720,height=480');return false;">
     <svg class='icon'>
       <use xlink:href='#icon-linkedin'></use>
     </svg>
     <span class='hidden'>LinkedIn</span>
   </a>
-  <a target="_blank" rel="noopener" href='http://service.weibo.com/share/share.php?appkey=&title=数据结构笔记&url=https://xnth97.github.io/2017/12/19/data-structure-note/&pic=&searchPic=false&style=simple' onclick="window.open(this.href, 'weibo-share', 'width=640,height=360');return false;">
+  <a target="_blank" rel="noopener" href='http://service.weibo.com/share/share.php?appkey=&title=数据结构笔记&url=https://xnth97.github.io/2017/12/20/data-structure-note/&pic=&searchPic=false&style=simple' onclick="window.open(this.href, 'weibo-share', 'width=640,height=360');return false;">
     <svg class='icon'>
       <use xlink:href='#icon-sina-weibo'></use>
     </svg>
     <span class='hidden'>Sina Weibo</span>
   </a>
-  <a target="_blank" rel="noopener" href='http://twitter.com/share?url=https://xnth97.github.io/2017/12/19/data-structure-note/'
+  <a target="_blank" rel="noopener" href='http://twitter.com/share?url=https://xnth97.github.io/2017/12/20/data-structure-note/'
     onclick="window.open(this.href, 'twitter-share', 'width=640,height=480');return false;">
     <svg class="icon">
       <use xlink:href="#icon-twitter"></use>
     </svg>
     <span class="hidden">Twitter</span>
   </a>
-  <a target="_blank" rel="noopener" href='https://www.facebook.com/sharer/sharer.php?u=https://xnth97.github.io/2017/12/19/data-structure-note/'
+  <a target="_blank" rel="noopener" href='https://www.facebook.com/sharer/sharer.php?u=https://xnth97.github.io/2017/12/20/data-structure-note/'
     onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
     <svg class="icon">
       <use xlink:href="#icon-facebook2"></use>
@@ -349,13 +348,13 @@
   </article>
   <nav class="pagination" role="pagination">
     
-    <a class="newer-posts" href="/2018/02/04/sorting-algorithms/">
+    <a class="newer-posts" href="/2018/02/05/sorting-algorithms/">
         ← 排序算法笔记
     </a>
     
     <span class="page-number">•</span>
     
-    <a class="older-posts" href="/2017/10/25/raspberry-pi/">
+    <a class="older-posts" href="/2017/10/26/raspberry-pi/">
         Raspberry Pi 手记 →
     </a>
     
