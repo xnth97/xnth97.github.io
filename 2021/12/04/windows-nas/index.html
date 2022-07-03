@@ -126,7 +126,17 @@
 
 <p>然后运行 <code>sudo mount -a</code> 挂载，Ubuntu 即可以读写网络驱动器里的文件了。需要注意的是，此处 <code>USERNAME</code> 的用户必须在 Windows Server 里也设置好对应的读写权限，否则容易出现 <code>permission denied</code> 错误。</p>
 <p>对于这些智能家居相关的核心服务，我的想法是将它们物理隔离在一台虚拟机上，创建好检查点，这样一般不需要去动它们，万一因为更新之类的原因搞挂了也可以迅速恢复，避免对家庭使用造成影响。至于其它玩耍的服务可以开新的虚拟机去尽情折腾。</p>
-<h3 id="乱七八糟服务"><a href="#乱七八糟服务" class="headerlink" title="乱七八糟服务"></a>乱七八糟服务</h3><p>由于服务器性能较为富裕，我又开了一台 Ubuntu Server 4 CPU + 8GB RAM 的虚拟机跑一些乱七八糟的服务。顺便安利一下 Hyper-V 的动态内存分配，可以允许虚拟机在指定的内存范围内动态变化，因此即使分配了 8GB RAM，在负荷低的情况下虚拟机也只会占用大约 1GB 左右 RAM，不会给宿主机造成太大压力。</p>
+<h4 id="2022-年更新：替换-Ubuntu-为-Windows-Server-Core"><a href="#2022-年更新：替换-Ubuntu-为-Windows-Server-Core" class="headerlink" title="2022 年更新：替换 Ubuntu 为 Windows Server Core"></a>2022 年更新：替换 Ubuntu 为 Windows Server Core</h4><p>运行家庭服务的 Ubuntu Server 更新 Jellyfish 后莫名其妙搞丢了我好多配置文件，而且基本每天一小崩两天一大崩，于是一怒之下更换为 Windows Server Core。用了几个月下来真是一个坚如磐石，虽然有几点不太满意的：</p>
+<ul>
+<li>缺乏包管理，<code>winget</code> 目前在 Server SKU 上用不了</li>
+<li>Windows 服务还是比 systemctl 要复杂些，甚至还是第三方 app <a target="_blank" rel="noopener" href="https://nssm.cc/">nssm</a> 更为好用；即使这样还会带来复杂的权限问题</li>
+<li>没有真正的 CLI 模式，占用较多内存（不过对于家用这也是优势）</li>
+</ul>
+<p>对于家用来说，大量 Linux 下的繁复操作（如挂载）在 Windows Server 里都具有内建的稳定对应功能实现，甚至由于 Server SKU + Hyper-V 还会有更高的性能表现。而且借助安装 <a target="_blank" rel="noopener" href="https://docs.microsoft.com/en-us/windows-server/get-started/server-core-app-compatibility-feature-on-demand">FOD</a> 可以让 Windows Server 获得更多方便而基础的 GUI 管理工具，如 <code>explorer</code>、<code>taskmgr</code> 等。由于 Server Core 在 CLI 外表下其实具备完整 GUI（只是没有传统桌面 Shell），我们完全可以安装使用 Edge、VSCode 等更为复杂的应用来简化服务器部署与配置。</p>
+<p><img src="/images/211204/servercore.jpeg"></p>
+<h3 id="乱七八糟服务"><a href="#乱七八糟服务" class="headerlink" title="乱七八糟服务"></a>乱七八糟服务</h3><p>由于服务器性能较为富裕，我又开了一台 Ubuntu Server 4 CPU + 8GB RAM 的虚拟机跑一些乱七八糟的服务。顺便安利一下 Hyper-V 的动态内存分配，可以允许虚拟机在指定的内存范围内动态变化，因此即使分配了 8GB RAM，在负荷低的情况下虚拟机也只会占用大约 1GB 左右 RAM，不会给宿主机造成太大压力。注意在 Hyper-V 上运行的 Linux，可以安装 azure 优化的内核获得更好的性能。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install linux-azure</span><br></pre></td></tr></table></figure>
+
 <p><img src="/images/211204/hyperv.png"></p>
 <p>在这台服务器上，我完全通过 Docker 部署了这些服务：</p>
 <ul>
@@ -135,6 +145,9 @@
 <li><a target="_blank" rel="noopener" href="https://github.com/cdr/code-server">code-server</a>：在线版的 VSCode，方便顺手直接改一些服务器上的代码/文件，比如上述所有服务的 <code>docker-compose.yml</code>。</li>
 <li><a target="_blank" rel="noopener" href="https://github.com/librespeed/speedtest">librespeed</a>：用来进行局域网测速。</li>
 <li><a target="_blank" rel="noopener" href="https://github.com/pawelmalak/flame">flame</a>：简易的 Dashboard，作为所有服务的统一入口。</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/gogs/gogs">gogs</a>：自建轻量 git 服务器。</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/kalcaddle/kodbox">kodbox</a>：可道云，基于 web 的文件管理。</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/bpatrik/pigallery2">pigallery2</a>：基于 web 和文件夹的轻量化相册浏览。</li>
 </ul>
 <p><img src="/images/211204/codeserver.png"></p>
 <p><img src="/images/211204/dashboard.png"></p>
