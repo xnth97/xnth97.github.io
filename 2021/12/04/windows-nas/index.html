@@ -104,25 +104,25 @@
 <p><img src="/images/211204/server.png"></p>
 <p>通过服务器管理器，所有基础搭建都可以轻松地通过 GUI 设置完成，不需要像 Linux 一样安装额外软件包或者修改 <code>/etc/fstab</code> 之类，个人感觉非常适合家用服务器的部署。存储池、文件共享和 Hyper-V 大家都比较熟悉了，这里多说一下宝藏 <a target="_blank" rel="noopener" href="https://www.microsoft.com/en-us/evalcenter/evaluate-windows-admin-center">Windows Admin Center</a>，这个免费的软件实在是太香了。它也是开箱即用地提供了一个完善的 web 管理页面，不仅能够实时查看服务器状态，更能直接管理防火墙、服务、虚拟机、文件甚至注册表项等。</p>
 <p><img src="/images/211204/wac.png"></p>
-<p>我对 NAS 的使用需求很简单，主要就是提供一个网络驱动器存放文件以及通过 Lightroom 库管理照片，因此 Windows Server 自带的文件共享绰绰有余。其他设备直接挂载来访问，读写速度大概在 90 - 95 MB/s 上下，对于机械盘也勉强可用了。</p>
+<p>我对 NAS 的使用需求很简单，主要就是提供一个网络驱动器存放文件以及通过 Lightroom 库管理照片，因此 Windows Server 自带的文件共享绰绰有余。其他设备直接挂载来访问，读写速度大概在 90 - 95 MB&#x2F;s 上下，对于机械盘也勉强可用了。</p>
 <p><img src="/images/211204/speedtest.png"></p>
 <h2 id="虚拟机"><a href="#虚拟机" class="headerlink" title="虚拟机"></a>虚拟机</h2><p>其它所有的家庭服务，我通过 Hyper-V 上的三个虚拟机部署和管理。</p>
 <h3 id="家庭核心服务"><a href="#家庭核心服务" class="headerlink" title="家庭核心服务"></a>家庭核心服务</h3><p>之前介绍过我家有些服务跑在一台树莓派上，然而对于性能敏感的任务还是很捉急（比如 <code>ffmpeg</code> 解码 Ring 摄像头视频流传输到 HomeKit）。这次我开了一台 Ubuntu Server 2 CPU + 2GB RAM 的虚拟机来接手原来树莓派上智能家居相关服务，主要有负责桥接家里 IoT 设备的 <a target="_blank" rel="noopener" href="https://homebridge.io/">homebridge</a>，将 Chromecast 转为 AirPlay 的 <a target="_blank" rel="noopener" href="https://github.com/philippe44/AirConnect/tree/master/aircast">aircast</a>，和下载文件的 <code>aria2</code> 以及 <a target="_blank" rel="noopener" href="https://github.com/ziahamza/webui-aria2">webui-aria2</a> 作为 UI 管理后台。这些服务全部通过 <code>pm2</code> 来进行管理，在遇到问题时可以自动重启。</p>
 <h4 id="AdGuard-Home"><a href="#AdGuard-Home" class="headerlink" title="AdGuard Home"></a>AdGuard Home</h4><p><a target="_blank" rel="noopener" href="https://adguard.com/zh_cn/adguard-home/overview.html">AdGuard Home</a> 是一款开源 DNS 服务器，主要用来拦截广告和跟踪。在服务器上直接使用 snap 安装：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo snap install adguard-home</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo snap install adguard-home</span><br></pre></td></tr></table></figure>
 
 <p>然后打开服务器的 3000 端口地址去进行初始化，一般在这一步会有 53 端口被占用的问题。首先停用 <code>systemd-resolved</code> 服务：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl stop systemd-resolved</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl stop systemd-resolved</span><br></pre></td></tr></table></figure>
 
 <p>然后编辑 <code>/etc/systemd/resolved.conf</code>，添加 <code>DNS</code>、<code>FallbackDNS</code> 并修改 <code>DNSStubListener=no</code>，最后更新 <code>resolv.conf</code>：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ln -sf &#x2F;run&#x2F;systemd&#x2F;resolve&#x2F;resolv.conf &#x2F;etc&#x2F;resolv.conf</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ln -sf /run/systemd/resolve/resolv.conf /etc/resolv.conf</span><br></pre></td></tr></table></figure>
 
 <p><img src="/images/211204/adguard.png"></p>
 <h4 id="挂载"><a href="#挂载" class="headerlink" title="挂载"></a>挂载</h4><p>在 Windows Server 上，我创建了一个新的文件共享服务用来共享 <code>Downloads</code> 文件夹。在 Ubuntu Server 上，首先安装 <code>cifs-utils</code>，创建 <code>/mnt/downloads</code> 作为挂载点，创建一个 credentials 存放用户名密码：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">username&#x3D;USERNAME</span><br><span class="line">password&#x3D;PASSWORD</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">username=USERNAME</span><br><span class="line">password=PASSWORD</span><br></pre></td></tr></table></figure>
 
 <p>修改 <code>/etc/fstab</code> 加上:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;SERVER_IP&#x2F;Downloads &#x2F;mnt&#x2F;downloads cifs credentials&#x3D;&#x2F;path&#x2F;to&#x2F;credentials,uid&#x3D;1000,gid&#x3D;1000,iocharset&#x3D;utf8,rw,file_mode&#x3D;0777,dir_mode&#x3D;0777,sec&#x3D;ntlmv2 0 0</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">//SERVER_IP/Downloads /mnt/downloads cifs credentials=/path/to/credentials,uid=1000,gid=1000,iocharset=utf8,rw,file_mode=0777,dir_mode=0777,sec=ntlmv2 0 0</span><br></pre></td></tr></table></figure>
 
 <p>然后运行 <code>sudo mount -a</code> 挂载，Ubuntu 即可以读写网络驱动器里的文件了。需要注意的是，此处 <code>USERNAME</code> 的用户必须在 Windows Server 里也设置好对应的读写权限，否则容易出现 <code>permission denied</code> 错误。</p>
 <p>对于这些智能家居相关的核心服务，我的想法是将它们物理隔离在一台虚拟机上，创建好检查点，这样一般不需要去动它们，万一因为更新之类的原因搞挂了也可以迅速恢复，避免对家庭使用造成影响。至于其它玩耍的服务可以开新的虚拟机去尽情折腾。</p>
@@ -135,14 +135,14 @@
 <p>对于家用来说，大量 Linux 下的繁复操作（如挂载）在 Windows Server 里都具有内建的稳定对应功能实现，甚至由于 Server SKU + Hyper-V 还会有更高的性能表现。而且借助安装 <a target="_blank" rel="noopener" href="https://docs.microsoft.com/en-us/windows-server/get-started/server-core-app-compatibility-feature-on-demand">FOD</a> 可以让 Windows Server 获得更多方便而基础的 GUI 管理工具，如 <code>explorer</code>、<code>taskmgr</code> 等。由于 Server Core 在 CLI 外表下其实具备完整 GUI（只是没有传统桌面 Shell），我们完全可以安装使用 Edge、VSCode 等更为复杂的应用来简化服务器部署与配置。</p>
 <p><img src="/images/211204/servercore.jpeg"></p>
 <h3 id="乱七八糟服务"><a href="#乱七八糟服务" class="headerlink" title="乱七八糟服务"></a>乱七八糟服务</h3><p>由于服务器性能较为富裕，我又开了一台 Ubuntu Server 4 CPU + 8GB RAM 的虚拟机跑一些乱七八糟的服务。顺便安利一下 Hyper-V 的动态内存分配，可以允许虚拟机在指定的内存范围内动态变化，因此即使分配了 8GB RAM，在负荷低的情况下虚拟机也只会占用大约 1GB 左右 RAM，不会给宿主机造成太大压力。注意在 Hyper-V 上运行的 Linux，可以安装 azure 优化的内核获得更好的性能。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install linux-azure</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install linux-azure</span><br></pre></td></tr></table></figure>
 
 <p><img src="/images/211204/hyperv.png"></p>
 <p>在这台服务器上，我完全通过 Docker 部署了这些服务：</p>
 <ul>
 <li><a target="_blank" rel="noopener" href="https://github.com/janeczku/calibre-web">calibre-web</a>：著名电子书管理软件的 web 前端，支持在线阅读。</li>
 <li><a target="_blank" rel="noopener" href="https://github.com/mattermost/focalboard">focalboard</a>：个人使用的 Jira，方便追踪一些个人小目标。</li>
-<li><a target="_blank" rel="noopener" href="https://github.com/cdr/code-server">code-server</a>：在线版的 VSCode，方便顺手直接改一些服务器上的代码/文件，比如上述所有服务的 <code>docker-compose.yml</code>。</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/cdr/code-server">code-server</a>：在线版的 VSCode，方便顺手直接改一些服务器上的代码&#x2F;文件，比如上述所有服务的 <code>docker-compose.yml</code>。</li>
 <li><a target="_blank" rel="noopener" href="https://github.com/librespeed/speedtest">librespeed</a>：用来进行局域网测速。</li>
 <li><a target="_blank" rel="noopener" href="https://github.com/pawelmalak/flame">flame</a>：简易的 Dashboard，作为所有服务的统一入口。</li>
 <li><a target="_blank" rel="noopener" href="https://github.com/gogs/gogs">gogs</a>：自建轻量 git 服务器。</li>
