@@ -177,8 +177,8 @@
         <id>https://xnth97.github.io/2023/05/10/prompt-engineering</id>
         <link href="https://xnth97.github.io/2023/05/10/prompt-engineering"/>
         <updated>2023-05-10T20:11:00.000Z</updated>
-        <summary type="html"><![CDATA[近几个月最火热的话题莫过于以大语言模型（LLM）为代表的 GAI 了“我太帅喽我太狂喽”。AI 能够根据指令生成回答，但回答的质量极大程度上取决于指令的质量。正好 Andrew Ng 发布了 Prompt Engineering for Developers，周末学习一个记录一下。]]></summary>
-        <content type="html"><![CDATA[<p>近几个月最火热的话题莫过于以大语言模型（LLM）为代表的 GAI 了~~“我太帅喽我太狂喽”~~。AI 能够根据指令生成回答，但回答的质量极大程度上取决于指令的质量。正好 Andrew Ng 发布了 <a href="https://www.deeplearning.ai/short-courses/chatgpt-prompt-engineering-for-developers/" target="_blank" rel="noopener noreferrer">Prompt Engineering for Developers</a>，周末学习一个记录一下。</p>
+        <summary type="html"><![CDATA[近几个月最火热的话题莫过于以大语言模型（LLM）为代表的 GAI 了我太帅喽我太狂喽。AI 能够根据指令生成回答，但回答的质量极大程度上取决于指令的质量。正好 Andrew Ng 发布了 Prompt Engineering for Developers，周末学习一个记录一下。]]></summary>
+        <content type="html"><![CDATA[<p>近几个月最火热的话题莫过于以大语言模型（LLM）为代表的 GAI 了<del>我太帅喽我太狂喽</del>。AI 能够根据指令生成回答，但回答的质量极大程度上取决于指令的质量。正好 Andrew Ng 发布了 <a href="https://www.deeplearning.ai/short-courses/chatgpt-prompt-engineering-for-developers/" target="_blank" rel="noopener noreferrer">Prompt Engineering for Developers</a>，周末学习一个记录一下。</p>
 <h2 class="anchor anchorWithStickyNavbar_LWe7" id="概述">概述<a href="https://xnth97.github.io/2023/05/10/prompt-engineering#%E6%A6%82%E8%BF%B0" class="hash-link" aria-label="概述的直接链接" title="概述的直接链接">​</a></h2>
 <p>大语言模型主要分为 Base LLM 和 Instruction Tuned LLM。Base LLM 通过预测下一个词和简单的损失函数来输出结果，而 Instruction Tuned LLM 则可以根据指令生成文本。背后的关键训练范式则是 RLHF，Reinforcement Learning from Human Feedback，根据人类反馈来强化学习。<a href="https://huggingface.co/blog/zh/rlhf" target="_blank" rel="noopener noreferrer">huggingface 的这篇文章</a>很好地解释了 RLHF 是如何在 LLM 领域取得成果的。</p>
 <p>deeplearning.ai 的视频提供了基于 OpenAI 的简单 playground。但我用的是 Azure OpenAI 提供的 gpt-35-turbo 模型，所以用 Go 也实现了一个简单的程序，具体代码附在<a href="https://xnth97.github.io/2023/05/10/prompt-engineering#playground">本文末尾</a>。</p>
@@ -195,7 +195,7 @@
 <ol start="2">
 <li>要求结构化的输出，比如 JSON，HTML</li>
 </ol>
-<p>明确要求 AI 返回数据结构而不是 plain text，这样 app 可以简单 parse 出 AI 回答里不同的部分。比如<a href="https://github.com/xnth97/how/blob/main/main.go#L95" target="_blank" rel="noopener noreferrer">我的小项目 how 里</a>明确要求 AI 返回 JSON，这样可以根据不同 key 的不同内容做下一步处理。</p>
+<p>明确要求 AI 返回数据结构而不是 plain text，这样 app 可以简单 parse 出 AI 回答里不同的部分。比如<a href="https://github.com/xnth97/how/blob/9f60dd4038e8caf30d1ac42d21d0f76ba0c4f5dd/main.go#L103" target="_blank" rel="noopener noreferrer">我的小项目 how 里</a>明确要求 AI 返回 JSON，这样可以根据不同 key 的不同内容做下一步处理。</p>
 <div class="codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_biex"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">Generate a list of three made-up book titles along with their authors and genres. </span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">Provide them in JSON format with the following keys: </span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">book_id, title, author, genre.</span><br></span></code></pre><div class="buttonGroup__atx"><button type="button" aria-label="复制代码到剪贴板" title="复制" class="clean-btn"><span class="copyButtonIcons_eSgA" aria-hidden="true"><svg viewBox="0 0 24 24" class="copyButtonIcon_y97N"><path fill="currentColor" d="M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z"></path></svg><svg viewBox="0 0 24 24" class="copyButtonSuccessIcon_LjdS"><path fill="currentColor" d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"></path></svg></span></button></div></div></div>
 <ol start="3">
 <li>检查是否满足条件</li>
