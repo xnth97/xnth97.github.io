@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkblog=self.webpackChunkblog||[]).push([["1751"],{47234:function(t){t.exports=JSON.parse('{"tag":{"label":"photo","permalink":"/tags/photo","allTagsPath":"/tags","count":6,"unlisted":false},"listMetadata":{"permalink":"/tags/photo","page":1,"postsPerPage":10,"totalPages":1,"totalCount":6,"blogDescription":"Blog","blogTitle":"Blog"}}')}}]);
