@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkblog=self.webpackChunkblog||[]).push([["6376"],{9055:function(a){a.exports=JSON.parse('{"tag":{"label":"coding","permalink":"/tags/coding","allTagsPath":"/tags","count":6,"unlisted":false},"listMetadata":{"permalink":"/tags/coding","page":1,"postsPerPage":10,"totalPages":1,"totalCount":6,"blogDescription":"Blog","blogTitle":"Blog"}}')}}]);
