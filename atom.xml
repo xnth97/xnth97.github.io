@@ -353,7 +353,7 @@
 <p><img decoding="async" loading="lazy" src="https://xnth97.github.io/assets/images/back-bd615d98a405e0e633b5da4cd25c27e3.jpg" width="2048" height="1536" class="img_ev3q"></p>
 <p>正面是一块 1440P 120Hz 高刷曲面屏，屏幕内嵌了速度很不错的指纹识别模组。我第一次用纯曲面屏，感觉曲率还算蛮高的，几乎能覆盖到侧面三分之一的机身。巨大的曲率让安卓边缘返回的手势非常顺滑贴手，但也导致屏幕两侧正面看会微微发绿，看来手感和观感不可兼得。这块屏幕的色彩和亮度都非常不错，明显好于 S21 以及远远甩开 iPhone 13。我特别享受用这块巨亮无比的屏幕观看 HDR 内容，以至于最近有些节目（比如《黑镜》第六季）我选择专门缓存好 Netflix 等着出门时在手机上看。宽大的尺寸和讨喜的调色让我第一次体会到手机甚至掌上设备看视频的甜点舒适区。</p>
 <p><img decoding="async" loading="lazy" src="https://xnth97.github.io/assets/images/screen-f3778ca6884da51be5b00eeca8426f58.jpg" width="2048" height="1181" class="img_ev3q"></p>
-<p>内在硬件则是国产旗舰的传统强项了。Snapdragon 8 Gen 2（现在这都啥命名）+ 12GB RAM，所有应用都是一个游刃有余。游戏高刷满帧丝滑流畅，小而美也从不被杀后台。自研的马里亚纳芯片虽然被自豪地标记在外壳和软件里，却也无奈成为 Oppo 半导体的绝唱<sup><a href="https://xnth97.github.io/2023/08/20/find-x6-pro#user-content-fn-1-ecc11f" id="user-content-fnref-1-ecc11f" data-footnote-ref="true" aria-describedby="footnote-label" class="anchorTargetStickyNavbar_Vzrq">1</a></sup>。上下双扬声器开口且支持杜比，音质对我轻度游戏、Netflix 视频和 Apple Music 都比较足够。</p>
+<p>内在硬件则是国产旗舰的传统强项了。Snapdragon 8 Gen 2（现在这都啥命名）+ 12GB RAM，所有应用都是一个游刃有余。游戏高刷满帧丝滑流畅，小而美也从不被杀后台。自研的马里亚纳芯片虽然被自豪地标记在外壳和软件里，却也无奈成为 Oppo 半导体的绝唱<sup><a href="https://xnth97.github.io/2023/08/20/find-x6-pro#user-content-fn-1-ceae85" id="user-content-fnref-1-ceae85" data-footnote-ref="true" aria-describedby="footnote-label" class="anchorTargetStickyNavbar_Vzrq">1</a></sup>。上下双扬声器开口且支持杜比，音质对我轻度游戏、Netflix 视频和 Apple Music 都比较足够。</p>
 <p>整体来讲，这台机器由内而外满足我对国产旗舰的刻板印象：堆料。另一方面，它的工业设计也打破了我对国产傻大黑粗的偏见。色彩讨喜亲肤舒适的素皮，宽大扎实却不厚重的手感，以及满满致敬哈苏老法师狂喜的镜头模组设计，的确是独特而自成一派的风格。</p>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="软件">软件<a href="https://xnth97.github.io/2023/08/20/find-x6-pro#%E8%BD%AF%E4%BB%B6" class="hash-link" aria-label="软件的直接链接" title="软件的直接链接" translate="no">​</a></h2>
 <p>软件搭载基于 Android 13 的 ColorOS，在国内一众系统中也算得上简约了。ColorOS 的 launcher 基本是 Android 和 iOS 的缝合怪，只有一层“桌面”加负一屏，图标、文件夹、Android 小部件和 Oppo 自家的仿 iOS 的 Widget 都缝合在一起。Oppo 这个“卡片中心”确实学到了 WidgetKit 的精髓，实时更新的卡片提供完善的一瞥之内可以看清的信息，也有比 iOS widget 更开放的交互，不过不知道脱离 Android 规范的产物第三方适配的积极性和维护程度如何。更离谱（？）的是卡片中心里有大量本机上并没有安装的 app，其提供的卡片也能正常使用，感觉是设备厂商和应用厂商大型 py 交易现场，和 iOS 的模式大相径庭。</p>
@@ -372,7 +372,7 @@
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="生态">生态？<a href="https://xnth97.github.io/2023/08/20/find-x6-pro#%E7%94%9F%E6%80%81" class="hash-link" aria-label="生态？的直接链接" title="生态？的直接链接" translate="no">​</a></h2>
 <p>虽然拿到机器的第一天我就一波谷歌三件套装齐了（很感谢 ColorOS 枪口抬高一寸并没有卡什么），常用的 app 大部分也是通过 Google Play 安装，但这一个多月尤其肉身在国内的生活也让我第一次体验到安卓系统的“生态”。</p>
 <p>首先一点是系统和第三方服务的深度集成。或许是国内巨头对设备厂商影响力甚巨，或许是 PM 发自肺腑地认为整合一堆乱七八糟的能带来更多便利。不需安装就能使用的卡片中心之前提过了，我第一个文化震撼就是在没什么设置的情况下，ColorOS 可以系统级追踪你的所有快递、外卖、高铁票之类，我猜测是系统直接读取了手机号接入相应 API。付出（不存在的）隐私成本后，系统追踪的快递会提示我在哪个快递柜取件，到附近直接点开系统级小程序一键开柜；屏幕上方挖孔附近区域会实时显示高铁票的检票口，点开会追踪本人所有的高铁票（尽管很多并不是我自己购买的）；电话 app 可以直接追踪话费流量使用情况并充值，甚至还有专属的合作套餐；通讯录可以直接导入领英联系人（RIP 我组前 feature）。信息和入口在系统里无处不在。</p>
-<p>然后是系统对巨头的主动适配。针对国民级应用微信，系统竟然会主动提供类似“视频通话美颜”、“红包助手”之类辅助性功能，游戏助手里也有针对王者荣耀复活时可以以小窗倒计时等。类似这种需求在海外产品里是很难见到或者是很<em>隐蔽</em>的<sup><a href="https://xnth97.github.io/2023/08/20/find-x6-pro#user-content-fn-2-ecc11f" id="user-content-fnref-2-ecc11f" data-footnote-ref="true" aria-describedby="footnote-label" class="anchorTargetStickyNavbar_Vzrq">2</a></sup>。另外前些年经常看到的什么 app 连环唤醒、滥发通知、流氓软件、乱写存储等问题，可能是由于 Android 系统权限的收紧，以及 ColorOS 针对毒瘤的特定压制，在日常使用中还没有遇到过，也许道高一尺魔高一丈吧。</p>
+<p>然后是系统对巨头的主动适配。针对国民级应用微信，系统竟然会主动提供类似“视频通话美颜”、“红包助手”之类辅助性功能，游戏助手里也有针对王者荣耀复活时可以以小窗倒计时等。类似这种需求在海外产品里是很难见到或者是很<em>隐蔽</em>的<sup><a href="https://xnth97.github.io/2023/08/20/find-x6-pro#user-content-fn-2-ceae85" id="user-content-fnref-2-ceae85" data-footnote-ref="true" aria-describedby="footnote-label" class="anchorTargetStickyNavbar_Vzrq">2</a></sup>。另外前些年经常看到的什么 app 连环唤醒、滥发通知、流氓软件、乱写存储等问题，可能是由于 Android 系统权限的收紧，以及 ColorOS 针对毒瘤的特定压制，在日常使用中还没有遇到过，也许道高一尺魔高一丈吧。</p>
 <p>感觉在国内生态中，由于 Android 主导者 Google 的缺位，设备生产商上位成为了 OS vendor 和渠道商（各自的应用商店、推送系统等）。又由于国内互联网巨头地位过于压倒性，绝大部分用户关心少量头部国民 app 运行（适配）得好不好（<em>“为什么他的手机抢红包快？”</em>），于是形成了大而全的 OEM 和 BAT 巨头相互拉扯的奇妙环境，与国际市场运营商、OEM、Google “三权分立”的生态截然不同。</p>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="体验">体验<a href="https://xnth97.github.io/2023/08/20/find-x6-pro#%E4%BD%93%E9%AA%8C" class="hash-link" aria-label="体验的直接链接" title="体验的直接链接" translate="no">​</a></h2>
 <p>体验下来，我对 Find X6 Pro 最满意的还是拍照。硬件的豪华堆料保证了随时随心选择一个焦段所见即所得，成片也更多的是大底传感器忠实记录光线而不是 Pixel 或三星浓重的计算风味。其次是素质优秀亮度饱满的屏幕，无论是回放 XDR 照片还是播放 HDR 内容都生动精确，拔高了在移动设备上享受内容的上限。尤其要说的是续航，这真的是我用过续航最为充沛的手机，重度使用一天晚上还是能有超过 30% 的电量，完全没有使用 Pixel 和前代水果时的续航焦虑。SuperVOOC 闪充本以为是个噱头，结果这 100W 充电真的太猛了，随时插上一会就能补足大量电量，甚至让早上起床发现晚上忘了充电都不再是一个问题，洗漱时间足够充满出门了，还完全可以在外面打开反向无线充电给副机或耳机补能。</p>
@@ -380,11 +380,11 @@
 <!-- -->
 <section data-footnotes="true" class="footnotes"><h2 class="anchor anchorTargetStickyNavbar_Vzrq sr-only" id="footnote-label">Footnotes<a href="https://xnth97.github.io/2023/08/20/find-x6-pro#footnote-label" class="hash-link" aria-label="Footnotes的直接链接" title="Footnotes的直接链接" translate="no">​</a></h2>
 <ol>
-<li class="anchorTargetStickyNavbar_Vzrq" id="user-content-fn-1-ecc11f">
-<p><a href="https://36kr.com/p/2256035274190472" target="_blank" rel="noopener noreferrer" class="">OPPO 芯片一夜解散，马里亚纳 404</a> <a href="https://xnth97.github.io/2023/08/20/find-x6-pro#user-content-fnref-1-ecc11f" data-footnote-backref="" aria-label="Back to reference 1" class="data-footnote-backref">↩</a></p>
+<li class="anchorTargetStickyNavbar_Vzrq" id="user-content-fn-1-ceae85">
+<p><a href="https://36kr.com/p/2256035274190472" target="_blank" rel="noopener noreferrer" class="">OPPO 芯片一夜解散，马里亚纳 404</a> <a href="https://xnth97.github.io/2023/08/20/find-x6-pro#user-content-fnref-1-ceae85" data-footnote-backref="" aria-label="Back to reference 1" class="data-footnote-backref">↩</a></p>
 </li>
-<li class="anchorTargetStickyNavbar_Vzrq" id="user-content-fn-2-ecc11f">
-<p><code>WeChat references this, only god knows why.</code> Apple <a href="https://github.com/apple-open-source-mirror/libmalloc/blob/6f8aa5a1b1ef88c45b46ff45eb2b0dd46180e023/private/make_tapi_happy.h#L82" target="_blank" rel="noopener noreferrer" class="">libmalloc</a> <a href="https://xnth97.github.io/2023/08/20/find-x6-pro#user-content-fnref-2-ecc11f" data-footnote-backref="" aria-label="Back to reference 2" class="data-footnote-backref">↩</a></p>
+<li class="anchorTargetStickyNavbar_Vzrq" id="user-content-fn-2-ceae85">
+<p><code>WeChat references this, only god knows why.</code> Apple <a href="https://github.com/apple-open-source-mirror/libmalloc/blob/6f8aa5a1b1ef88c45b46ff45eb2b0dd46180e023/private/make_tapi_happy.h#L82" target="_blank" rel="noopener noreferrer" class="">libmalloc</a> <a href="https://xnth97.github.io/2023/08/20/find-x6-pro#user-content-fnref-2-ceae85" data-footnote-backref="" aria-label="Back to reference 2" class="data-footnote-backref">↩</a></p>
 </li>
 </ol>
 </section>]]></content>
@@ -825,7 +825,7 @@
         <content type="html"><![CDATA[<p>最近打算购入 NAS，比较来比较去群晖和 QNAP，突然被同事安利巨硬员工可以打骨折购买 ThinkStation，于是用接近一台 DS920+ 的价格购入了最低配 ThinkStation P340 工作站。基于这台机器，这两天逐渐搭建起了我的家庭服务器。</p>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="硬件">硬件<a href="https://xnth97.github.io/2021/12/04/windows-nas#%E7%A1%AC%E4%BB%B6" class="hash-link" aria-label="硬件的直接链接" title="硬件的直接链接" translate="no">​</a></h2>
 <p><img decoding="async" loading="lazy" src="https://xnth97.github.io/assets/images/thinkstation-af7e1af58740eb6c6b46b5a3123d6cc9.jpg" width="1200" height="1763" class="img_ev3q"></p>
-<p>外观是 ThinkStation 一如既往的低调，体积也没有很大。最低配 P340 带有 10 代 i3 处理器，四核八线程对家庭服务器绰绰有余。内存自带不够看的 4GB，购入两根海盗船组成 20GB 内存<sup><a href="https://xnth97.github.io/2021/12/04/windows-nas#user-content-fn-1-fe5f93" id="user-content-fnref-1-fe5f93" data-footnote-ref="true" aria-describedby="footnote-label" class="anchorTargetStickyNavbar_Vzrq">1</a></sup>。比较良心的是自带 256GB M2 SSD 用来装系统，又购买了两块 WD NAS 红盘作为存储<sup><a href="https://xnth97.github.io/2021/12/04/windows-nas#user-content-fn-2-fe5f93" id="user-content-fnref-2-fe5f93" data-footnote-ref="true" aria-describedby="footnote-label" class="anchorTargetStickyNavbar_Vzrq">2</a></sup>。许多年没碰过正经的塔式计算机了，目测 ThinkStation 用料还是相对丐的（但是绝对足够用）。令我比较印象深刻的是 ThinkStation 的盘位托架非常优雅，不需要螺丝固定，仅需要抽拉和推动拉手来依靠机械结构固定，看来设计时充分考虑到了扩展性。</p>
+<p>外观是 ThinkStation 一如既往的低调，体积也没有很大。最低配 P340 带有 10 代 i3 处理器，四核八线程对家庭服务器绰绰有余。内存自带不够看的 4GB，购入两根海盗船组成 20GB 内存<sup><a href="https://xnth97.github.io/2021/12/04/windows-nas#user-content-fn-1-9c9350" id="user-content-fnref-1-9c9350" data-footnote-ref="true" aria-describedby="footnote-label" class="anchorTargetStickyNavbar_Vzrq">1</a></sup>。比较良心的是自带 256GB M2 SSD 用来装系统，又购买了两块 WD NAS 红盘作为存储<sup><a href="https://xnth97.github.io/2021/12/04/windows-nas#user-content-fn-2-9c9350" id="user-content-fnref-2-9c9350" data-footnote-ref="true" aria-describedby="footnote-label" class="anchorTargetStickyNavbar_Vzrq">2</a></sup>。许多年没碰过正经的塔式计算机了，目测 ThinkStation 用料还是相对丐的（但是绝对足够用）。令我比较印象深刻的是 ThinkStation 的盘位托架非常优雅，不需要螺丝固定，仅需要抽拉和推动拉手来依靠机械结构固定，看来设计时充分考虑到了扩展性。</p>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="os">OS<a href="https://xnth97.github.io/2021/12/04/windows-nas#os" class="hash-link" aria-label="OS的直接链接" title="OS的直接链接" translate="no">​</a></h2>
 <p>物理机操作系统选用 Windows Server 2022。倒不是不熟悉 Linux，主要是<del>为了巨硬员工的尊严</del>。正经的理由是：我需要物理机操作系统只负责底层的存储和虚拟化，其它所有服务均通过部署其上的虚拟机提供，这样不会担心乱搞把全家的服务都搞挂了。Windows Server 的优势在于开箱即用地提供了极为稳定的基础功能：</p>
 <ul>
@@ -914,11 +914,11 @@
 <!-- -->
 <section data-footnotes="true" class="footnotes"><h2 class="anchor anchorTargetStickyNavbar_Vzrq sr-only" id="footnote-label">Footnotes<a href="https://xnth97.github.io/2021/12/04/windows-nas#footnote-label" class="hash-link" aria-label="Footnotes的直接链接" title="Footnotes的直接链接" translate="no">​</a></h2>
 <ol>
-<li class="anchorTargetStickyNavbar_Vzrq" id="user-content-fn-1-fe5f93">
-<p>一年后变成了 28GB <a href="https://xnth97.github.io/2021/12/04/windows-nas#user-content-fnref-1-fe5f93" data-footnote-backref="" aria-label="Back to reference 1" class="data-footnote-backref">↩</a></p>
+<li class="anchorTargetStickyNavbar_Vzrq" id="user-content-fn-1-9c9350">
+<p>一年后变成了 28GB <a href="https://xnth97.github.io/2021/12/04/windows-nas#user-content-fnref-1-9c9350" data-footnote-backref="" aria-label="Back to reference 1" class="data-footnote-backref">↩</a></p>
 </li>
-<li class="anchorTargetStickyNavbar_Vzrq" id="user-content-fn-2-fe5f93">
-<p>后面又插了一个 512GB NVME SSD <a href="https://xnth97.github.io/2021/12/04/windows-nas#user-content-fnref-2-fe5f93" data-footnote-backref="" aria-label="Back to reference 2" class="data-footnote-backref">↩</a></p>
+<li class="anchorTargetStickyNavbar_Vzrq" id="user-content-fn-2-9c9350">
+<p>后面又插了一个 512GB NVME SSD <a href="https://xnth97.github.io/2021/12/04/windows-nas#user-content-fnref-2-9c9350" data-footnote-backref="" aria-label="Back to reference 2" class="data-footnote-backref">↩</a></p>
 </li>
 </ol>
 </section>]]></content>
