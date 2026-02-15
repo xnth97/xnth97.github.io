@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkblog=self.webpackChunkblog||[]).push([["9763"],{94232(a){a.exports=JSON.parse('{"tag":{"label":"annual","permalink":"/tags/annual","allTagsPath":"/tags","count":6,"unlisted":false},"listMetadata":{"permalink":"/tags/annual","page":1,"postsPerPage":10,"totalPages":1,"totalCount":6,"blogDescription":"Blog","blogTitle":"Blog"}}')}}]);
