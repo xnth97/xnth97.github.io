@@ -1,0 +1,51 @@
+<!DOCTYPE html><html lang="zh-Hans"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="Windows Dev Kit 2023 简要体验"><title>Windows Dev Kit 2023 简要体验 - NOWHERE</title><link rel="icon" href="/img/favicon.ico"><link rel="stylesheet" href="/_astro/BaseLayout.BrFC7wQb.css"></head> <body class="post-page"> <header class="site-nav"> <div class="site-nav-inner"> <a class="brand" href="/" aria-label="NOWHERE"> <span>NOWHERE</span> </a> <nav aria-label="Primary navigation"> <a href="/tags/daily/">日常</a><a href="/tags/gears/">剁手</a><a href="/tags/note/">笔记</a><a href="/tags/travel/">旅行</a><a href="/link/">友链</a><a href="/about/">关于我</a> </nav> </div> </header>  <main class="article-page"> <article class="post-article"> <header class="article-header"> <p class="article-kicker">2022年11月6日</p> <p class="article-type">daily</p> <h1>Windows Dev Kit 2023 简要体验</h1> <div class="tag-row"> <a href="/tags/daily/">daily</a><a href="/tags/gears/">gears</a> </div> </header> <div class="prose">  <p>今年 Build 大会上我软宣布了 <a href="https://www.youtube.com/watch?v=yICVNta8jMU">Project Volterra</a>，一个 arm64 架构的 Windows 开发机。作为前 Intel NUC 用户、并曾于 Windows 7 时代给家里装过 ITX 的 HTPC 的小尺寸主机爱好者，我迅速被它紧凑的设计和 ARM 架构吸引。收到机器一周多的时间，它替代了 Alienware R10 成为了我桌面上的主力机。以下是一些简要体验。</p>
+<h1 id="开箱">开箱</h1>
+<p>大概是非消费级产品缘故，包装极为简陋，一个硬纸壳快递盒就是全部包装了。Windows 而非 Surface 的 logo 清楚地显示出开发机的定位。</p>
+<figure><a href="./images/package.jpg" class="glightbox" data-gallery="article-images" data-fullsize-from-img="true"><img src="/_astro/package.BiNkpW11_ZNdN7k.webp" alt loading="lazy" decoding="async" width="1488" height="720"></a></figure>
+<p>取出机器，一个黑色的巴掌大的小盒子，基本体积可以对标 Mac Mini。回收塑料机身、镜面田牌 logo，做工精致并不廉价。边缘直上直下没有倒角，但由于不是金属，并没有 Mac 的割手感。设计非常对我胃口，可以无感地摆放在家中的任意角落。</p>
+<figure><a href="./images/machine.jpg" class="glightbox" data-gallery="article-images" data-fullsize-from-img="true"><img src="/_astro/machine.C6p7ljs-_Z27Jfcb.webp" alt loading="lazy" decoding="async" width="1440" height="1080"></a></figure>
+<p>Windows Dev Kit 2023 基于骁龙 8cx gen3，板载 32GB RAM 和可更换的 512GB NVME SSD（什么叫良心啊果子）。接口齐全，背部是电源、网口、mDP 和三个 USB-A，侧面另有两个全功能 USB-C，网卡甚至还支持 WiFi 6E。</p>
+<figure><a href="./images/ports.jpg" class="glightbox" data-gallery="article-images" data-fullsize-from-img="true"><img src="/_astro/ports.CuqRE2-X_ZKeMR9.webp" alt loading="lazy" decoding="async" width="1440" height="1085"></a></figure>
+<p>连接好田牌自家外设 Microsoft Modern Camera, Microsoft Bluetooth Ergonomic Mouse, Microsoft Designer Compact Keyboard，开机。</p>
+<figure><a href="./images/setup.jpg" class="glightbox" data-gallery="article-images" data-fullsize-from-img="true"><img src="/_astro/setup.ClLN9mWa_hAyAa.webp" alt loading="lazy" decoding="async" width="1672" height="1254"></a></figure>
+<figure><a href="./images/device.jpg" class="glightbox" data-gallery="article-images" data-fullsize-from-img="true"><img src="/_astro/device.D6CLb890_Z1InCQX.webp" alt loading="lazy" decoding="async" width="1323" height="1051"></a></figure>
+<blockquote>
+<p>毫不意外，这玩意就是个没有屏幕的 Surface</p>
+</blockquote>
+<h1 id="性能">性能</h1>
+<p>作为（下班后的）主力机，我的日常负载大概是 ~20 个 Edge 标签页、小型 Visual Studio / VSCode 项目、某个 Office 365 app、两三个 IM、若干个终端以及一些后台服务（OneDrive, iCloud, PowerToys, Steam etc），对于这台机器算是绰绰有余。得益于大内存和高速 SSD，多任务切换还是相当丝滑的。Adreno GPU 相较于曾经我购买的 NUC 的 Intel 核显也是大幅提升，渲染 4K + 2K 桌面动画毫不拖沓，且 GPU 占用率极低。</p>
+<figure><a href="./images/perf.jpg" class="glightbox" data-gallery="article-images" data-fullsize-from-img="true"><img src="/_astro/perf.jUy8numj_1Voru5.webp" alt loading="lazy" decoding="async" width="1497" height="1141"></a></figure>
+<p>但需要注意的是，我这里的使用场景算是一个 happy path：大部分上述提到的应用软件都是原生的 arm64 版本。一旦涉及到 x86 翻译的部分，在高负载时（比如编译 Node.js 项目）就能明显地感觉到力不从心，极为缓慢。为了对比 M1，我也作死尝试了一下运行 x86 的古墓丽影：暗影，720P 中画质 20fps，惨不忍睹。作为参照我的 M1 Max 开到非常高 1440P 是 60fps 满帧且风扇都不转的。为什么没测 1440P 呢，因为 720P 以上直接：</p>
+<figure><a href="./images/shadow_of_tomb.png" class="glightbox" data-gallery="article-images" data-fullsize-from-img="true"><img src="/_astro/shadow_of_tomb.CRU7cTQO_ZuEPYR.webp" alt loading="lazy" decoding="async" width="829" height="390"></a></figure>
+<p>图一乐也跑一下分，膏通还是被果子按在地上碾压了。单核大约是我 M1 Max 60%，多核更是只有 45%，更离谱的是跑在 WSA 上的还比原生要略高一点。不过另一方面，这个单核性能也赶上了 Intel 16 寸 MBP，多核也有它 Core i9 9880H 的 80%，然而运行起来极为安静毫无声音（据<a href="https://www.jeffgeerling.com/blog/2022/testing-microsofts-windows-dev-kit-2023">此文</a>日常功耗约为几瓦），能耗比虽不及 M1、但也超出我（火龙 888 受害者）对膏通的预期了。</p>
+<figure><a href="./images/geekbench.jpg" class="glightbox" data-gallery="article-images" data-fullsize-from-img="true"><img src="/_astro/geekbench.qpJ5gGLN_Z2n10r8.webp" alt loading="lazy" decoding="async" width="1607" height="194"></a></figure>
+<p>最后在传统性能之外，有必要提一嘴，这颗 SoC 相较于 PC 的一大不同是它还具有 NPU，据称在某些机器学习任务可以达到 80x CPU 的速度。不过膏通这 ONNX SDK 还需要申请，一周多过去了还没有收到，所以暂时无法测试。</p>
+<h1 id="兼容性">兼容性</h1>
+<p>严格来说，这是我第二次使用桌面 Windows on ARM 的设备（第一次是天国的 Surface 2 和 Windows RT）。很多日常使用的应用，如 VSCode、Edge、Office、7zip 等均是原生 arm64，一些更吃性能的开发工具如 VS、Golang、Python 也有了 arm64 版本，使用起来<strong>基本</strong>和 x86 无异。其中相对有障碍的是自家 Visual Studio，有 arm64，但装不了扩展。其他 x86 软件，得益于新增的 64 位翻译支持，只要不是高负载（如编译、游戏），不管是 GUI 还是 CLI 都运行的没有什么问题。</p>
+<figure><a href="./images/vsix.png" class="glightbox" data-gallery="article-images" data-fullsize-from-img="true"><img src="/_astro/vsix.CVS4-o1Z_SP6uh.webp" alt loading="lazy" decoding="async" width="656" height="387"></a></figure>
+<p>ARM 架构的一个意外之喜可能是 WSA，安卓子系统可以直接原生运行 arm64 的 app 了，理论上兼容性和性能都比 x86 翻译要好上很多。我用的最多的是 Apple Music，其中图形开销较大的部分如动态歌词、专辑动画等，现在都是纵享丝滑。</p>
+<figure><a href="./images/music.jpg" class="glightbox" data-gallery="article-images" data-fullsize-from-img="true"><img src="/_astro/music.CMl9R5pQ_1S0AM4.webp" alt loading="lazy" decoding="async" width="1683" height="1245"></a></figure>
+<h1 id="前景">前景？</h1>
+<p>虽然只是开发机，我还挺高兴巨硬愿意把这东西做出来的，而且设计和做工完全可以当一个消费级产品来卖。虽然 SoC 绝对性能不及 M1，但 32GB + 512GB 的良心搭配还是让它日常使用场景远远胜过比它贵出百刀的 Mac Mini，甚至还预装了 $199 的 Windows 11 Pro。对于我，它可以是一台摆在书房的开发机，可以是卧室里连接投影的 HTPC，可以是扔在车库里的低功耗服务器。但极高的能耗比、优雅紧凑的设计、齐全不阉割的接口、完全静音的体验，又让我觉得它甚至可以是一台适合绝大部分人的 daily driver。并不是所有人都需要/负担得起强大的塔式计算机或昂贵的 Mac，一个简单的 ARM 小盒子或许也可以带来新时代计算设备的普惠。</p>
+<blockquote>
+<p>本文使用 Windows Dev Kit 2023 撰写并发布</p>
+</blockquote>  </div> <section class="article-comments" aria-label="评论"> <div id="disqus_thread"></div> </section> <script>(function(){const identifier = "/2022/11-06-windows-dev-kit/";
+const title = "Windows Dev Kit 2023 简要体验";
+const url = "https://xnth97.github.io/2022/11-06-windows-dev-kit/";
+
+  window.disqus_config = function () {
+    this.page.url = url;
+    this.page.identifier = identifier;
+    this.page.title = title;
+    this.language = 'en_US';
+  };
+
+  if (!document.querySelector('script[data-disqus-shortname="xnth97"]')) {
+    const script = document.createElement('script');
+    script.src = 'https://xnth97.disqus.com/embed.js';
+    script.async = true;
+    script.dataset.disqusShortname = 'xnth97';
+    script.setAttribute('data-timestamp', String(Date.now()));
+    document.body.appendChild(script);
+  }
+})();</script> </article> </main>  <footer class="site-footer"> <div> <strong>NOWHERE</strong> <span>一些碎碎念</span> </div> <p>Copyright © 2026 NOWHERE</p> </footer> <script type="module" src="/_astro/BaseLayout.astro_astro_type_script_index_0_lang.CHqgZIDF.js"></script> </body> </html>

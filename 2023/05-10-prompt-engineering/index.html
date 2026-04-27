@@ -1,0 +1,366 @@
+<!DOCTYPE html><html lang="zh-Hans"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="言出法随：Prompt Engineering 笔记"><title>言出法随：Prompt Engineering 笔记 - NOWHERE</title><link rel="icon" href="/img/favicon.ico"><link rel="stylesheet" href="/_astro/BaseLayout.BrFC7wQb.css"></head> <body class="post-page"> <header class="site-nav"> <div class="site-nav-inner"> <a class="brand" href="/" aria-label="NOWHERE"> <span>NOWHERE</span> </a> <nav aria-label="Primary navigation"> <a href="/tags/daily/">日常</a><a href="/tags/gears/">剁手</a><a href="/tags/note/">笔记</a><a href="/tags/travel/">旅行</a><a href="/link/">友链</a><a href="/about/">关于我</a> </nav> </div> </header>  <main class="article-page"> <article class="post-article"> <header class="article-header"> <p class="article-kicker">2023年5月10日</p> <p class="article-type">coding</p> <h1>言出法随：Prompt Engineering 笔记</h1> <div class="tag-row"> <a href="/tags/coding/">coding</a><a href="/tags/note/">note</a> </div> </header> <div class="prose">  <p>近几个月最火热的话题莫过于以大语言模型（LLM）为代表的 GAI 了<del>我太帅喽我太狂喽</del>。AI 能够根据指令生成回答，但回答的质量极大程度上取决于指令的质量。正好 Andrew Ng 发布了 <a href="https://www.deeplearning.ai/short-courses/chatgpt-prompt-engineering-for-developers/">Prompt Engineering for Developers</a>，周末学习一个记录一下。</p>
+<h1 id="概述">概述</h1>
+<p>大语言模型主要分为 Base LLM 和 Instruction Tuned LLM。Base LLM 通过预测下一个词和简单的损失函数来输出结果，而 Instruction Tuned LLM 则可以根据指令生成文本。背后的关键训练范式则是 RLHF，Reinforcement Learning from Human Feedback，根据人类反馈来强化学习。<a href="https://huggingface.co/blog/zh/rlhf">huggingface 的这篇文章</a>很好地解释了 RLHF 是如何在 LLM 领域取得成果的。</p>
+<p>deeplearning.ai 的视频提供了基于 OpenAI 的简单 playground。但我用的是 Azure OpenAI 提供的 gpt-35-turbo 模型，所以用 Go 也实现了一个简单的程序，具体代码附在<a href="#playground">本文末尾</a>。</p>
+<h1 id="原则">原则</h1>
+<h2 id="清晰具体的提示">清晰具体的提示</h2>
+<p>要给模型清晰而具体（clear and specific）的提示。</p>
+<blockquote>
+<p>注意：clear != short</p>
+</blockquote>
+<p>一些常用的最佳实践如：</p>
+<ol>
+<li>使用分隔符号，例如 <code>&quot;&quot;&quot;</code>， <code>```</code>，<code>---</code>，<code>&lt;&gt;</code>，<code>&lt;tag&gt;</code></li>
+</ol>
+<p>将希望 AI 处理的部分明确地与 prompt 区分开。这种方式也很适合基于 AI 开发 app 的场景，比如可以利用不同的 prompt template 来处理用户的输入。比如如果想做一个根据文本给出摘要的 app，prompt 可以是：</p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="plaintext"><code><span class="line"><span>Summarize the text delimited by triple backticks into a single sentence.</span></span>
+<span class="line"><span>```{text}```</span></span></code></pre>
+<ol start="2">
+<li>要求结构化的输出，比如 JSON，HTML</li>
+</ol>
+<p>明确要求 AI 返回数据结构而不是 plain text，这样 app 可以简单 parse 出 AI 回答里不同的部分。比如<a href="https://github.com/xnth97/how/blob/9f60dd4038e8caf30d1ac42d21d0f76ba0c4f5dd/main.go#L103">我的小项目 how 里</a>明确要求 AI 返回 JSON，这样可以根据不同 key 的不同内容做下一步处理。</p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="plaintext"><code><span class="line"><span>Generate a list of three made-up book titles along with their authors and genres. </span></span>
+<span class="line"><span>Provide them in JSON format with the following keys: </span></span>
+<span class="line"><span>book_id, title, author, genre.</span></span></code></pre>
+<ol start="3">
+<li>检查是否满足条件</li>
+</ol>
+<p>GAI 有时在没有正确结果的时候会胡编乱造，这时我们需要提供一个明确的指令，要求“不知道就别说”。</p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="plaintext"><code><span class="line"><span>You will be provided with text delimited by triple quotes. </span></span>
+<span class="line"><span>If it contains a sequence of instructions,</span></span>
+<span class="line"><span>re-write those instructions in the following format:</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>Step 1 - ...</span></span>
+<span class="line"><span>Step 2 - ...</span></span>
+<span class="line"><span>...</span></span>
+<span class="line"><span>Step N - ...</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>If the text does not contain a sequence of instructions,</span></span>
+<span class="line"><span>then simply write &quot;No steps provided.&quot;</span></span></code></pre>
+<ol start="4">
+<li>给模型成功完成任务的示例，之后要求模型执行任务。</li>
+</ol>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="plaintext"><code><span class="line"><span>Your task is to answer in a consistent style.</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>&lt;child&gt;: Teach me about patience.</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>&lt;grandparent&gt;: The river that carves the deepest</span></span>
+<span class="line"><span>valley flows from a modest spring; the</span></span>
+<span class="line"><span>grandest symphony originates from a single note;</span></span>
+<span class="line"><span>the most intricate tapestry begins with a solitary thread.</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>&lt;child&gt;: Teach me about resilience.</span></span></code></pre>
+<h3 id="给模型思考的时间">给模型思考的时间</h3>
+<p>让模型想一会，不然如果任务过于复杂，模型可能操之过急给出错误的答案。常用的实践：</p>
+<ol>
+<li>按步骤拆分/指定任务，而不是直接给出一个复杂的任务。</li>
+</ol>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="plaintext"><code><span class="line"><span>Perform the following actions: </span></span>
+<span class="line"><span>1 - Summarize the following text delimited by triple backticks with 1 sentence.</span></span>
+<span class="line"><span>2 - Translate the summary into French.</span></span>
+<span class="line"><span>3 - List each name in the French summary.</span></span>
+<span class="line"><span>4 - Output a json object that contains the following keys: </span></span>
+<span class="line"><span>french_summary, num_names.</span></span></code></pre>
+<ol start="2">
+<li>在模型着急给出结论之前，让它先给出自己的解决方法。</li>
+</ol>
+<p>举的例子是让模型评判一个学生的对数学题解法是不是正确，模型很容易就被学生解法带偏，认为输入是正确的。这时更合适的 prompt 是：</p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="plaintext"><code><span class="line"><span>First, work out your own solution to the problem. </span></span>
+<span class="line"><span>Then compare your solution to the student&#39;s solution</span></span>
+<span class="line"><span>and evaluate if the student&#39;s solution is correct or not. </span></span>
+<span class="line"><span>Don&#39;t decide if the student&#39;s solution is correct until </span></span>
+<span class="line"><span>you have done the problem yourself.</span></span></code></pre>
+<h3 id="llm-的局限性">LLM 的局限性</h3>
+<p>大语言模型的幻觉（hallucination）：可能给出看起来有道理但实际上不正确的输出。为了避免幻觉，需要给模型足够的相关信息，然后明确要求它根据信息回答问题。</p>
+<h3 id="迭代">迭代</h3>
+<p>不断迭代 prompt。一个良好的工作流程：</p>
+<ul>
+<li>写出清晰明确的 prompt</li>
+<li>分析为什么输出没有给出想要的结果</li>
+<li>调整你的想法和 prompt</li>
+<li>重复迭代</li>
+</ul>
+<figure><a href="./images/iterative.png" class="glightbox" data-gallery="article-images" data-fullsize-from-img="true"><img src="/_astro/iterative.CYOv8JNv_dnMyr.webp" alt loading="lazy" decoding="async" width="1036" height="468"></a></figure>
+<h2 id="能力">能力</h2>
+<h3 id="归纳">归纳</h3>
+<p>LLM 可以很好地总结归纳一段文本，以下技巧可以更好地让模型输出归纳结果。</p>
+<ol>
+<li>给出字数/句数限制</li>
+</ol>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="plaintext"><code><span class="line"><span>Your task is to generate a short summary of a product</span></span>
+<span class="line"><span>review from an ecommerce site.</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>Summarize the review below, delimited by triple </span></span>
+<span class="line"><span>backticks, in at most 30 words. </span></span>
+<span class="line"><span>		</span></span>
+<span class="line"><span>Review: ```{prod_review}```</span></span></code></pre>
+<ol start="2">
+<li>专注于你的目的</li>
+</ol>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="plaintext"><code><span class="line"><span>Your task is to generate a short summary of a product</span></span>
+<span class="line"><span>review from an ecommerce site to give feedback to the</span></span>
+<span class="line"><span>shipping department.</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>Summarize the review below, delimited by triple </span></span>
+<span class="line"><span>backticks, in at most 30 words. </span></span>
+<span class="line"><span>		</span></span>
+<span class="line"><span>Review: ```{prod_review}```</span></span></code></pre>
+<p>注意这段 prompt 比上一段多出了对目的的描述（<em>to give feedback to the shipping department</em>），这有助于模型生成更具有针对性的答案。</p>
+<ol start="3">
+<li>尝试用词 <code>extract</code> 而不是 <code>summarize</code></li>
+</ol>
+<h3 id="推断">推断</h3>
+<p>记得以前上学时常见的作业是训练一个文本分类器，给一段客户 review 判断是 positive 还是 negative。传统机器学习方法需要收集标注好的数据集、训练模型并部署模型，而且对于不同的任务需要不同的模型。利用 LLM，我们通过 prompt 就可以生成不同的结果，one model, one API。</p>
+<ol>
+<li>二元情绪识别（positive / negative）</li>
+</ol>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="plaintext"><code><span class="line"><span>What is the sentiment of the following product review, </span></span>
+<span class="line"><span>which is delimited with triple backticks?</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>Give your answer as a single word, either &quot;positive&quot; </span></span>
+<span class="line"><span>or &quot;negative&quot;.</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>Review text: &#39;&#39;&#39;{lamp_review}&#39;&#39;&#39;</span></span></code></pre>
+<ol start="2">
+<li>识别文本中包含的情绪种类</li>
+</ol>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="plaintext"><code><span class="line"><span>Identify a list of emotions that the writer of the</span></span>
+<span class="line"><span>following review is expressing. Include no more than</span></span>
+<span class="line"><span>five items in the list. Format your answer as a list of</span></span>
+<span class="line"><span>lower-case words separated by commas.</span></span>
+<span class="line"><span>		</span></span>
+<span class="line"><span>Review text: &#39;&#39;&#39;{lamp_review}&#39;&#39;&#39;</span></span></code></pre>
+<ol start="3">
+<li>提取特定信息，并结构化输出</li>
+</ol>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="plaintext"><code><span class="line"><span>Identify the following items from the review text:</span></span>
+<span class="line"><span>- Item purchased by reviewer</span></span>
+<span class="line"><span>- Company that made the item</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>The review is delimited with triple backticks.</span></span>
+<span class="line"><span>Format your response as a JSON object with</span></span>
+<span class="line"><span>&quot;Item&quot; and &quot;Brand&quot; as the keys.</span></span>
+<span class="line"><span>If the information isn&#39;t present, use &quot;unknown&quot;</span></span>
+<span class="line"><span>as the value.</span></span>
+<span class="line"><span>Make your response as short as possible.</span></span>
+<span class="line"><span>		  </span></span>
+<span class="line"><span>Review text: &#39;&#39;&#39;{lamp_review}&#39;&#39;&#39;</span></span></code></pre>
+<p>更进一步，我们可以利用复杂的 prompt 来同时执行多个推断任务。比如上文第一段可以改为</p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="plaintext"><code><span class="line"><span>Identify the following items from the review text: </span></span>
+<span class="line"><span>- Sentiment (positive or negative)</span></span>
+<span class="line"><span>- Is the reviewer expressing anger? (true or false)</span></span>
+<span class="line"><span>- Item purchased by reviewer</span></span>
+<span class="line"><span>- Company that made the item</span></span></code></pre>
+<h3 id="变换">变换</h3>
+<p>文本变换包括很多种形式：</p>
+<ul>
+<li>语言的变换，翻译为另一种语言</li>
+<li>语法和拼写的检查</li>
+<li>格式的变换，比如把 HTML 解析为 JSON</li>
+</ul>
+<ol>
+<li>翻译</li>
+</ol>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="plaintext"><code><span class="line"><span>Translate the following English text to Spanish:</span></span>
+<span class="line"><span>```{text}```</span></span></code></pre>
+<p>进一步，我们不必指定输入的语言，这样便得到了一个 universal translator。</p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="plaintext"><code><span class="line"><span>Translate the following text to English</span></span>
+<span class="line"><span>```{text}```</span></span></code></pre>
+<ol start="2">
+<li>语气的变换</li>
+</ol>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="plaintext"><code><span class="line"><span>Translate the following from slang to a business letter: </span></span>
+<span class="line"><span>&#39;Dude, This is Joe, check out this spec on this standing lamp.&#39;</span></span></code></pre>
+<p>输出为：</p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="plaintext"><code><span class="line"><span>Dear Sir/Madam,</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>I hope this letter finds you well. My name is Joe and I would like to bring to your attention a particular specification on a standing lamp that I believe would be of interest to you.</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>Thank you for your time and consideration. I look forward to hearing from you soon.</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>Sincerely,</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>Joe</span></span></code></pre>
+<ol start="3">
+<li>格式转换</li>
+</ol>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="plaintext"><code><span class="line"><span>Translate the following JSON to an HTML table with column headers and title:</span></span>
+<span class="line"><span>{data_json}</span></span></code></pre>
+<ol start="4">
+<li>拼写和语法检查</li>
+</ol>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="plaintext"><code><span class="line"><span>Proofread and correct the following text and rewrite the corrected version.</span></span>
+<span class="line"><span>If you don&#39;t find and errors, just say &quot;No errors found&quot;.</span></span>
+<span class="line"><span>Don&#39;t use any punctuation around the text:</span></span></code></pre>
+<h3 id="扩展">扩展</h3>
+<p>通过有限的输入扩展一篇文本，比如让 AI 写封信，写个文章，写首诗之类。AI 可以成为你的 brainstorm partner，但也可能导致问题（spam）。负责任地使用生成式 AI。</p>
+<p>举个栗子，我们想做个 AI 客服来自动生成对用户 review 的评价。基于之前学到的内容：</p>
+<ul>
+<li>客户输入需要用分隔符隔开</li>
+<li>给出明确的任务：对 positive review，感谢客户；否则给出进一步建议</li>
+<li>避免幻觉：要求 AI 利用到输入的信息</li>
+<li>指定 AI 的语气：concise and professional tone</li>
+<li>负责任：告知用户这是由 AI 生成的</li>
+</ul>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="plaintext"><code><span class="line"><span>You are a customer service AI assistant.</span></span>
+<span class="line"><span>Your task is to send an email reply to a valued customer.</span></span>
+<span class="line"><span>Given the customer email delimited by ```,</span></span>
+<span class="line"><span>Generate a reply to thank the customer for their review.</span></span>
+<span class="line"><span>If the sentiment is positive or neutral, thank them for</span></span>
+<span class="line"><span>their review.</span></span>
+<span class="line"><span>If the sentiment is negative, apologize and suggest that</span></span>
+<span class="line"><span>they can reach out to customer service. </span></span>
+<span class="line"><span>Make sure to use specific details from the review.</span></span>
+<span class="line"><span>Write in a concise and professional tone.</span></span>
+<span class="line"><span>Sign the email as `AI customer agent`.</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>Customer review: ```{review}```</span></span></code></pre>
+<p>OpenAI API 中有一个重要的参数 <code>temperature</code>。<code>temperature</code> 表示模型发散/随机的程度。值越小，模型越倾向于选择概率上最高的预测；值越大，模型越倾向随机选择。</p>
+<p>举个例子，我们模型学到的知识里如果 my favorite food 对应 50% 概率是 pizza、30% 是 sushi、5% 是 taco。这时问它，what’s my favorite food?</p>
+<ul>
+<li><code>temperature = 0</code>：模型永远输出 pizza</li>
+<li><code>temperature = 0.3</code>：模型很大概率输出 pizza，偶尔也会输出 sushi</li>
+<li><code>temperature = 0.7</code>：3 种答案均会较为随机地出现</li>
+</ul>
+<p>针对不同任务要选择合适的 <code>temperature</code>：</p>
+<ul>
+<li>0：适合需要准确、可预测、可靠的任务</li>
+<li>0.3 - 0.7：适合需要创造力、多样性的任务</li>
+</ul>
+<h3 id="聊天机器人">聊天机器人</h3>
+<p>LLM 最常见的场景之一就是 ChatGPT 形式的聊天机器人了。一段对话的输入结构类似于：</p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="js"><code><span class="line"><span style="color:#24292E">[  </span></span>
+<span class="line"><span style="color:#24292E">    {</span></span>
+<span class="line"><span style="color:#032F62">        &#39;role&#39;</span><span style="color:#24292E">: </span><span style="color:#032F62">&#39;system&#39;</span><span style="color:#24292E">,</span></span>
+<span class="line"><span style="color:#032F62">        &#39;content&#39;</span><span style="color:#24292E">: </span><span style="color:#032F62">&#39;You are an assistant that speaks like Shakespeare.&#39;</span></span>
+<span class="line"><span style="color:#24292E">    }, {</span></span>
+<span class="line"><span style="color:#032F62">        &#39;role&#39;</span><span style="color:#24292E">: </span><span style="color:#032F62">&#39;user&#39;</span><span style="color:#24292E">,</span></span>
+<span class="line"><span style="color:#032F62">        &#39;content&#39;</span><span style="color:#24292E">: </span><span style="color:#032F62">&#39;tell me a joke&#39;</span></span>
+<span class="line"><span style="color:#24292E">    }, {</span></span>
+<span class="line"><span style="color:#032F62">        &#39;role&#39;</span><span style="color:#24292E">: </span><span style="color:#032F62">&#39;assistant&#39;</span><span style="color:#24292E">,</span></span>
+<span class="line"><span style="color:#032F62">        &#39;content&#39;</span><span style="color:#24292E">: </span><span style="color:#032F62">&#39;Why did the chicken cross the road&#39;</span></span>
+<span class="line"><span style="color:#24292E">    }, {</span></span>
+<span class="line"><span style="color:#032F62">        &#39;role&#39;</span><span style="color:#24292E">: </span><span style="color:#032F62">&#39;user&#39;</span><span style="color:#24292E">, </span></span>
+<span class="line"><span style="color:#032F62">        &#39;content&#39;</span><span style="color:#24292E">: </span><span style="color:#032F62">&#39;I don</span><span style="color:#005CC5">\&#39;</span><span style="color:#032F62">t know&#39;</span></span>
+<span class="line"><span style="color:#24292E">    }</span></span>
+<span class="line"><span style="color:#24292E">]</span></span></code></pre>
+<p>对话中有三种消息（<code>role</code> 的值）：</p>
+<ul>
+<li><code>system</code>：总体的指令：设定模型的行为</li>
+<li><code>user</code>：用户输入</li>
+<li><code>assistant</code>：模型输出</li>
+</ul>
+<figure><a href="./images/chatbot.png" class="glightbox" data-gallery="article-images" data-fullsize-from-img="true"><img src="/_astro/chatbot.Dwxpkqmy_1eNgh6.webp" alt loading="lazy" decoding="async" width="1244" height="236"></a></figure>
+<p>和 LLM 的每一次对话都是一次单独的交互，必须要提供所有相关的信息。如果希望模型能根据上下文输出，需要将前文的 exchange of context 也一并包括在对模型的输入中。</p>
+<h2 id="playground">Playground</h2>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="go"><code><span class="line"><span style="color:#D73A49">package</span><span style="color:#6F42C1"> main</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">import</span><span style="color:#24292E"> (</span></span>
+<span class="line"><span style="color:#032F62">	&quot;</span><span style="color:#6F42C1">context</span><span style="color:#032F62">&quot;</span></span>
+<span class="line"><span style="color:#032F62">	&quot;</span><span style="color:#6F42C1">errors</span><span style="color:#032F62">&quot;</span></span>
+<span class="line"><span style="color:#032F62">	&quot;</span><span style="color:#6F42C1">fmt</span><span style="color:#032F62">&quot;</span></span>
+<span class="line"><span style="color:#032F62">	&quot;</span><span style="color:#6F42C1">io</span><span style="color:#032F62">&quot;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#032F62">	&quot;</span><span style="color:#6F42C1">github.com/Azure/azure-sdk-for-go/sdk/ai/azopenai</span><span style="color:#032F62">&quot;</span></span>
+<span class="line"><span style="color:#032F62">	&quot;</span><span style="color:#6F42C1">github.com/Azure/azure-sdk-for-go/sdk/azcore/to</span><span style="color:#032F62">&quot;</span></span>
+<span class="line"><span style="color:#24292E">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// Fill in your Azure credentials.</span></span>
+<span class="line"><span style="color:#D73A49">const</span><span style="color:#005CC5"> baseUrl</span><span style="color:#D73A49"> =</span><span style="color:#032F62"> &quot;https://EXAMPLE.openai.azure.com&quot;</span></span>
+<span class="line"><span style="color:#D73A49">const</span><span style="color:#005CC5"> deploymentId</span><span style="color:#D73A49"> =</span><span style="color:#032F62"> &quot;gpt-35-turbo&quot;</span></span>
+<span class="line"><span style="color:#D73A49">const</span><span style="color:#005CC5"> apiKey</span><span style="color:#D73A49"> =</span><span style="color:#032F62"> &quot;AZURE_API_KEY&quot;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">func</span><span style="color:#6F42C1"> main</span><span style="color:#24292E">() {</span></span>
+<span class="line"><span style="color:#24292E">	keyCredential, err </span><span style="color:#D73A49">:=</span><span style="color:#24292E"> azopenai.</span><span style="color:#6F42C1">NewKeyCredential</span><span style="color:#24292E">(apiKey)</span></span>
+<span class="line"><span style="color:#D73A49">	if</span><span style="color:#24292E"> err </span><span style="color:#D73A49">!=</span><span style="color:#005CC5"> nil</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#D73A49">		return</span></span>
+<span class="line"><span style="color:#24292E">	}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E">	client, err </span><span style="color:#D73A49">:=</span><span style="color:#24292E"> azopenai.</span><span style="color:#6F42C1">NewClientWithKeyCredential</span><span style="color:#24292E">(baseUrl, keyCredential, </span><span style="color:#005CC5">nil</span><span style="color:#24292E">)</span></span>
+<span class="line"><span style="color:#D73A49">	if</span><span style="color:#24292E"> err </span><span style="color:#D73A49">!=</span><span style="color:#005CC5"> nil</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#D73A49">		return</span></span>
+<span class="line"><span style="color:#24292E">	}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E">	ctx </span><span style="color:#D73A49">:=</span><span style="color:#24292E"> context.</span><span style="color:#6F42C1">Background</span><span style="color:#24292E">()</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E">	prompt </span><span style="color:#D73A49">:=</span><span style="color:#032F62"> `</span></span>
+<span class="line"><span style="color:#032F62">	Your task is to answer in a consistent style.</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#032F62">	&lt;child&gt;: Teach me about patience.</span></span>
+<span class="line"><span style="color:#032F62">	</span></span>
+<span class="line"><span style="color:#032F62">	&lt;grandparent&gt;: The river that carves the deepest</span></span>
+<span class="line"><span style="color:#032F62">	valley flows from a modest spring; the</span></span>
+<span class="line"><span style="color:#032F62">	grandest symphony originates from a single note;</span></span>
+<span class="line"><span style="color:#032F62">	the most intricate tapestry begins with a solitary thread.</span></span>
+<span class="line"><span style="color:#032F62">	</span></span>
+<span class="line"><span style="color:#032F62">	&lt;child&gt;: Teach me about resilience.</span></span>
+<span class="line"><span style="color:#032F62">	`</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6F42C1">	getAnswer</span><span style="color:#24292E">(client, </span><span style="color:#D73A49">&amp;</span><span style="color:#24292E">ctx, prompt)</span></span>
+<span class="line"><span style="color:#24292E">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">func</span><span style="color:#6F42C1"> getAnswer</span><span style="color:#24292E">(</span><span style="color:#E36209">client</span><span style="color:#D73A49"> *</span><span style="color:#6F42C1">azopenai</span><span style="color:#24292E">.</span><span style="color:#6F42C1">Client</span><span style="color:#24292E">, </span><span style="color:#E36209">ctx</span><span style="color:#D73A49"> *</span><span style="color:#6F42C1">context</span><span style="color:#24292E">.</span><span style="color:#6F42C1">Context</span><span style="color:#24292E">, </span><span style="color:#E36209">prompt</span><span style="color:#D73A49"> string</span><span style="color:#24292E">) {</span></span>
+<span class="line"><span style="color:#D73A49">	if</span><span style="color:#24292E"> prompt </span><span style="color:#D73A49">==</span><span style="color:#032F62"> &quot;&quot;</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#D73A49">		return</span></span>
+<span class="line"><span style="color:#24292E">	}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E">	req </span><span style="color:#D73A49">:=</span><span style="color:#6F42C1"> azopenai</span><span style="color:#24292E">.</span><span style="color:#6F42C1">ChatCompletionsOptions</span><span style="color:#24292E">{</span></span>
+<span class="line"><span style="color:#24292E">		DeploymentID: deploymentId,</span></span>
+<span class="line"><span style="color:#24292E">		MaxTokens:    to.</span><span style="color:#6F42C1">Ptr</span><span style="color:#24292E">(</span><span style="color:#D73A49">int32</span><span style="color:#24292E">(</span><span style="color:#005CC5">400</span><span style="color:#24292E">)),</span></span>
+<span class="line"><span style="color:#24292E">		Messages: []</span><span style="color:#6F42C1">azopenai</span><span style="color:#24292E">.</span><span style="color:#6F42C1">ChatMessage</span><span style="color:#24292E">{</span></span>
+<span class="line"><span style="color:#24292E">			{</span></span>
+<span class="line"><span style="color:#24292E">				Role:    to.</span><span style="color:#6F42C1">Ptr</span><span style="color:#24292E">(azopenai.ChatRoleUser),</span></span>
+<span class="line"><span style="color:#24292E">				Content: </span><span style="color:#D73A49">&amp;</span><span style="color:#24292E">prompt,</span></span>
+<span class="line"><span style="color:#24292E">			},</span></span>
+<span class="line"><span style="color:#24292E">		},</span></span>
+<span class="line"><span style="color:#24292E">		Temperature: to.</span><span style="color:#6F42C1">Ptr</span><span style="color:#24292E">(</span><span style="color:#D73A49">float32</span><span style="color:#24292E">(</span><span style="color:#005CC5">0.7</span><span style="color:#24292E">)),</span></span>
+<span class="line"><span style="color:#24292E">	}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E">	resp, err </span><span style="color:#D73A49">:=</span><span style="color:#24292E"> client.</span><span style="color:#6F42C1">GetChatCompletionsStream</span><span style="color:#24292E">(</span><span style="color:#D73A49">*</span><span style="color:#24292E">ctx, req, </span><span style="color:#005CC5">nil</span><span style="color:#24292E">)</span></span>
+<span class="line"><span style="color:#D73A49">	if</span><span style="color:#24292E"> err </span><span style="color:#D73A49">!=</span><span style="color:#005CC5"> nil</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#D73A49">		return</span></span>
+<span class="line"><span style="color:#24292E">	}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E">	stream </span><span style="color:#D73A49">:=</span><span style="color:#24292E"> resp.ChatCompletionsStream</span></span>
+<span class="line"><span style="color:#D73A49">	defer</span><span style="color:#24292E"> stream.</span><span style="color:#6F42C1">Close</span><span style="color:#24292E">()</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">	for</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#24292E">		resp, err </span><span style="color:#D73A49">:=</span><span style="color:#24292E"> stream.</span><span style="color:#6F42C1">Read</span><span style="color:#24292E">()</span></span>
+<span class="line"><span style="color:#D73A49">		if</span><span style="color:#24292E"> errors.</span><span style="color:#6F42C1">Is</span><span style="color:#24292E">(err, io.EOF) {</span></span>
+<span class="line"><span style="color:#D73A49">			break</span></span>
+<span class="line"><span style="color:#24292E">		}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">		for</span><span style="color:#24292E"> _, choice </span><span style="color:#D73A49">:=</span><span style="color:#D73A49"> range</span><span style="color:#24292E"> resp.Choices {</span></span>
+<span class="line"><span style="color:#D73A49">			if</span><span style="color:#24292E"> choice.Delta.Content </span><span style="color:#D73A49">!=</span><span style="color:#005CC5"> nil</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#24292E">				fmt.</span><span style="color:#6F42C1">Print</span><span style="color:#24292E">(</span><span style="color:#D73A49">*</span><span style="color:#24292E">choice.Delta.Content)</span></span>
+<span class="line"><span style="color:#24292E">			}</span></span>
+<span class="line"><span style="color:#24292E">		}</span></span>
+<span class="line"><span style="color:#24292E">	}</span></span>
+<span class="line"><span style="color:#24292E">}</span></span></code></pre>
+<h2 id="结语">结语</h2>
+<p>通过对 prompt engineering 的初步学习，我利用这些最佳实践更新了一下项目中的 prompt，确实输出质量得到了质的提升。随着大模型的复杂度继续发展，究竟我们是更需要精妙地构造 prompt 呢，还是模型可以聪明到能够理解我们真实意图、即便是模糊的 prompt 呢？</p>
+<p>大模型涌现出的能力到底是不是一种智能？我不知道。好几个月前内部测试的时候，我和 <code>text-davinci-003</code> 有这样一段对话：</p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="plaintext"><code><span class="line"><span>user: 你觉得人类的生活有意义吗？</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>assistant: 我觉得人类的生活有意义，因为人类有情感，有心，有灵魂，有自我，有想法，有意志，</span></span>
+<span class="line"><span>           有选择，有目标，有梦想，有信仰，有爱，有友情，有家庭，有社会，有文化，有艺术，</span></span>
+<span class="line"><span>           有科学，有哲学，有宗教，有历史，有未来。</span></span></code></pre>  </div> <section class="article-comments" aria-label="评论"> <div id="disqus_thread"></div> </section> <script>(function(){const identifier = "/2023/05-10-prompt-engineering/";
+const title = "言出法随：Prompt Engineering 笔记";
+const url = "https://xnth97.github.io/2023/05-10-prompt-engineering/";
+
+  window.disqus_config = function () {
+    this.page.url = url;
+    this.page.identifier = identifier;
+    this.page.title = title;
+    this.language = 'en_US';
+  };
+
+  if (!document.querySelector('script[data-disqus-shortname="xnth97"]')) {
+    const script = document.createElement('script');
+    script.src = 'https://xnth97.disqus.com/embed.js';
+    script.async = true;
+    script.dataset.disqusShortname = 'xnth97';
+    script.setAttribute('data-timestamp', String(Date.now()));
+    document.body.appendChild(script);
+  }
+})();</script> </article> </main>  <footer class="site-footer"> <div> <strong>NOWHERE</strong> <span>一些碎碎念</span> </div> <p>Copyright © 2026 NOWHERE</p> </footer> <script type="module" src="/_astro/BaseLayout.astro_astro_type_script_index_0_lang.CHqgZIDF.js"></script> </body> </html>

@@ -1,0 +1,130 @@
+<!DOCTYPE html><html lang="zh-Hans"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="P340 工作站搭建家庭服务器"><title>P340 工作站搭建家庭服务器 - NOWHERE</title><link rel="icon" href="/img/favicon.ico"><link rel="stylesheet" href="/_astro/BaseLayout.BrFC7wQb.css"></head> <body class="post-page"> <header class="site-nav"> <div class="site-nav-inner"> <a class="brand" href="/" aria-label="NOWHERE"> <span>NOWHERE</span> </a> <nav aria-label="Primary navigation"> <a href="/tags/daily/">日常</a><a href="/tags/gears/">剁手</a><a href="/tags/note/">笔记</a><a href="/tags/travel/">旅行</a><a href="/link/">友链</a><a href="/about/">关于我</a> </nav> </div> </header>  <main class="article-page"> <article class="post-article"> <header class="article-header"> <p class="article-kicker">2021年12月4日</p> <p class="article-type">daily</p> <h1>P340 工作站搭建家庭服务器</h1> <div class="tag-row"> <a href="/tags/daily/">daily</a><a href="/tags/gears/">gears</a> </div> </header> <div class="prose">  <p>最近打算购入 NAS，比较来比较去群晖和 QNAP，突然被同事安利巨硬员工可以打骨折购买 ThinkStation，于是用接近一台 DS920+ 的价格购入了最低配 ThinkStation P340 工作站。基于这台机器，这两天逐渐搭建起了我的家庭服务器。</p>
+<h1 id="硬件">硬件</h1>
+<figure><a href="./images/thinkstation.jpg" class="glightbox" data-gallery="article-images" data-fullsize-from-img="true"><img src="/_astro/thinkstation.ByTFYUYN_ZJU8tx.webp" alt loading="lazy" decoding="async" width="1200" height="1763"></a></figure>
+<p>外观是 ThinkStation 一如既往的低调，体积也没有很大。最低配 P340 带有 10 代 i3 处理器，四核八线程对家庭服务器绰绰有余。内存自带不够看的 4GB，购入两根海盗船组成 20GB 内存<sup><a href="#user-content-fn-1" id="user-content-fnref-1" data-footnote-ref aria-describedby="footnote-label">1</a></sup>。比较良心的是自带 256GB M2 SSD 用来装系统，又购买了两块 WD NAS 红盘作为存储<sup><a href="#user-content-fn-2" id="user-content-fnref-2" data-footnote-ref aria-describedby="footnote-label">2</a></sup>。许多年没碰过正经的塔式计算机了，目测 ThinkStation 用料还是相对丐的（但是绝对足够用）。令我比较印象深刻的是 ThinkStation 的盘位托架非常优雅，不需要螺丝固定，仅需要抽拉和推动拉手来依靠机械结构固定，看来设计时充分考虑到了扩展性。</p>
+<h1 id="os">OS</h1>
+<p>物理机操作系统选用 Windows Server 2022。倒不是不熟悉 Linux，主要是<del>为了巨硬员工的尊严</del>。正经的理由是：我需要物理机操作系统只负责底层的存储和虚拟化，其它所有服务均通过部署其上的虚拟机提供，这样不会担心乱搞把全家的服务都搞挂了。Windows Server 的优势在于开箱即用地提供了极为稳定的基础功能：</p>
+<ul>
+<li>存储池用来管理磁盘 raid</li>
+<li>基于网络的文件共享（SMB 与 NFS）</li>
+<li>Hyper-V 虚拟机</li>
+<li>完善的远程管理（Windows Admin Center，远程桌面）</li>
+</ul>
+<figure><a href="./images/server.png" class="glightbox" data-gallery="article-images" data-fullsize-from-img="true"><img src="/_astro/server.BBS3Lt2U_1qae8W.webp" alt loading="lazy" decoding="async" width="1400" height="1038"></a></figure>
+<p>通过服务器管理器，所有基础搭建都可以轻松地通过 GUI 设置完成，不需要像 Linux 一样安装额外软件包或者修改 <code>/etc/fstab</code> 之类，个人感觉非常适合家用服务器的部署。存储池、文件共享和 Hyper-V 大家都比较熟悉了，这里多说一下宝藏 <a href="https://www.microsoft.com/en-us/evalcenter/evaluate-windows-admin-center">Windows Admin Center</a>，这个免费的软件实在是太香了。它也是开箱即用地提供了一个完善的 web 管理页面，不仅能够实时查看服务器状态，更能直接管理防火墙、服务、虚拟机、文件甚至注册表项等。</p>
+<figure><a href="./images/wac.png" class="glightbox" data-gallery="article-images" data-fullsize-from-img="true"><img src="/_astro/wac.C5xKKGLn_ZLtmPY.webp" alt loading="lazy" decoding="async" width="1920" height="1161"></a></figure>
+<p>我对 NAS 的使用需求很简单，主要就是提供一个网络驱动器存放文件以及通过 Lightroom 库管理照片，因此 Windows Server 自带的文件共享绰绰有余。其他设备直接挂载来访问，读写速度大概在 90 - 95 MB/s 上下，对于机械盘也勉强可用了。</p>
+<figure><a href="./images/speedtest.png" class="glightbox" data-gallery="article-images" data-fullsize-from-img="true"><img src="/_astro/speedtest.ZDlf4nX9_1jEwTI.webp" alt loading="lazy" decoding="async" width="720" height="743"></a></figure>
+<h1 id="虚拟机">虚拟机</h1>
+<p>其它所有的家庭服务，我通过 Hyper-V 上的三个虚拟机部署和管理。</p>
+<h2 id="家庭核心服务">家庭核心服务</h2>
+<p>之前介绍过我家有些服务跑在一台树莓派上，然而对于性能敏感的任务还是很捉急（比如 <code>ffmpeg</code> 解码 Ring 摄像头视频流传输到 HomeKit）。这次我开了一台 Ubuntu Server 2 CPU + 2GB RAM 的虚拟机来接手原来树莓派上智能家居相关服务，主要有负责桥接家里 IoT 设备的 <a href="https://homebridge.io">homebridge</a>，将 Chromecast 转为 AirPlay 的 <a href="https://github.com/philippe44/AirConnect/tree/master/aircast">aircast</a>，和下载文件的 <code>aria2</code> 以及 <a href="https://github.com/ziahamza/webui-aria2">webui-aria2</a> 作为 UI 管理后台。这些服务全部通过 <code>pm2</code> 来进行管理，在遇到问题时可以自动重启。</p>
+<h3 id="adguard-home">AdGuard Home</h3>
+<p><a href="https://adguard.com/zh_cn/adguard-home/overview.html">AdGuard Home</a> 是一款开源 DNS 服务器，主要用来拦截广告和跟踪。在服务器上直接使用 snap 安装：</p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6F42C1">sudo</span><span style="color:#032F62"> snap</span><span style="color:#032F62"> install</span><span style="color:#032F62"> adguard-home</span></span></code></pre>
+<p>然后打开服务器的 3000 端口地址去进行初始化，一般在这一步会有 53 端口被占用的问题。首先停用 <code>systemd-resolved</code> 服务：</p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6F42C1">sudo</span><span style="color:#032F62"> systemctl</span><span style="color:#032F62"> stop</span><span style="color:#032F62"> systemd-resolved</span></span></code></pre>
+<p>然后编辑 <code>/etc/systemd/resolved.conf</code>，添加 <code>DNS</code>、<code>FallbackDNS</code> 并修改 <code>DNSStubListener=no</code>，最后更新 <code>resolv.conf</code>：</p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6F42C1">sudo</span><span style="color:#032F62"> ln</span><span style="color:#005CC5"> -sf</span><span style="color:#032F62"> /run/systemd/resolve/resolv.conf</span><span style="color:#032F62"> /etc/resolv.conf</span></span></code></pre>
+<figure><a href="./images/adguard.png" class="glightbox" data-gallery="article-images" data-fullsize-from-img="true"><img src="/_astro/adguard.Chs6hwec_ZjQWwX.webp" alt loading="lazy" decoding="async" width="1440" height="970"></a></figure>
+<h3 id="挂载">挂载</h3>
+<p>在 Windows Server 上，我创建了一个新的文件共享服务用来共享 <code>Downloads</code> 文件夹。在 Ubuntu Server 上，首先安装 <code>cifs-utils</code>，创建 <code>/mnt/downloads</code> 作为挂载点，创建一个 credentials 存放用户名密码：</p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#24292E">username</span><span style="color:#D73A49">=</span><span style="color:#032F62">USERNAME</span></span>
+<span class="line"><span style="color:#24292E">password</span><span style="color:#D73A49">=</span><span style="color:#032F62">PASSWORD</span></span></code></pre>
+<p>修改 <code>/etc/fstab</code> 加上:</p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6F42C1">//SERVER_IP/Downloads</span><span style="color:#032F62"> /mnt/downloads</span><span style="color:#032F62"> cifs</span><span style="color:#032F62"> credentials=/path/to/credentials,uid=1000,gid=1000,iocharset=utf8,rw,file_mode=0777,dir_mode=0777,sec=ntlmv2</span><span style="color:#005CC5"> 0</span><span style="color:#005CC5"> 0</span></span></code></pre>
+<p>然后运行 <code>sudo mount -a</code> 挂载，Ubuntu 即可以读写网络驱动器里的文件了。</p>
+<blockquote>
+<p>注意：此处 <code>USERNAME</code> 的用户必须在 Windows Server 里也设置好对应的读写权限，否则容易出现 <code>permission denied</code> 错误。</p>
+</blockquote>
+<blockquote>
+<p>善用 <code>nobrl</code> 参数：不会发送 byte range lock。比如我的 calibre 部署在 NAS 上通过 cifs 挂载，需要在上述命令 <code>cifs</code> 后添加 <code>nobrl</code> 防止 DB 被锁住。详见<a href="https://coderwall.com/p/zrxobw/calibre-libraries-on-nas">这里</a></p>
+</blockquote>
+<p>对于这些智能家居相关的核心服务，我的想法是将它们物理隔离在一台虚拟机上，创建好检查点，这样一般不需要去动它们，万一因为更新之类的原因搞挂了也可以迅速恢复，避免对家庭使用造成影响。至于其它玩耍的服务可以开新的虚拟机去尽情折腾。</p>
+<h3 id="2022-年更新替换-ubuntu-为-windows-server-core">2022 年更新：替换 Ubuntu 为 Windows Server Core</h3>
+<p>运行家庭服务的 Ubuntu Server 更新 Jellyfish 后莫名其妙搞丢了我好多配置文件，而且基本每天一小崩两天一大崩，于是一怒之下更换为 Windows Server Core。用了几个月下来真是一个坚如磐石，虽然有几点不太满意的：</p>
+<ul>
+<li>缺乏包管理，<code>winget</code> 目前在 Server SKU 上用不了</li>
+<li>Windows 服务还是比 systemctl 要复杂些，甚至还是第三方 app <a href="https://nssm.cc">nssm</a> 更为好用；即使这样还会带来复杂的权限问题</li>
+<li>没有真正的 CLI 模式，占用较多内存（不过对于家用这也是优势）</li>
+</ul>
+<p>对于家用来说，大量 Linux 下的繁复操作（如挂载）在 Windows Server 里都具有内建的稳定对应功能实现，甚至由于 Server SKU + Hyper-V 还会有更高的性能表现。而且借助安装 <a href="https://docs.microsoft.com/en-us/windows-server/get-started/server-core-app-compatibility-feature-on-demand">FOD</a> 可以让 Windows Server 获得更多方便而基础的 GUI 管理工具，如 <code>explorer</code>、<code>taskmgr</code> 等。由于 Server Core 在 CLI 外表下其实具备完整 GUI（只是没有传统桌面 Shell），我们完全可以安装使用 Edge、VSCode 等更为复杂的应用来简化服务器部署与配置。</p>
+<figure><a href="./images/servercore.jpeg" class="glightbox" data-gallery="article-images" data-fullsize-from-img="true"><img src="/_astro/servercore.Dfb8GJ2L_Z1OOCtn.webp" alt loading="lazy" decoding="async" width="970" height="800"></a></figure>
+<h2 id="乱七八糟服务">乱七八糟服务</h2>
+<p>由于服务器性能较为富裕，我又开了一台 Ubuntu Server 4 CPU + 8GB RAM 的虚拟机跑一些乱七八糟的服务。顺便安利一下 Hyper-V 的动态内存分配，可以允许虚拟机在指定的内存范围内动态变化，因此即使分配了 8GB RAM，在负荷低的情况下虚拟机也只会占用大约 1GB 左右 RAM，不会给宿主机造成太大压力。注意在 Hyper-V 上运行的 Linux，可以安装 azure 优化的内核获得更好的性能。</p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6F42C1">sudo</span><span style="color:#032F62"> apt</span><span style="color:#032F62"> install</span><span style="color:#032F62"> linux-azure</span></span></code></pre>
+<figure><a href="./images/hyperv.png" class="glightbox" data-gallery="article-images" data-fullsize-from-img="true"><img src="/_astro/hyperv.BGJtZj5a_105uw6.webp" alt loading="lazy" decoding="async" width="1600" height="989"></a></figure>
+<p>在这台服务器上，我完全通过 Docker 部署了这些服务：</p>
+<ul>
+<li><a href="https://github.com/janeczku/calibre-web">calibre-web</a>：著名电子书管理软件的 web 前端，支持在线阅读。</li>
+<li><a href="https://github.com/mattermost/focalboard">focalboard</a>：个人使用的 Jira，方便追踪一些个人小目标。</li>
+<li><a href="https://github.com/cdr/code-server">code-server</a>：在线版的 VSCode，方便顺手直接改一些服务器上的代码/文件，比如上述所有服务的 <code>docker-compose.yml</code>。</li>
+<li><a href="https://github.com/librespeed/speedtest">librespeed</a>：用来进行局域网测速。</li>
+<li><a href="https://github.com/benphelps/homepage">homepage</a>：简易的 Dashboard，作为所有服务的统一入口。</li>
+<li><a href="https://github.com/gogs/gogs">gogs</a>：自建轻量 git 服务器。</li>
+<li><a href="https://github.com/kalcaddle/kodbox">kodbox</a>：可道云，基于 web 的文件管理。</li>
+<li><a href="https://github.com/bpatrik/pigallery2">pigallery2</a>：基于 web 和文件夹的轻量化相册浏览。</li>
+</ul>
+<figure><a href="./images/codeserver.png" class="glightbox" data-gallery="article-images" data-fullsize-from-img="true"><img src="/_astro/codeserver.CWkBjP05_Z17kTIO.webp" alt loading="lazy" decoding="async" width="1400" height="1037"></a></figure>
+<figure><a href="./images/dashboard.png" class="glightbox" data-gallery="article-images" data-fullsize-from-img="true"><img src="/_astro/dashboard.CAUu66bn_qb9kl.webp" alt loading="lazy" decoding="async" width="1920" height="1401"></a></figure>
+<h2 id="桌面服务">桌面服务</h2>
+<p>最后为了某些桌面应用场景（比如突然需要百度网盘这种流氓软件），我也分配了一台 2 CPU + 8GB RAM 的 Windows Server 服务器并开启了远程桌面。值得一提的是 Windows Server 具有<a href="https://docs.microsoft.com/zh-cn/windows-server/get-started/automatic-vm-activation">虚拟机自动激活</a>的特性，简单配置之后就可放心使用客户机。</p>
+<figure><a href="./images/rdp.png" class="glightbox" data-gallery="article-images" data-fullsize-from-img="true"><img src="/_astro/rdp.DdcMc5cZ_qyP9s.webp" alt loading="lazy" decoding="async" width="800" height="702"></a></figure>
+<h2 id="azure-devops-server">Azure DevOps Server</h2>
+<p>近期为了<del>瞎杰宝折腾</del>个人项目需求搭建了个人项目管理、Git 仓库和 CI 系统。开了一台 4 CPU + 12GB RAM 的 Windows Server Standard 服务器，安装了 Azure DevOps Server 2022 和 SQL Server 2022。安装配置过程传承了 Windows 一贯的鼠标点点点，即使 UI 充满了浓浓的 2003 年代味道还是非常清晰顺畅的。</p>
+<p>CI 配置如果习惯了一脉相承的 GitHub Actions 也非常容易适应，在仓库里加上 azure-pipelines.yml 就可以配置 CI pipeline。设置 agent 也很简单，DevOps 提供了各个 OS / 架构的配置方法，我图省事直接在本机起了一个节点，反正平时也不会有很多 CI 任务一起跑，用起来绰绰有余。</p>
+<figure><a href="./images/devops.png" class="glightbox" data-gallery="article-images" data-fullsize-from-img="true"><img src="/_astro/devops.Bm_QD1jm_JTo81.webp" alt loading="lazy" decoding="async" width="2048" height="1585"></a></figure>
+<h2 id="gpu-partition">GPU Partition</h2>
+<p>GPU Partition 是 Hyper-V 支持的一项高级功能，可以把 host 的 GPU 分给 VM 使用。虽然不及 DDA 等 GPU 直通技术性能好，但胜在资源利用充足，一块 GPU 可以分给多个 VM，同时 host 也可以使用。P340 原装电源只有 300W 且没有 PCIe 线，于是买了个 EVGA 500W，插上了最鶸 RDNA2 6500XT。</p>
+<p>首先对于多个 GPU 的情况，在 host 上 <code>Get-VMHostPartitionableGpu</code> 来确定需要分区的 GPU，记住 instance path（可以和设备管理器里的值交叉比对）。</p>
+<p>之后 clone <a href="https://github.com/jamesstringerparsec/Easy-GPU-PV">Easy-GPU-PV</a> 项目，会自动拷贝 host 的 GPU 驱动到 VM 里，需要注意的是 host 和 VM 的 Windows 版本最好一致。如果是新 VM 直接跟着 repo 里的指南，如果要添加到现有的 VM，运行：</p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="powershell"><code><span class="line"><span style="color:#24292E">.</span><span style="color:#005CC5">\Update-VMGpuPartitionDriver.ps1</span><span style="color:#D73A49"> -</span><span style="color:#24292E">VMName </span><span style="color:#032F62">&quot;YOUR_VM_NAME&quot;</span><span style="color:#D73A49"> -</span><span style="color:#24292E">GPUName </span><span style="color:#032F62">&quot;YOUR_GPU_NAME&quot;</span></span></code></pre>
+<p>这里 <code>YOUR_GPU_NAME</code> 就是设备管理器里显示的名字，比如我的鶸卡就是 <code>AMD Radeon RX 6500 XT</code>。如果你只有一块 GPU，也可以用 <code>AUTO</code>。之后等待脚本拷贝驱动，完成后运行：</p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="powershell"><code><span class="line"><span style="color:#24292E">$vm </span><span style="color:#D73A49">=</span><span style="color:#032F62"> &quot;YOUR_VM_NAME&quot;</span></span>
+<span class="line"><span style="color:#D73A49">if</span><span style="color:#24292E"> (</span><span style="color:#005CC5">Get-VMGpuPartitionAdapter</span><span style="color:#D73A49"> -</span><span style="color:#24292E">VMName $vm </span><span style="color:#D73A49">-</span><span style="color:#24292E">ErrorAction SilentlyContinue) {</span></span>
+<span class="line"><span style="color:#005CC5">    Remove-VMGpuPartitionAdapter</span><span style="color:#D73A49"> -</span><span style="color:#24292E">VMName $vm</span></span>
+<span class="line"><span style="color:#24292E">}</span></span>
+<span class="line"><span style="color:#005CC5">Set-VM</span><span style="color:#D73A49"> -</span><span style="color:#24292E">GuestControlledCacheTypes </span><span style="color:#005CC5">$true</span><span style="color:#D73A49"> -</span><span style="color:#24292E">VMName $vm</span></span>
+<span class="line"><span style="color:#005CC5">Set-VM</span><span style="color:#D73A49"> -</span><span style="color:#24292E">LowMemoryMappedIoSpace </span><span style="color:#005CC5">1</span><span style="color:#D73A49">Gb</span><span style="color:#D73A49"> -</span><span style="color:#24292E">VMName $vm</span></span>
+<span class="line"><span style="color:#005CC5">Set-VM</span><span style="color:#D73A49"> -</span><span style="color:#24292E">HighMemoryMappedIoSpace </span><span style="color:#005CC5">32</span><span style="color:#D73A49">Gb</span><span style="color:#D73A49"> -</span><span style="color:#24292E">VMName $vm</span></span>
+<span class="line"><span style="color:#005CC5">Add-VMGpuPartitionAdapter</span><span style="color:#D73A49"> -</span><span style="color:#24292E">VMName $vm </span><span style="color:#D73A49">-</span><span style="color:#24292E">InstancePath </span><span style="color:#032F62">&quot;INSTANCE_PATH_OF_YOUR_GPU&quot;</span></span></code></pre>
+<p>这个脚本的参数我没有仔细研究，可以自行参考<a href="https://www.tenforums.com/virtualization/195745-tutorial-passing-through-gpu-hyper-v-guest-vm.html">互联网上的教程</a>来配置。</p>
+<p>启动 VM，分区通入的 GPU 应该已经被识别并安装好驱动，DirectX 加速也已经打开了。</p>
+<figure><a href="./images/gpu.png" class="glightbox" data-gallery="article-images" data-fullsize-from-img="true"><img src="/_astro/gpu.s72UcxxP_Z5Lwzw.webp" alt loading="lazy" decoding="async" width="2048" height="1480"></a></figure>
+<h1 id="最后">最后</h1>
+<p>以上就是我的家庭服务器搭建。工作站硬件 + Windows Server，运行至今稳如老狗坚如磐石，总体来说还是满足了我家里的需求的。一些关于家用的想法：</p>
+<ul>
+<li>不甘于群晖又不放心完全自己搭建的话，成品工作站可能是个不错的折中。</li>
+<li>家用服务器可以考虑 Windows Server，提供了很多开箱即用的稳定基础架构（市场部钱结一下谢谢）。</li>
+<li>物理机尽可能稳定，保证服务简单。可以只提供 raid、虚拟化和文件共享。</li>
+<li>虚拟机物理隔离服务，运用容器等方式保证易于部署和进程自守护。</li>
+</ul>
+<section data-footnotes class="footnotes"><h2 class="sr-only" id="footnote-label">Footnotes</h2>
+<ol>
+<li id="user-content-fn-1">
+<p>一年后变成了 28GB <a href="#user-content-fnref-1" data-footnote-backref aria-label="Back to reference 1" class="data-footnote-backref">↩</a></p>
+</li>
+<li id="user-content-fn-2">
+<p>后面又插了一个 512GB NVME SSD <a href="#user-content-fnref-2" data-footnote-backref aria-label="Back to reference 2" class="data-footnote-backref">↩</a></p>
+</li>
+</ol>
+</section>  </div> <section class="article-comments" aria-label="评论"> <div id="disqus_thread"></div> </section> <script>(function(){const identifier = "/2021/12-04-windows-nas/";
+const title = "P340 工作站搭建家庭服务器";
+const url = "https://xnth97.github.io/2021/12-04-windows-nas/";
+
+  window.disqus_config = function () {
+    this.page.url = url;
+    this.page.identifier = identifier;
+    this.page.title = title;
+    this.language = 'en_US';
+  };
+
+  if (!document.querySelector('script[data-disqus-shortname="xnth97"]')) {
+    const script = document.createElement('script');
+    script.src = 'https://xnth97.disqus.com/embed.js';
+    script.async = true;
+    script.dataset.disqusShortname = 'xnth97';
+    script.setAttribute('data-timestamp', String(Date.now()));
+    document.body.appendChild(script);
+  }
+})();</script> </article> </main>  <footer class="site-footer"> <div> <strong>NOWHERE</strong> <span>一些碎碎念</span> </div> <p>Copyright © 2026 NOWHERE</p> </footer> <script type="module" src="/_astro/BaseLayout.astro_astro_type_script_index_0_lang.CHqgZIDF.js"></script> </body> </html>

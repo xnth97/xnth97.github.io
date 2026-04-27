@@ -1,0 +1,83 @@
+<!DOCTYPE html><html lang="zh-Hans"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="数字家庭二零二零"><title>数字家庭二零二零 - NOWHERE</title><link rel="icon" href="/img/favicon.ico"><link rel="stylesheet" href="/_astro/BaseLayout.BrFC7wQb.css"></head> <body class="post-page"> <header class="site-nav"> <div class="site-nav-inner"> <a class="brand" href="/" aria-label="NOWHERE"> <span>NOWHERE</span> </a> <nav aria-label="Primary navigation"> <a href="/tags/daily/">日常</a><a href="/tags/gears/">剁手</a><a href="/tags/note/">笔记</a><a href="/tags/travel/">旅行</a><a href="/link/">友链</a><a href="/about/">关于我</a> </nav> </div> </header>  <main class="article-page"> <article class="post-article"> <header class="article-header"> <p class="article-kicker">2020年11月3日</p> <p class="article-type">daily</p> <h1>数字家庭二零二零</h1> <div class="tag-row"> <a href="/tags/daily/">daily</a><a href="/tags/gears/">gears</a> </div> </header> <div class="prose">  <p>二零二零年，“家”成了一个空前重要的地方。既是栖身安居之处，也是丝竹案牍场所。有了自己的窝以后，近期趁着亚麻 Prime Day 搞了一堆东西，对家里进行一下数字化改造。</p>
+<h1 id="网络">网络</h1>
+<p>我家面积不大但共有三层，层高也不算低，势必要上 mesh 了。趁着打折，购入 Google Nest Wifi 套装，包含一个路由和两个 mesh point。其中 mesh point 有麦克风和扬声器，可以作为支持 Google assistant 的智能音箱使用。</p>
+<figure><a href="./images/nest-1.jpeg" class="glightbox" data-gallery="article-images" data-fullsize-from-img="true"><img src="/_astro/nest-1.D1liNi12_Z1Xrmkz.webp" alt loading="lazy" decoding="async" width="1400" height="1050"></a></figure>
+<p>我家主网口在二楼客厅，通过 coax 线缆和 modem 连接。猫用的是以前的 Netgear C7000v2，支持 xfinity modem 和路由器功能，我禁掉了它的路由器只作为猫使用。猫 LAN 口连接 Nest Wifi 主路由，主路由有线接入埋好的 CAT7 线缆和交换机。交换机买的便宜的千兆 TPLINK SG108，本来是专门有线网给游戏机使用的，但由于线缆实在有碍观瞻，现在客厅娱乐设备也暂时直接连入 Wifi 网络了。灵魂绘制有交换机时拓扑图如下：</p>
+<figure><a href="./images/network.png" class="glightbox" data-gallery="article-images" data-fullsize-from-img="true"><img src="/_astro/network.BCPhYP91_Z18xdd1.webp" alt loading="lazy" decoding="async" width="1600" height="1252"></a></figure>
+<p>两个无线 mesh point，一个放置在一楼入口处，用于一楼的物联网设备（门铃，车库门，安防系统等）和偶尔在一楼上网使用。另一个放置在三楼书房，以保证 WFH 的信号质量，不过后续安置台式机以后应该会直接使用有线网。Nest Wifi 的设置极其简单，通过 Google Home app 基本和设置一盏灯的过程无异。所有 Wifi 的设置<strong>仅能</strong>通过手机，对我来说虽然勉强够用，但总不如传统路由网页端功能强大。但可能对于相对小白的用户而言，简单明了又成了优势，各有利弊叭。</p>
+<figure><a href="./images/nest-2.png" class="glightbox" data-gallery="article-images" data-fullsize-from-img="true" data-title="左：简陋的手机端；右：空荡的网页端"><img src="/_astro/nest-2.B1EgTaCD_7NTPR.webp" alt="左：简陋的手机端；右：空荡的网页端" loading="lazy" decoding="async" width="1600" height="977"></a><figcaption>左：简陋的手机端；右：空荡的网页端</figcaption></figure>
+<p>配好 mesh 以后，三层楼实现 Wifi 无死角覆盖，绝大部分地方都是满格信号。而因为我套餐速度本就不高，测速也基本能跑满，让以前只用过小米路由 + 小米 Wifi 放大器的我不禁对现代无线 mesh 刮目相看。另外两个 mesh point 也附赠了 Google Home mini 的功能，而且不知是不是体积更大的缘故，在我听来音质甚至要好于我的 Google Home mini 和 Nest mini，低音明显更有力沉稳，高频也没有 nest mini 轻飘飘的感觉。当然白送的音响功能没什么好评价了，工作时 cast 个播客当背景音绰绰有余。</p>
+<figure><a href="./images/nest-3.jpeg" class="glightbox" data-gallery="article-images" data-fullsize-from-img="true" data-title="放置于书房的 mesh point，作为智能音箱时底部灯条会亮起"><img src="/_astro/nest-3.DA7ylCg0_18JxHJ.webp" alt="放置于书房的 mesh point，作为智能音箱时底部灯条会亮起" loading="lazy" decoding="async" width="1400" height="1050"></a><figcaption>放置于书房的 mesh point，作为智能音箱时底部灯条会亮起</figcaption></figure>
+<p>Nest Wifi 的主路由和 mesh point 均配备四核 1.4 Ghz 处理器和专用的机器学习引擎（也许是运行 Google assistant 之用），并分别配置 1GB 和 768MB 的内存。这参数已经比我几年前的手机要强，对于路由器来说绰绰有余了。</p>
+<h1 id="门铃">门铃</h1>
+<p>买的亚麻旗下 Ring 和 echo 的套装（然而我家 Google home/nest 实在太多了，echo 一个都没有拆），毕竟水深火热，带摄像头的门铃主要是安全起见吧。门铃安装也不复杂，先粗暴地把原来的门铃拆了，美国门铃大致都是一个简陋的电路，门铃起到一个接通电路的作用，按下就会响起来。</p>
+<figure><a href="./images/doorbell-1.jpeg" class="glightbox" data-gallery="article-images" data-fullsize-from-img="true"><img src="/_astro/doorbell-1.DPIER-fI_Z1ueSWc.webp" alt loading="lazy" decoding="async" width="1400" height="827"></a></figure>
+<p>先把 Ring 附带的一个支架钉在墙上，然后把原来门铃两根电线接到 Ring 门铃背后两个螺丝触点上，最后卡回支架就可以用了。这个门铃非常<em>睿智</em>的是<strong>需要充电</strong>，而且充电接口在看不见的背面，这就意味着每次充电都要把它拆下来。幸好电池看来比较耐用，使用三周掉了 5% 的电。环形的灯是常亮的，不过应该是从原来门铃电路取的电，因此自身电池应该只负责联网和录制了。</p>
+<figure><a href="./images/doorbell-2.jpeg" class="glightbox" data-gallery="article-images" data-fullsize-from-img="true"><img src="/_astro/doorbell-2.DVI8FyGk_Zg0VRy.webp" alt loading="lazy" decoding="async" width="1400" height="1288"></a></figure>
+<p>Ring 这个门铃主要作用就是：</p>
+<ul>
+<li>有人按门铃时手机会收到通知，可以视频通话</li>
+<li>监测门口可疑行动，触发通知并自动录像</li>
+<li>是个可以按的门铃</li>
+</ul>
+<p>大部分设置也是通过手机 app 进行。需要注意一点是一开始我接好后按门铃我家里并不会响，后来发现 app 里有一项 <code>In-home Chime Settings</code>，需要正确设置才能响。这么重要的设置为什么不在初始化流程里？也是一个<em>睿智</em>设计了。</p>
+<h1 id="安防">安防</h1>
+<p>选购安防系统时，犹豫是老牌 ADT 还是新秀 Ring，考虑到<del>ADT 实在太贵了</del>Ring 科技基因更深厚，买了 Ring Alarm 八件的套装（还送了个 echo show，出于上述理由也没拆）。看着八件套很唬人，其实就包括：</p>
+<ul>
+<li>基站 x1</li>
+<li>keypad x1</li>
+<li>信号放大器 x1</li>
+<li>门窗感应器 x4</li>
+<li>运动感应器 x1</li>
+</ul>
+<figure><a href="./images/ring-1.jpeg" class="glightbox" data-gallery="article-images" data-fullsize-from-img="true"><img src="/_astro/ring-1.uHIOU6Xq_Z1WDc5M.webp" alt loading="lazy" decoding="async" width="1400" height="1050"></a></figure>
+<p>安装和设置也没什么难度，跟着 app 一步步来就好了。传感器也都是通过 3M 胶固定，非常 DIY 友好。我把基站、keypad 和主路由都放在二楼的一个小边桌上，白色看起来也比较和谐。Ring Alarms 主要是基于<strong>场景</strong>的模式，配置好 disarmed，home 和 away 三种模式后基本就只需要开关切换就可以了，感应器和警报系统会根据场景工作。我同时订阅了 Ring 的服务，会有专业人员（或机器人🤖️？）帮你监测感应器的异常并在必要时报警，避免用户不在家又漏掉通知之类的情况。</p>
+<figure><a href="./images/ring-2.jpeg" class="glightbox" data-gallery="article-images" data-fullsize-from-img="true"><img src="/_astro/ring-2.Di01Z8BK_1hQAfj.webp" alt loading="lazy" decoding="async" width="1400" height="668"></a></figure>
+<h1 id="温控">温控</h1>
+<p>前两天咕果新出了平价版 Nest thermostat，加上 PG&amp;E 对安装智能温控可以 rebate 几十块，毫不犹豫下单了。我觊觎远程操控空调功能已久，虽说湾区宜人的气候使它难有用武之地，但我看着家里上世纪科技的温控实在是难受。</p>
+<figure><a href="./images/thermostat-1.jpeg" class="glightbox" data-gallery="article-images" data-fullsize-from-img="true"><img src="/_astro/thermostat-1.NE6J8duz_1ysUPh.webp" alt loading="lazy" decoding="async" width="1400" height="1050"></a></figure>
+<blockquote>
+<p>旧温控</p>
+</blockquote>
+<p>安装和设置就和所有 2020 年的电子产品一样，通过手机 app 进行。不过一步步引导的模式对于没安过空调的我来说还是很有必要的。暴力拆下旧温控，需要记下排线的情况，Google Home app 也会提醒你需要拍张照片。</p>
+<figure><a href="./images/thermostat-2.jpeg" class="glightbox" data-gallery="article-images" data-fullsize-from-img="true"><img src="/_astro/thermostat-2.BSr1u5Qh_Z2rM7mV.webp" alt loading="lazy" decoding="async" width="1200" height="1447"></a></figure>
+<p>之后拔掉排线，拆掉原来的底座，钉上 Nest 的底座，按 app 提示接好排线，最后扣上 Nest thermostat，20 分钟鸟枪换炮。</p>
+<figure><a href="./images/thermostat-3.jpeg" class="glightbox" data-gallery="article-images" data-fullsize-from-img="true"><img src="/_astro/thermostat-3.YxzCY4Sg_2jrBPI.webp" alt loading="lazy" decoding="async" width="1400" height="1050"></a></figure>
+<p>新 Nest 温控改为镜面设计，操作沿袭老款侧边触控的形态，屏幕由原来酷炫的圆形屏幕阉割成一块普通的 2.4 寸 QVGA（感觉是诺基亚的库存），不过幸好由于镜面设计看不出来屏幕的边框，配合简单的 UI 视觉效果还是可以的。操作也是非常流畅，触控时的音效异常悦耳清爽。</p>
+<figure><a href="./images/g-home.png" class="glightbox" data-gallery="article-images" data-fullsize-from-img="true" data-title="随着设备增多日益丰富的 Google Home 主屏"><img src="/_astro/g-home.Bgc_T_FV_1oXmqC.webp" alt="随着设备增多日益丰富的 Google Home 主屏" loading="lazy" decoding="async" width="1024" height="1017"></a><figcaption>随着设备增多日益丰富的 Google Home 主屏</figcaption></figure>
+<p>Nest 温控主要设置也在 Google Home app 里，不过由于目前气候舒适暂时没有好好了解，等到天冷之后再深入体验一番。</p>
+<h1 id="树莓派">树莓派</h1>
+<p>之前买的树莓派被我装上了散热片，扔到一个看不见的角落默默跑着几个服务。对于我目前来说最有用的莫过于 <a href="https://github.com/homebridge/homebridge">homebridge</a>，把我家不同品牌的大量物联网设备都纳入了 HomeKit 的体系下，配合 Apple TV 甚至能实现简单的自动化（例如出门后：关车库门，关灯，安防系统设防）。我目前 homebridge 运行了以下插件：</p>
+<ul>
+<li>homebridge-config-ui-x: GUI 配置 homebridge 的利器</li>
+<li>homebridge-bravia-tvos: 控制我的大法电视</li>
+<li>homebridge-myq: 控制我的车库门</li>
+<li>homebridge-nest: 将 Nest 添加为一个温度感应器并控制，不过好像还不支持最新款</li>
+<li>homebridge-ring: 控制 Ring alarms 安防系统，并添加传感器和摄像头</li>
+<li>homebridge-tplink-smarthome: 控制我的几个 TPLINK 小插头</li>
+</ul>
+<figure><a href="./images/home.png" class="glightbox" data-gallery="article-images" data-fullsize-from-img="true" data-title="为什么夹杂奇怪的中英双语：我有些设备习惯用 Siri（中文）有些习惯用 Google assistant（英文）"><img src="/_astro/home.DQavNQQm_Zw3g28.webp" alt="为什么夹杂奇怪的中英双语：我有些设备习惯用 Siri（中文）有些习惯用 Google assistant（英文）" loading="lazy" decoding="async" width="1024" height="1037"></a><figcaption>为什么夹杂奇怪的中英双语：我有些设备习惯用 Siri（中文）有些习惯用 Google assistant（英文）</figcaption></figure>
+<p>另外 tvOS 14 更新后，在看电视时如果楼下有人按门铃，Apple TV 会直接弹出门铃传来的实时视频，省去掏手机-&gt;解锁-&gt;打开 app 查看的步骤，非常好用。我树莓派上长期运行的另一个服务是 <a href="https://github.com/philippe44/AirConnect/tree/master/aircast">aircast</a>，用于 chromecast 和 AirPlay 协议的交互，这样水果设备也可以方便地投射音频到我的一堆咕果音响上，实现廉价的全家环绕立体声。两个服务基本不怎么占用资源，树莓派 3B 运行毫无压力。</p>
+<figure><a href="./images/pm2.png" class="glightbox" data-gallery="article-images" data-fullsize-from-img="true"><img src="/_astro/pm2.DkOIBift_1zkoQ6.webp" alt loading="lazy" decoding="async" width="1444" height="310"></a></figure>
+<p>此外运行的服务还有 NextCloud（临时存储一些小文件）和 Netdata（监控板子运行情况），又写了一个无比简陋的导航页去快速进入各服务的管理界面。 目前树莓派 RAM 占用 40%，CPU 基本没什么波动，运行非常稳定。</p>
+<h1 id="结束">结束</h1>
+<p>以上就是近期我对家里进行的改造，希望明年有机会能多多走出家门吧。</p>  </div> <section class="article-comments" aria-label="评论"> <div id="disqus_thread"></div> </section> <script>(function(){const identifier = "/2020/11-03-digital-home/";
+const title = "数字家庭二零二零";
+const url = "https://xnth97.github.io/2020/11-03-digital-home/";
+
+  window.disqus_config = function () {
+    this.page.url = url;
+    this.page.identifier = identifier;
+    this.page.title = title;
+    this.language = 'en_US';
+  };
+
+  if (!document.querySelector('script[data-disqus-shortname="xnth97"]')) {
+    const script = document.createElement('script');
+    script.src = 'https://xnth97.disqus.com/embed.js';
+    script.async = true;
+    script.dataset.disqusShortname = 'xnth97';
+    script.setAttribute('data-timestamp', String(Date.now()));
+    document.body.appendChild(script);
+  }
+})();</script> </article> </main>  <footer class="site-footer"> <div> <strong>NOWHERE</strong> <span>一些碎碎念</span> </div> <p>Copyright © 2026 NOWHERE</p> </footer> <script type="module" src="/_astro/BaseLayout.astro_astro_type_script_index_0_lang.CHqgZIDF.js"></script> </body> </html>

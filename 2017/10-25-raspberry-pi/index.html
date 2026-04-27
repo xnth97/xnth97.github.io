@@ -1,0 +1,162 @@
+<!DOCTYPE html><html lang="zh-Hans"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="Raspberry Pi 手记"><title>Raspberry Pi 手记 - NOWHERE</title><link rel="icon" href="/img/favicon.ico"><link rel="stylesheet" href="/_astro/BaseLayout.BrFC7wQb.css"></head> <body class="post-page"> <header class="site-nav"> <div class="site-nav-inner"> <a class="brand" href="/" aria-label="NOWHERE"> <span>NOWHERE</span> </a> <nav aria-label="Primary navigation"> <a href="/tags/daily/">日常</a><a href="/tags/gears/">剁手</a><a href="/tags/note/">笔记</a><a href="/tags/travel/">旅行</a><a href="/link/">友链</a><a href="/about/">关于我</a> </nav> </div> </header>  <main class="article-page"> <article class="post-article"> <header class="article-header"> <p class="article-kicker">2017年10月25日</p> <p class="article-type">daily</p> <h1>Raspberry Pi 手记</h1> <div class="tag-row"> <a href="/tags/daily/">daily</a><a href="/tags/gears/">gears</a> </div> </header> <div class="prose">  <p>近期搞来一块新电脑（？）不能免俗，选择了 Raspberry Pi 3B。树莓派的牛皮纸袋包装真的很可爱，乍一看真的很像从超市买了一袋子树莓回来。</p>
+<figure><a href="./images/1.jpg" class="glightbox" data-gallery="article-images" data-fullsize-from-img="true"><img src="/_astro/1.C12XTGvH_Z1CCooO.webp" alt loading="lazy" decoding="async" width="720" height="721"></a></figure>
+<h1 id="初始化">初始化</h1>
+<h2 id="安装系统">安装系统</h2>
+<p>准备一张 MicroSD 卡，系统镜像直接下载 <a href="https://www.raspberrypi.org/downloads/raspbian/">Raspbian</a>。有个 Noobs 是一个 easy installer，没什么用处。下载镜像后烧写到 MicroSD 卡里，推荐使用 <a href="https://etcher.io">Etcher</a>，全平台的一个简洁好用的镜像烧写工具。</p>
+<h2 id="无头启动">“无头”启动</h2>
+<p>一般来说，树莓派是需要接上 USB 键鼠、HDMI 连接显示器、插上网线启动的。这些东西我一个都没有，于是使用所谓 headless setup 的方法，直接使树莓派连接上 WiFi 热点并开启 ssh。首先打开 MicroSD 卡的 boot 分区，<code>touch ssh</code> 放入一个空白的 <code>ssh</code> 文件，告诉系统打开 ssh。然后在同样位置创建一个 <code>wpa_supplicant.conf</code> 文件，内容为：</p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="plaintext"><code><span class="line"><span>country=US # 这里换成你所在的国家</span></span>
+<span class="line"><span>ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev</span></span>
+<span class="line"><span>update_config=1</span></span>
+<span class="line"><span>network={</span></span>
+<span class="line"><span>    ssid=&quot;你的 WiFi SSID&quot;</span></span>
+<span class="line"><span>    psk=&quot;你的 WiFi 密码&quot;</span></span>
+<span class="line"><span>}</span></span></code></pre>
+<p>这样树莓派启动后会自动读取配置连接 WiFi 热点，即可以用 ssh 愉快地玩耍了。上电。</p>
+<figure><a href="./images/2.jpg" class="glightbox" data-gallery="article-images" data-fullsize-from-img="true"><img src="/_astro/2.B0lIP3oI_Z21jXFt.webp" alt loading="lazy" decoding="async" width="720" height="720"></a></figure>
+<h2 id="设置">设置</h2>
+<p>在自己路由器管理页面记住树莓派的 IP，用 <code>ssh pi@树莓派的 IP</code> 连接，默认密码为 raspberry。初次启动，使用 <code>sudo passwd</code> 更改下密码，然后 <code>sudo raspi-config</code> 命令进入树莓派的设置工具。</p>
+<p>我在这里进行的变更有：</p>
+<ul>
+<li>Boot options -&gt; Desktop / CLI -&gt; Console</li>
+<li>Interfacing options -&gt; VNC -&gt; Enable</li>
+<li>Advanced options -&gt; Expand filesystem</li>
+</ul>
+<p>开启第二步后，不熟悉命令行的话也可以通过 VNC 连接远程桌面使用树莓派了。需要在终端内启动 <code>vncserver :1</code>，然后就可以从 VNC 客户端里通过 <code>树莓派的 IP:1</code> 连接了。不使用的话可以 <code>vncserver -kill :1</code> 关闭。</p>
+<p>一切就绪，安装好 vim、oh-my-zsh、git 之类工具，树莓派基本就可用了。</p>
+<h1 id="搭建下载机">搭建下载机</h1>
+<p>搞树莓派的核心需求是搭建一个能够远程控制的下载机，同时我在家里的时候可以直接访问树莓派连接的硬盘，甚至直接通过兼容流媒体协议的 app 播放。</p>
+<h2 id="挂载硬盘">挂载硬盘</h2>
+<p>这里我的硬盘因为要兼容 macOS 和 Windows，所以格式化为了 exFAT 格式，需要安装对应读写的驱动：</p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6F42C1">sudo</span><span style="color:#032F62"> apt-get</span><span style="color:#032F62"> install</span><span style="color:#032F62"> exfat-fuse</span></span></code></pre>
+<p>之后挂载移动硬盘到 /mnt/hdd：</p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6F42C1">sudo</span><span style="color:#032F62"> mount</span><span style="color:#005CC5"> -o</span><span style="color:#032F62"> uid=pi,gid=pi</span><span style="color:#032F62"> /dev/sda1</span><span style="color:#032F62"> /mnt/hdd</span></span></code></pre>
+<p>不用后弹出：</p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6F42C1">sudo</span><span style="color:#032F62"> umount</span><span style="color:#032F62"> /mnt/hdd</span></span></code></pre>
+<p>注意：由于电压原因，树莓派直接连接移动硬盘可能不稳定。我的方法是将移动硬盘连接到有 USB 接口的显示器，再把显示器 USB 线连接到树莓派上。如果有带有供电的 USB HUB 理论上应该也可以。</p>
+<h2 id="安装-aria2">安装 aria2</h2>
+<p>大名鼎鼎的 aria2 就无需多言了。直接安装：</p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6F42C1">sudo</span><span style="color:#032F62"> apt-get</span><span style="color:#032F62"> install</span><span style="color:#032F62"> aria2</span></span></code></pre>
+<p>接下来需要给 aria2 创建两个文件：一个配置文件，一个用来保存下载会话。找到一个合适的路径，<code>touch aria2.session</code> 创建空白会话文件。然后 <code>vim aria2.conf</code>，编辑配置文件：</p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="plaintext"><code><span class="line"><span>dir = /path/to/your/downloads # 下载存储路径</span></span>
+<span class="line"><span>enable-rpc = true # 开启 RPC，以下几个选项均和远程控制有关</span></span>
+<span class="line"><span>rpc-allow-origin-all = true</span></span>
+<span class="line"><span>rpc-listen-all = true</span></span>
+<span class="line"><span>continue = true # 断点续传</span></span>
+<span class="line"><span>input-file = /path/to/aria2.session # 会话文件路径，下同</span></span>
+<span class="line"><span>save-session = /path/to/aria2.session</span></span>
+<span class="line"><span>max-concurrent-downloads = 5 # 最大同时下载数</span></span></code></pre>
+<p>加载配置文件，并以 daemon 模式启动 aria2：</p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6F42C1">sudo</span><span style="color:#032F62"> aria2c</span><span style="color:#005CC5"> --conf-path=/path/to/aria2.conf</span><span style="color:#005CC5"> -D</span></span></code></pre>
+<p>或使用 pm2：</p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6F42C1">pm2</span><span style="color:#032F62"> start</span><span style="color:#032F62"> aria2c</span><span style="color:#005CC5"> --</span><span style="color:#005CC5"> --conf-path=/path/to/aria2.conf</span></span></code></pre>
+<h2 id="远程控制">远程控制</h2>
+<p>远程控制就是在本地开一个服务器，提供一个访问 aria2 的 Web UI，然后通过路由器的 port forwarding 暴露到公网上，即可以远程访问 Web UI 管理下载任务了。首先开一个自己习惯的服务器，我使用的是 nginx，安装好后编辑配置文件自己指定 nginx 的根目录，启动 nginx：</p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6F42C1">sudo</span><span style="color:#032F62"> apt-get</span><span style="color:#032F62"> install</span><span style="color:#032F62"> nginx</span></span>
+<span class="line"><span style="color:#6F42C1">sudo</span><span style="color:#032F62"> vim</span><span style="color:#032F62"> /etc/nginx/sites-enabled/default</span></span>
+<span class="line"><span style="color:#6F42C1">sudo</span><span style="color:#032F62"> service</span><span style="color:#032F62"> nginx</span><span style="color:#032F62"> start</span></span></code></pre>
+<p>接下来选择一个适用于 aria2 的 Web UI，我使用的是 <a href="https://github.com/ziahamza/webui-aria2">webui-aria2</a>。进入自己设置的服务器根目录，<code>git clone https://github.com/ziahamza/webui-aria2.git</code>，改个名字 <code>mv webui-aria2 aria2</code>，即可以通过 <code>树莓派的 IP/aria2</code> 访问 aria2 的 Web UI 了。最后在自己路由器上打开 port forwarding，注意给树莓派保留 IP 而不要任凭路由器 DHCP，分配一个端口给树莓派的 80 端口。然后根据 aria2 的教程设置密钥访问，即可以远程安全的管理自己的下载任务了。</p>
+<figure><a href="./images/4.png" class="glightbox" data-gallery="article-images" data-fullsize-from-img="true"><img src="/_astro/4.Ck8MrRkC_1TIavH.webp" alt loading="lazy" decoding="async" width="1240" height="889"></a></figure>
+<blockquote>
+<p>美帝连国内凄惨的下载速度</p>
+</blockquote>
+<h2 id="文件服务器">文件服务器</h2>
+<p>文件服务器通过 SMB 协议，安装 samba：</p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6F42C1">sudo</span><span style="color:#032F62"> apt-get</span><span style="color:#032F62"> install</span><span style="color:#032F62"> samba</span><span style="color:#032F62"> samba-common-bin</span></span></code></pre>
+<p>修改配置文件：</p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6F42C1">sudo</span><span style="color:#032F62"> vim</span><span style="color:#032F62"> /etc/samba/smb.conf</span></span></code></pre>
+<p>添加自己下载目录的配置：</p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="plaintext"><code><span class="line"><span>[hdd]</span></span>
+<span class="line"><span>path = /path/to/your/hdd</span></span>
+<span class="line"><span>valid users = pi</span></span>
+<span class="line"><span>browseable = Yes</span></span>
+<span class="line"><span>writeable = Yes</span></span>
+<span class="line"><span>writelist = pi</span></span>
+<span class="line"><span>create mask = 0777</span></span>
+<span class="line"><span>directory mask = 0777</span></span></code></pre>
+<p>然后重启 samba 服务，并添加当前账户：</p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6F42C1">sudo</span><span style="color:#032F62"> service</span><span style="color:#032F62"> smbd</span><span style="color:#032F62"> restart</span></span>
+<span class="line"><span style="color:#6F42C1">sudo</span><span style="color:#032F62"> smbpasswd</span><span style="color:#005CC5"> -a</span><span style="color:#032F62"> pi</span></span></code></pre>
+<p>这样在局域网里就能够发现树莓派了。用 pi 的账号密码连接，就可以轻松挂载共享的文件夹。</p>
+<h2 id="流媒体服务器">流媒体服务器</h2>
+<p>流媒体服务器通过 DLNA 协议，首先安装 minidlna：</p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6F42C1">sudo</span><span style="color:#032F62"> apt-get</span><span style="color:#032F62"> install</span><span style="color:#032F62"> minidlna</span></span></code></pre>
+<p>之后修改配置文件：</p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6F42C1">sudo</span><span style="color:#032F62"> vim</span><span style="color:#032F62"> /etc/minidlna.conf</span></span></code></pre>
+<p>修改内容，主要是流媒体服务器读取文件的路径。注意 minidlna 可以根据媒体类型分别设置路径：</p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="plaintext"><code><span class="line"><span># A 代表音频 P 代表图片 V 代表视频</span></span>
+<span class="line"><span>media_dir = A,/path/to/audio</span></span>
+<span class="line"><span>media_dir = P,/path/to/picture</span></span>
+<span class="line"><span>media_dir = V,/path/to/video</span></span></code></pre>
+<p>启动 minidlna 服务：</p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6F42C1">sudo</span><span style="color:#032F62"> service</span><span style="color:#032F62"> minidlna</span><span style="color:#032F62"> start</span></span></code></pre>
+<p>然后打开兼容 DLNA 协议的播放器（如 VLC），就可以直接播放硬盘里的流媒体了。另外，minidlna 还会开放 8200 端口显示媒体数量等一些信息。</p>
+<h1 id="minecraft-服务器">Minecraft 服务器</h1>
+<p>搭建一个 Minecraft 服务器也是树莓派不错的归宿。之前我尝试过使用免费的 Google Cloud 实例，性能非常差一下子就会崩掉。而我家又由于 Xfinity 的网关原因，无法成功转到公网上。因此采用的办法是树莓派运行服务器，通过内网穿透反向代理到 Google Cloud 实例上。</p>
+<h2 id="运行">运行</h2>
+<p>安装 JRE：</p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6F42C1">sudo</span><span style="color:#032F62"> apt-get</span><span style="color:#032F62"> install</span><span style="color:#032F62"> default-jre</span></span></code></pre>
+<p>选择合适的 Minecraft 服务器。我选择的是 <a href="https://github.com/PaperMC/Paper">PaperSpigot</a>，一个高性能的 Spigot fork。注意树莓派由于性能原因不建议使用太高版本，以 PaperSpigot-1.7.10-R0.1-SNAPSHOT-latest.jar 为例，执行：</p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6F42C1">java</span><span style="color:#005CC5"> -jar</span><span style="color:#005CC5"> -Xmx840M</span><span style="color:#005CC5"> -Xms840M</span><span style="color:#032F62"> PaperSpigot-1.7.10-R0.1-SNAPSHOT-latest.jar</span><span style="color:#032F62"> nogui</span></span></code></pre>
+<p>Minecraft 服务器就在 25565 端口上启动了。插件只需要放入同目录的 <code>/plugins</code> 文件夹，重启服务器即可以自动启动。</p>
+<h2 id="内网穿透">内网穿透</h2>
+<p>内网穿透使用 <a href="https://github.com/fatedier/frp">frp</a>，具体的使用文档可以看<a href="https://github.com/fatedier/frp/blob/master/README_zh.md">这里</a>。下载时注意架构和操作系统，这里我的 Google Cloud 实例是 linux-amd64，树莓派是 linux-arm。</p>
+<p>将 linux-amd64 的 frps 和 frps.ini 放到 GCP 实例上，编辑 frps.ini：</p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="plaintext"><code><span class="line"><span># frps.ini</span></span>
+<span class="line"><span>[common]</span></span>
+<span class="line"><span>bind_port = 7000 # 服务器使用 7000 端口和树莓派通信</span></span></code></pre>
+<p>启动 frps：</p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6F42C1">./frps</span><span style="color:#005CC5"> -c</span><span style="color:#032F62"> ./frps.ini</span></span></code></pre>
+<p>将 linux-arm 的 frpc 和 frpc.ini 放到树莓派上，编辑 frpc.ini：</p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="plaintext"><code><span class="line"><span># frpc.ini</span></span>
+<span class="line"><span>[common]</span></span>
+<span class="line"><span>server_addr = x.x.x.x # 公网 IP 地址</span></span>
+<span class="line"><span>server_port = 7000 # 服务器使用的端口</span></span>
+<span class="line"><span>[minecraft]</span></span>
+<span class="line"><span>type = tcp</span></span>
+<span class="line"><span>local_ip = 127.0.0.1</span></span>
+<span class="line"><span>local_port = 25565 # minecraft 服务器开启的端口</span></span>
+<span class="line"><span>remote_port = 6000 # 远程用来连接的端口</span></span></code></pre>
+<p>启动 frpc：</p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6F42C1">./frpc</span><span style="color:#005CC5"> -c</span><span style="color:#032F62"> ./frpc.ini</span></span></code></pre>
+<p>最后在任意一台机器上连接 Minecraft 服务器，地址为 <code>服务器公网 IP:6000</code>。在我的两人生存服上树莓派的负载约为 10%，可以较为轻松的应对低版本 Minecraft 服务器的工作。</p>
+<h1 id="智能家居">智能家居</h1>
+<p>智能家居部分主要是运行了两个服务：</p>
+<ul>
+<li><a href="https://github.com/homebridge/homebridge">HomeBridge</a>：将 IoT 设备桥接至 HomeKit</li>
+<li><a href="https://github.com/philippe44/AirConnect">AirConnect</a>：将 Chromecast 设备桥接至 AirPlay</li>
+</ul>
+<h2 id="安装-nodejs-及-pm2">安装 Node.js 及 pm2</h2>
+<p>我们使用 pm2 作为进程管理工具。首先安装 Node.js LTS，跟着<a href="https://github.com/nodesource/distributions/blob/master/README.md">文档</a>：</p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6F42C1">curl</span><span style="color:#005CC5"> -fsSL</span><span style="color:#032F62"> https://rpm.nodesource.com/setup_lts.x</span><span style="color:#D73A49"> |</span><span style="color:#6F42C1"> sudo</span><span style="color:#032F62"> bash</span><span style="color:#032F62"> -</span></span>
+<span class="line"><span style="color:#6F42C1">sudo</span><span style="color:#032F62"> apt-get</span><span style="color:#032F62"> install</span><span style="color:#005CC5"> -y</span><span style="color:#032F62"> nodejs</span></span></code></pre>
+<p>然后安装 pm2：</p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6F42C1">sudo</span><span style="color:#032F62"> npm</span><span style="color:#032F62"> install</span><span style="color:#005CC5"> -g</span><span style="color:#032F62"> pm2</span></span></code></pre>
+<h2 id="homebridge">HomeBridge</h2>
+<p>安装 HomeBridge 及 <code>homebridge-config-ui-x</code>：</p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6F42C1">sudo</span><span style="color:#032F62"> npm</span><span style="color:#032F62"> install</span><span style="color:#005CC5"> -g</span><span style="color:#005CC5"> --unsafe-perm</span><span style="color:#032F62"> homebridge</span><span style="color:#032F62"> homebridge-config-ui-x</span></span></code></pre>
+<p>然后根据 <a href="https://github.com/homebridge/homebridge/blob/master/config-sample.json">config-sample.json</a> 编写自己的配置文件，放到 <code>~/.homebridge/config.json</code>，之后运行 <code>homebridge</code> 命令启动，并使用 iOS 上的 Home 应用进行初始化。完成后即可通过 <code>pm2 start homebridge</code> 来使用 pm2 管理进程。</p>
+<h2 id="airconnect">AirConnect</h2>
+<p>对于 AirConnect 我们只需要它的一个组件 <code>aircast</code>。作者提供了<a href="https://github.com/philippe44/AirConnect/blob/master/bin/aircast-arm">编译好的 ARM 架构二进制</a>，直接下载后 scp 到树莓派上，修改权限后使用 <code>pm2 start aircast-arm</code> 即可。</p>
+<p>pm2 管理的进程初始化好之后，需要用 <code>pm2 save</code> 保存下配置，之后再次启动可以使用 <code>pm2 resurrect</code> 快速恢复。</p>
+<h1 id="总结">总结</h1>
+<p>树莓派还是挺实用的，一个极低功耗的完整 Linux 设备，外加 MicroSD 卡可以扩展较大的存储（我使用的 256GB），可以在家里便捷地实现文件共享、简单的自动化等操作。期待以后能有性能更强的 Pi 可以更为流畅地负担日常任务。</p>  </div> <section class="article-comments" aria-label="评论"> <div id="disqus_thread"></div> </section> <script>(function(){const identifier = "/2017/10-25-raspberry-pi/";
+const title = "Raspberry Pi 手记";
+const url = "https://xnth97.github.io/2017/10-25-raspberry-pi/";
+
+  window.disqus_config = function () {
+    this.page.url = url;
+    this.page.identifier = identifier;
+    this.page.title = title;
+    this.language = 'en_US';
+  };
+
+  if (!document.querySelector('script[data-disqus-shortname="xnth97"]')) {
+    const script = document.createElement('script');
+    script.src = 'https://xnth97.disqus.com/embed.js';
+    script.async = true;
+    script.dataset.disqusShortname = 'xnth97';
+    script.setAttribute('data-timestamp', String(Date.now()));
+    document.body.appendChild(script);
+  }
+})();</script> </article> </main>  <footer class="site-footer"> <div> <strong>NOWHERE</strong> <span>一些碎碎念</span> </div> <p>Copyright © 2026 NOWHERE</p> </footer> <script type="module" src="/_astro/BaseLayout.astro_astro_type_script_index_0_lang.CHqgZIDF.js"></script> </body> </html>

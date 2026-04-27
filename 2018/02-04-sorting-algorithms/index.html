@@ -1,0 +1,206 @@
+<!DOCTYPE html><html lang="zh-Hans"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="排序算法笔记"><title>排序算法笔记 - NOWHERE</title><link rel="icon" href="/img/favicon.ico"><link rel="stylesheet" href="/_astro/BaseLayout.BrFC7wQb.css"></head> <body class="post-page"> <header class="site-nav"> <div class="site-nav-inner"> <a class="brand" href="/" aria-label="NOWHERE"> <span>NOWHERE</span> </a> <nav aria-label="Primary navigation"> <a href="/tags/daily/">日常</a><a href="/tags/gears/">剁手</a><a href="/tags/note/">笔记</a><a href="/tags/travel/">旅行</a><a href="/link/">友链</a><a href="/about/">关于我</a> </nav> </div> </header>  <main class="article-page"> <article class="post-article"> <header class="article-header"> <p class="article-kicker">2018年2月4日</p> <p class="article-type">coding</p> <h1>排序算法笔记</h1> <div class="tag-row"> <a href="/tags/coding/">coding</a><a href="/tags/note/">note</a> </div> </header> <div class="prose">  <p>从接触算法就开始说的排序，这里总结一下。</p>
+<h1 id="bubble-sort">Bubble Sort</h1>
+<p>冒泡排序是最基础的排序了，主要有三个基本步骤：</p>
+<ul>
+<li>每次比较两个值</li>
+<li>如果左边的值更大，则交换两个值的位置，以将更大的值排到右边</li>
+<li>向右移动一个位置</li>
+</ul>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="swift"><code><span class="line"><span style="color:#D73A49">func</span><span style="color:#6F42C1"> bubbleSort</span><span style="color:#24292E">(</span><span style="color:#6F42C1">data</span><span style="color:#24292E">: </span><span style="color:#D73A49">inout</span><span style="color:#24292E"> [</span><span style="color:#005CC5">Int</span><span style="color:#24292E">]) {</span></span>
+<span class="line"><span style="color:#D73A49">    for</span><span style="color:#24292E"> outerIdx </span><span style="color:#D73A49">in</span><span style="color:#005CC5"> stride</span><span style="color:#24292E">(</span><span style="color:#005CC5">from</span><span style="color:#24292E">: data.</span><span style="color:#005CC5">count</span><span style="color:#D73A49"> -</span><span style="color:#005CC5"> 1</span><span style="color:#24292E">, </span><span style="color:#005CC5">to</span><span style="color:#24292E">: </span><span style="color:#005CC5">0</span><span style="color:#24292E">, </span><span style="color:#005CC5">by</span><span style="color:#24292E">: </span><span style="color:#005CC5">-1</span><span style="color:#24292E">) {</span></span>
+<span class="line"><span style="color:#D73A49">        for</span><span style="color:#24292E"> innerIdx </span><span style="color:#D73A49">in</span><span style="color:#005CC5"> 0</span><span style="color:#D73A49"> ..&lt;</span><span style="color:#24292E"> outerIdx {</span></span>
+<span class="line"><span style="color:#D73A49">            if</span><span style="color:#24292E"> data[innerIdx] </span><span style="color:#D73A49">&gt;</span><span style="color:#24292E"> data[innerIdx </span><span style="color:#D73A49">+</span><span style="color:#005CC5"> 1</span><span style="color:#24292E">] {</span></span>
+<span class="line"><span style="color:#24292E">                (data[innerIdx], data[innerIdx </span><span style="color:#D73A49">+</span><span style="color:#005CC5"> 1</span><span style="color:#24292E">]) </span><span style="color:#D73A49">=</span><span style="color:#24292E"> (data[innerIdx </span><span style="color:#D73A49">+</span><span style="color:#005CC5"> 1</span><span style="color:#24292E">], data[innerIdx])</span></span>
+<span class="line"><span style="color:#24292E">            }</span></span>
+<span class="line"><span style="color:#24292E">        }</span></span>
+<span class="line"><span style="color:#24292E">    }</span></span>
+<span class="line"><span style="color:#24292E">}</span></span></code></pre>
+<p>对一个长度为 n 的数组，worst-case 下需要执行交换的次数为 n(n - 1)/2，需要比较的次数也为 n(n - 1)/2。冒泡排序的时间复杂度为 O(n^2)。冒泡排序是稳定的。</p>
+<h1 id="selection-sort">Selection Sort</h1>
+<p>选择排序比冒泡排序快一点，主要有两个基本步骤：</p>
+<ul>
+<li>选择最小的值</li>
+<li>把它和最左边的元素交换</li>
+</ul>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="swift"><code><span class="line"><span style="color:#D73A49">func</span><span style="color:#6F42C1"> selectionSort</span><span style="color:#24292E">(</span><span style="color:#6F42C1">data</span><span style="color:#24292E">: </span><span style="color:#D73A49">inout</span><span style="color:#24292E"> [</span><span style="color:#005CC5">Int</span><span style="color:#24292E">]) {</span></span>
+<span class="line"><span style="color:#D73A49">    for</span><span style="color:#24292E"> outerIdx </span><span style="color:#D73A49">in</span><span style="color:#005CC5"> 0</span><span style="color:#D73A49"> ..&lt;</span><span style="color:#24292E"> data.</span><span style="color:#005CC5">count</span><span style="color:#D73A49"> -</span><span style="color:#005CC5"> 1</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#6A737D">        // set initial min value&#39;s index</span></span>
+<span class="line"><span style="color:#D73A49">        var</span><span style="color:#24292E"> minimum </span><span style="color:#D73A49">=</span><span style="color:#24292E"> outerIdx</span></span>
+<span class="line"><span style="color:#6A737D">        // select a new minimum value&#39;s index</span></span>
+<span class="line"><span style="color:#D73A49">        for</span><span style="color:#24292E"> innerIdx </span><span style="color:#D73A49">in</span><span style="color:#24292E"> outerIdx </span><span style="color:#D73A49">+</span><span style="color:#005CC5"> 1</span><span style="color:#D73A49"> ..&lt;</span><span style="color:#24292E"> data.</span><span style="color:#005CC5">count</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#D73A49">            if</span><span style="color:#24292E"> data[innerIdx] </span><span style="color:#D73A49">&lt;</span><span style="color:#24292E"> data[minimum] {</span></span>
+<span class="line"><span style="color:#6A737D">                // if new min, reset index</span></span>
+<span class="line"><span style="color:#24292E">                minimum </span><span style="color:#D73A49">=</span><span style="color:#24292E"> innerIdx</span></span>
+<span class="line"><span style="color:#24292E">            }</span></span>
+<span class="line"><span style="color:#24292E">        }</span></span>
+<span class="line"><span style="color:#D73A49">        if</span><span style="color:#24292E"> outerIdx </span><span style="color:#D73A49">!=</span><span style="color:#24292E"> minimum {</span></span>
+<span class="line"><span style="color:#24292E">            (data[outerIdx], data[minimum]) </span><span style="color:#D73A49">=</span><span style="color:#24292E"> (data[minimum], data[outerIdx])</span></span>
+<span class="line"><span style="color:#24292E">        }</span></span>
+<span class="line"><span style="color:#24292E">    }</span></span>
+<span class="line"><span style="color:#24292E">}</span></span></code></pre>
+<p>对一个长度为 n 的数组，worst-case 下需要执行交换的次数为 n - 1，需要比较的次数为 n(n - 1)/2。选择排序的时间复杂度为 O(n^2)。选择排序是不稳定的。</p>
+<h1 id="insertion-sort">Insertion Sort</h1>
+<p>插入排序比前两个都快，插入排序的关键在于有一条想象的分界线。主要思路是：</p>
+<ul>
+<li>分界线左边的元素都排好序了</li>
+<li>分界线右边的第一个元素需要被插到左边的一个恰当位置中
+<ul>
+<li>首先，把右边第一个元素的值存到一个临时变量中</li>
+<li>把左边的元素全部向右移一位，从而可以有一个位置来放要插入的值</li>
+<li>找到位置后，插入临时变量中的值</li>
+</ul>
+</li>
+</ul>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="swift"><code><span class="line"><span style="color:#D73A49">func</span><span style="color:#6F42C1"> insertionSort</span><span style="color:#24292E">(</span><span style="color:#6F42C1">data</span><span style="color:#24292E">: </span><span style="color:#D73A49">inout</span><span style="color:#24292E"> [</span><span style="color:#005CC5">Int</span><span style="color:#24292E">]) {</span></span>
+<span class="line"><span style="color:#D73A49">    guard</span><span style="color:#D73A49"> !</span><span style="color:#24292E">data.</span><span style="color:#005CC5">isEmpty</span><span style="color:#D73A49"> else</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#D73A49">        return</span></span>
+<span class="line"><span style="color:#24292E">    }</span></span>
+<span class="line"><span style="color:#D73A49">    for</span><span style="color:#24292E"> outerIdx </span><span style="color:#D73A49">in</span><span style="color:#005CC5"> 1</span><span style="color:#D73A49"> ..&lt;</span><span style="color:#24292E"> data.</span><span style="color:#005CC5">count</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#D73A49">        let</span><span style="color:#24292E"> tmp </span><span style="color:#D73A49">=</span><span style="color:#24292E"> data[outerIdx]</span></span>
+<span class="line"><span style="color:#D73A49">        var</span><span style="color:#24292E"> innerIdx </span><span style="color:#D73A49">=</span><span style="color:#24292E"> outerIdx</span></span>
+<span class="line"><span style="color:#6A737D">        // go backward in the left side of the line</span></span>
+<span class="line"><span style="color:#6A737D">        // shift the values</span></span>
+<span class="line"><span style="color:#D73A49">        while</span><span style="color:#24292E"> innerIdx </span><span style="color:#D73A49">&gt;</span><span style="color:#005CC5"> 0</span><span style="color:#24292E">, data[innerIdx </span><span style="color:#D73A49">-</span><span style="color:#005CC5"> 1</span><span style="color:#24292E">] </span><span style="color:#D73A49">&gt;=</span><span style="color:#24292E"> tmp {</span></span>
+<span class="line"><span style="color:#24292E">            data[innerIdx] </span><span style="color:#D73A49">=</span><span style="color:#24292E"> data[innerIdx </span><span style="color:#D73A49">-</span><span style="color:#005CC5"> 1</span><span style="color:#24292E">]</span></span>
+<span class="line"><span style="color:#24292E">            innerIdx </span><span style="color:#D73A49">-=</span><span style="color:#005CC5"> 1</span></span>
+<span class="line"><span style="color:#24292E">        }</span></span>
+<span class="line"><span style="color:#D73A49">        if</span><span style="color:#24292E"> outerIdx </span><span style="color:#D73A49">!=</span><span style="color:#24292E"> innerIdx {</span></span>
+<span class="line"><span style="color:#24292E">            data[innerIdx] </span><span style="color:#D73A49">=</span><span style="color:#24292E"> tmp</span></span>
+<span class="line"><span style="color:#24292E">        }</span></span>
+<span class="line"><span style="color:#24292E">    }</span></span>
+<span class="line"><span style="color:#24292E">}</span></span></code></pre>
+<p>对一个长度为 n 的数组，worst-case 下需要比较的次数为 n(n - 1) / 2，如果是随机分布的数组则表现会更好。插入排序最坏的情况下复杂度为 O(n^2)，最好的情况下为 O(n)（输入数组已经排好序的情况下）。插入排序也是稳定的。</p>
+<h1 id="merge-sort">Merge Sort</h1>
+<p>归并排序的思路是 divide and conquer algorithms 的一个生动的例子。归并排序的思路为：</p>
+<ul>
+<li>用归并排序排好前一半</li>
+<li>用归并排序排好后一半</li>
+<li>归并排好序的两半</li>
+</ul>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="swift"><code><span class="line"><span style="color:#D73A49">func</span><span style="color:#6F42C1"> mergeSort</span><span style="color:#24292E">(</span><span style="color:#6F42C1">data</span><span style="color:#24292E">: [</span><span style="color:#005CC5">Int</span><span style="color:#24292E">]) </span><span style="color:#D73A49">-&gt;</span><span style="color:#24292E"> [</span><span style="color:#005CC5">Int</span><span style="color:#24292E">] {</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    // helper that merges two parts</span></span>
+<span class="line"><span style="color:#D73A49">    func</span><span style="color:#6F42C1"> merge</span><span style="color:#24292E">(</span><span style="color:#6F42C1">_</span><span style="color:#24292E"> a: [</span><span style="color:#005CC5">Int</span><span style="color:#24292E">], </span><span style="color:#6F42C1">_</span><span style="color:#24292E"> b: [</span><span style="color:#005CC5">Int</span><span style="color:#24292E">]) </span><span style="color:#D73A49">-&gt;</span><span style="color:#24292E"> [</span><span style="color:#005CC5">Int</span><span style="color:#24292E">] {</span></span>
+<span class="line"><span style="color:#D73A49">        var</span><span style="color:#24292E"> merged: [</span><span style="color:#005CC5">Int</span><span style="color:#24292E">] </span><span style="color:#D73A49">=</span><span style="color:#24292E"> []</span></span>
+<span class="line"><span style="color:#D73A49">        var</span><span style="color:#24292E"> aIdx </span><span style="color:#D73A49">=</span><span style="color:#005CC5"> 0</span></span>
+<span class="line"><span style="color:#D73A49">        var</span><span style="color:#24292E"> bIdx </span><span style="color:#D73A49">=</span><span style="color:#005CC5"> 0</span></span>
+<span class="line"><span style="color:#D73A49">        while</span><span style="color:#24292E"> aIdx </span><span style="color:#D73A49">&lt;</span><span style="color:#24292E"> a.</span><span style="color:#005CC5">count</span><span style="color:#D73A49"> &amp;&amp;</span><span style="color:#24292E"> bIdx </span><span style="color:#D73A49">&lt;</span><span style="color:#24292E"> b.</span><span style="color:#005CC5">count</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#D73A49">            if</span><span style="color:#24292E"> a[aIdx] </span><span style="color:#D73A49">&lt;</span><span style="color:#24292E"> b[bIdx] {</span></span>
+<span class="line"><span style="color:#24292E">                merged.</span><span style="color:#005CC5">append</span><span style="color:#24292E">(a[aIdx])</span></span>
+<span class="line"><span style="color:#24292E">                aIdx </span><span style="color:#D73A49">+=</span><span style="color:#005CC5"> 1</span></span>
+<span class="line"><span style="color:#24292E">            } </span><span style="color:#D73A49">else</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#24292E">                merged.</span><span style="color:#005CC5">append</span><span style="color:#24292E">(b[bIdx])</span></span>
+<span class="line"><span style="color:#24292E">                bIdx </span><span style="color:#D73A49">+=</span><span style="color:#005CC5"> 1</span></span>
+<span class="line"><span style="color:#24292E">            }</span></span>
+<span class="line"><span style="color:#24292E">        }</span></span>
+<span class="line"><span style="color:#D73A49">        if</span><span style="color:#24292E"> aIdx </span><span style="color:#D73A49">&lt;</span><span style="color:#24292E"> a.</span><span style="color:#005CC5">count</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#24292E">            merged </span><span style="color:#D73A49">+=</span><span style="color:#24292E"> a[aIdx </span><span style="color:#D73A49">..&lt;</span><span style="color:#24292E"> a.</span><span style="color:#005CC5">count</span><span style="color:#24292E">]</span></span>
+<span class="line"><span style="color:#24292E">        }</span></span>
+<span class="line"><span style="color:#D73A49">        if</span><span style="color:#24292E"> bIdx </span><span style="color:#D73A49">&lt;</span><span style="color:#24292E"> b.</span><span style="color:#005CC5">count</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#24292E">            merged </span><span style="color:#D73A49">+=</span><span style="color:#24292E"> b[bIdx </span><span style="color:#D73A49">..&lt;</span><span style="color:#24292E"> b.</span><span style="color:#005CC5">count</span><span style="color:#24292E">]</span></span>
+<span class="line"><span style="color:#24292E">        }</span></span>
+<span class="line"><span style="color:#D73A49">        return</span><span style="color:#24292E"> merged</span></span>
+<span class="line"><span style="color:#24292E">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">    if</span><span style="color:#24292E"> data.</span><span style="color:#005CC5">count</span><span style="color:#D73A49"> &lt;=</span><span style="color:#005CC5"> 1</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#D73A49">        return</span><span style="color:#24292E"> data</span></span>
+<span class="line"><span style="color:#24292E">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">    let</span><span style="color:#24292E"> mid </span><span style="color:#D73A49">=</span><span style="color:#24292E"> data.</span><span style="color:#005CC5">count</span><span style="color:#D73A49"> /</span><span style="color:#005CC5"> 2</span></span>
+<span class="line"><span style="color:#6A737D">    // create left array</span></span>
+<span class="line"><span style="color:#D73A49">    let</span><span style="color:#24292E"> left </span><span style="color:#D73A49">=</span><span style="color:#005CC5"> Array</span><span style="color:#24292E">(data[</span><span style="color:#005CC5">0</span><span style="color:#D73A49"> ..&lt;</span><span style="color:#24292E"> mid])</span></span>
+<span class="line"><span style="color:#6A737D">    // create right array</span></span>
+<span class="line"><span style="color:#D73A49">    let</span><span style="color:#24292E"> right </span><span style="color:#D73A49">=</span><span style="color:#005CC5"> Array</span><span style="color:#24292E">(data[mid </span><span style="color:#D73A49">..&lt;</span><span style="color:#24292E"> data.</span><span style="color:#005CC5">count</span><span style="color:#24292E">])</span></span>
+<span class="line"><span style="color:#6A737D">    // call itself with left half</span></span>
+<span class="line"><span style="color:#D73A49">    let</span><span style="color:#24292E"> sortedLeft </span><span style="color:#D73A49">=</span><span style="color:#005CC5"> mergeSort</span><span style="color:#24292E">(</span><span style="color:#005CC5">data</span><span style="color:#24292E">: left)</span></span>
+<span class="line"><span style="color:#6A737D">    // call itself with right half</span></span>
+<span class="line"><span style="color:#D73A49">    let</span><span style="color:#24292E"> sortedRight </span><span style="color:#D73A49">=</span><span style="color:#005CC5"> mergeSort</span><span style="color:#24292E">(</span><span style="color:#005CC5">data</span><span style="color:#24292E">: right)</span></span>
+<span class="line"><span style="color:#6A737D">    // merge</span></span>
+<span class="line"><span style="color:#D73A49">    return</span><span style="color:#005CC5"> merge</span><span style="color:#24292E">(sortedLeft, sortedRight)</span></span>
+<span class="line"><span style="color:#24292E">}</span></span></code></pre>
+<p>归并排序的时间复杂度为 O(n log n)，空间复杂度为 O(n)，是稳定的。</p>
+<h1 id="quick-sort">Quick Sort</h1>
+<p>快速排序的思路主要有三步：</p>
+<ul>
+<li>把数组分成左半部分（较小值）和右半部分（较大值）</li>
+<li>用快速排序排序左半部分</li>
+<li>用快速排序排序右半部分</li>
+</ul>
+<p>中心思想就是 partitioning，需要选择一个 pivot value 来决定每个值属于哪个部分。</p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="swift"><code><span class="line"><span style="color:#D73A49">func</span><span style="color:#6F42C1"> quickSort</span><span style="color:#24292E">(</span><span style="color:#6F42C1">data</span><span style="color:#24292E">: </span><span style="color:#D73A49">inout</span><span style="color:#24292E"> [</span><span style="color:#005CC5">Int</span><span style="color:#24292E">]) {</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">    func</span><span style="color:#6F42C1"> partition</span><span style="color:#24292E">(</span><span style="color:#6F42C1">arr</span><span style="color:#24292E">: </span><span style="color:#D73A49">inout</span><span style="color:#24292E"> [</span><span style="color:#005CC5">Int</span><span style="color:#24292E">], </span><span style="color:#6F42C1">left</span><span style="color:#24292E">: </span><span style="color:#005CC5">Int</span><span style="color:#24292E">, </span><span style="color:#6F42C1">right</span><span style="color:#24292E">: </span><span style="color:#005CC5">Int</span><span style="color:#24292E">, </span><span style="color:#6F42C1">pivot</span><span style="color:#24292E">: </span><span style="color:#005CC5">Int</span><span style="color:#24292E">) </span><span style="color:#D73A49">-&gt;</span><span style="color:#005CC5"> Int</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#D73A49">        var</span><span style="color:#24292E"> leftPtr </span><span style="color:#D73A49">=</span><span style="color:#24292E"> left</span></span>
+<span class="line"><span style="color:#D73A49">        var</span><span style="color:#24292E"> rightPtr </span><span style="color:#D73A49">=</span><span style="color:#24292E"> right</span></span>
+<span class="line"><span style="color:#D73A49">        while</span><span style="color:#005CC5"> true</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#D73A49">            while</span><span style="color:#24292E"> arr[leftPtr] </span><span style="color:#D73A49">&lt;</span><span style="color:#24292E"> pivot {</span></span>
+<span class="line"><span style="color:#24292E">                leftPtr </span><span style="color:#D73A49">+=</span><span style="color:#005CC5"> 1</span></span>
+<span class="line"><span style="color:#24292E">            }</span></span>
+<span class="line"><span style="color:#D73A49">            while</span><span style="color:#24292E"> rightPtr </span><span style="color:#D73A49">&gt;</span><span style="color:#005CC5"> 0</span><span style="color:#24292E">, arr[rightPtr] </span><span style="color:#D73A49">&gt;</span><span style="color:#24292E"> pivot {</span></span>
+<span class="line"><span style="color:#24292E">                rightPtr </span><span style="color:#D73A49">-=</span><span style="color:#005CC5"> 1</span></span>
+<span class="line"><span style="color:#24292E">            }</span></span>
+<span class="line"><span style="color:#D73A49">            if</span><span style="color:#24292E"> leftPtr </span><span style="color:#D73A49">&gt;=</span><span style="color:#24292E"> rightPtr {</span></span>
+<span class="line"><span style="color:#D73A49">                break</span></span>
+<span class="line"><span style="color:#24292E">            } </span><span style="color:#D73A49">else</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#24292E">                (arr[leftPtr], arr[rightPtr]) </span><span style="color:#D73A49">=</span><span style="color:#24292E"> (arr[rightPtr], arr[leftPtr])</span></span>
+<span class="line"><span style="color:#24292E">            }</span></span>
+<span class="line"><span style="color:#24292E">        }</span></span>
+<span class="line"><span style="color:#D73A49">        return</span><span style="color:#24292E"> leftPtr</span></span>
+<span class="line"><span style="color:#24292E">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">    func</span><span style="color:#6F42C1"> quickSortHelper</span><span style="color:#24292E">(</span><span style="color:#6F42C1">data</span><span style="color:#24292E">: </span><span style="color:#D73A49">inout</span><span style="color:#24292E"> [</span><span style="color:#005CC5">Int</span><span style="color:#24292E">], </span><span style="color:#6F42C1">left</span><span style="color:#24292E">: </span><span style="color:#005CC5">Int</span><span style="color:#24292E">, </span><span style="color:#6F42C1">right</span><span style="color:#24292E">: </span><span style="color:#005CC5">Int</span><span style="color:#24292E">) {</span></span>
+<span class="line"><span style="color:#6A737D">        // base case</span></span>
+<span class="line"><span style="color:#D73A49">        if</span><span style="color:#24292E"> left </span><span style="color:#D73A49">&gt;=</span><span style="color:#24292E"> right {</span></span>
+<span class="line"><span style="color:#D73A49">            return</span></span>
+<span class="line"><span style="color:#24292E">        }</span></span>
+<span class="line"><span style="color:#6A737D">        // last value is pivot</span></span>
+<span class="line"><span style="color:#D73A49">        let</span><span style="color:#24292E"> pivot </span><span style="color:#D73A49">=</span><span style="color:#24292E"> data[right]</span></span>
+<span class="line"><span style="color:#D73A49">        let</span><span style="color:#24292E"> partition </span><span style="color:#D73A49">=</span><span style="color:#005CC5"> partition</span><span style="color:#24292E">(</span><span style="color:#005CC5">arr</span><span style="color:#24292E">: </span><span style="color:#D73A49">&amp;</span><span style="color:#24292E">data, </span><span style="color:#005CC5">left</span><span style="color:#24292E">: left, </span><span style="color:#005CC5">right</span><span style="color:#24292E">: right, </span><span style="color:#005CC5">pivot</span><span style="color:#24292E">: pivot)</span></span>
+<span class="line"><span style="color:#005CC5">        quickSortHelper</span><span style="color:#24292E">(</span><span style="color:#005CC5">data</span><span style="color:#24292E">: </span><span style="color:#D73A49">&amp;</span><span style="color:#24292E">data, </span><span style="color:#005CC5">left</span><span style="color:#24292E">: left, </span><span style="color:#005CC5">right</span><span style="color:#24292E">: partition </span><span style="color:#D73A49">-</span><span style="color:#005CC5"> 1</span><span style="color:#24292E">)</span></span>
+<span class="line"><span style="color:#005CC5">        quickSortHelper</span><span style="color:#24292E">(</span><span style="color:#005CC5">data</span><span style="color:#24292E">: </span><span style="color:#D73A49">&amp;</span><span style="color:#24292E">data, </span><span style="color:#005CC5">left</span><span style="color:#24292E">: partition </span><span style="color:#D73A49">+</span><span style="color:#005CC5"> 1</span><span style="color:#24292E">, </span><span style="color:#005CC5">right</span><span style="color:#24292E">: right)</span></span>
+<span class="line"><span style="color:#24292E">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#005CC5">    quickSortHelper</span><span style="color:#24292E">(</span><span style="color:#005CC5">data</span><span style="color:#24292E">: </span><span style="color:#D73A49">&amp;</span><span style="color:#24292E">data, </span><span style="color:#005CC5">left</span><span style="color:#24292E">: </span><span style="color:#005CC5">0</span><span style="color:#24292E">, </span><span style="color:#005CC5">right</span><span style="color:#24292E">: data.</span><span style="color:#005CC5">count</span><span style="color:#D73A49"> -</span><span style="color:#005CC5"> 1</span><span style="color:#24292E">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#24292E">}</span></span></code></pre>
+<p>这是一种原位置排序的实现。利用 Swift 语言的特性，我们可以给出一种远远更为简洁的实现：</p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto" tabindex="0" data-language="swift"><code><span class="line"><span style="color:#D73A49">func</span><span style="color:#6F42C1"> quickSortV2</span><span style="color:#24292E">(</span><span style="color:#6F42C1">data</span><span style="color:#24292E">: [</span><span style="color:#005CC5">Int</span><span style="color:#24292E">]) </span><span style="color:#D73A49">-&gt;</span><span style="color:#24292E"> [</span><span style="color:#005CC5">Int</span><span style="color:#24292E">] {</span></span>
+<span class="line"><span style="color:#D73A49">    if</span><span style="color:#24292E"> data.</span><span style="color:#005CC5">count</span><span style="color:#D73A49"> &lt;=</span><span style="color:#005CC5"> 1</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#D73A49">        return</span><span style="color:#24292E"> data</span></span>
+<span class="line"><span style="color:#24292E">    }</span></span>
+<span class="line"><span style="color:#D73A49">    var</span><span style="color:#24292E"> unsorted </span><span style="color:#D73A49">=</span><span style="color:#24292E"> data</span></span>
+<span class="line"><span style="color:#6A737D">    // initialize arrays</span></span>
+<span class="line"><span style="color:#D73A49">    var</span><span style="color:#24292E"> left: [</span><span style="color:#005CC5">Int</span><span style="color:#24292E">] </span><span style="color:#D73A49">=</span><span style="color:#24292E"> []</span></span>
+<span class="line"><span style="color:#D73A49">    var</span><span style="color:#24292E"> right: [</span><span style="color:#005CC5">Int</span><span style="color:#24292E">] </span><span style="color:#D73A49">=</span><span style="color:#24292E"> []</span></span>
+<span class="line"><span style="color:#6A737D">    // pick pivot value</span></span>
+<span class="line"><span style="color:#D73A49">    let</span><span style="color:#24292E"> pivot </span><span style="color:#D73A49">=</span><span style="color:#24292E"> unsorted.</span><span style="color:#005CC5">popLast</span><span style="color:#24292E">()</span><span style="color:#D73A49">!</span></span>
+<span class="line"><span style="color:#D73A49">    for</span><span style="color:#24292E"> x </span><span style="color:#D73A49">in</span><span style="color:#24292E"> unsorted {</span></span>
+<span class="line"><span style="color:#D73A49">        if</span><span style="color:#24292E"> x </span><span style="color:#D73A49">&lt;</span><span style="color:#24292E"> pivot {</span></span>
+<span class="line"><span style="color:#24292E">            left.</span><span style="color:#005CC5">append</span><span style="color:#24292E">(x)</span></span>
+<span class="line"><span style="color:#24292E">        } </span><span style="color:#D73A49">else</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#24292E">            right.</span><span style="color:#005CC5">append</span><span style="color:#24292E">(x)</span></span>
+<span class="line"><span style="color:#24292E">        }</span></span>
+<span class="line"><span style="color:#24292E">    }</span></span>
+<span class="line"><span style="color:#6A737D">    // call itself</span></span>
+<span class="line"><span style="color:#D73A49">    return</span><span style="color:#005CC5"> quickSortV2</span><span style="color:#24292E">(</span><span style="color:#005CC5">data</span><span style="color:#24292E">: left) </span><span style="color:#D73A49">+</span><span style="color:#24292E"> [pivot] </span><span style="color:#D73A49">+</span><span style="color:#005CC5"> quickSortV2</span><span style="color:#24292E">(</span><span style="color:#005CC5">data</span><span style="color:#24292E">: right)</span></span>
+<span class="line"><span style="color:#24292E">}</span></span></code></pre>
+<p>快速排序的时间复杂度为 O(n log n)。根据下面和大佬同学 <a href="https://dinglisa.com/blog/">@LisaDing</a> 的讨论，原地快速排序的空间复杂度一般可以为 O(log n)（即递归深度，因为每次保存常数信息，栈帧里总共就会有 log n，具体讨论可见 <a href="https://stackoverflow.com/questions/12573330/why-does-quicksort-use-ologn-extra-space">这里</a>），worst case 为 O(n)。第二种非原地的快速排序空间复杂度为 O(n log n)（具体见 <a href="https://stackoverflow.com/questions/38487269/space-complexity-of-quick-sort">stackoverflow 的这个帖子</a>）。因此，快速排序的空间复杂度和具体实现关系很大。快速排序是不稳定的。</p>  </div> <section class="article-comments" aria-label="评论"> <div id="disqus_thread"></div> </section> <script>(function(){const identifier = "/2018/02-04-sorting-algorithms/";
+const title = "排序算法笔记";
+const url = "https://xnth97.github.io/2018/02-04-sorting-algorithms/";
+
+  window.disqus_config = function () {
+    this.page.url = url;
+    this.page.identifier = identifier;
+    this.page.title = title;
+    this.language = 'en_US';
+  };
+
+  if (!document.querySelector('script[data-disqus-shortname="xnth97"]')) {
+    const script = document.createElement('script');
+    script.src = 'https://xnth97.disqus.com/embed.js';
+    script.async = true;
+    script.dataset.disqusShortname = 'xnth97';
+    script.setAttribute('data-timestamp', String(Date.now()));
+    document.body.appendChild(script);
+  }
+})();</script> </article> </main>  <footer class="site-footer"> <div> <strong>NOWHERE</strong> <span>一些碎碎念</span> </div> <p>Copyright © 2026 NOWHERE</p> </footer> <script type="module" src="/_astro/BaseLayout.astro_astro_type_script_index_0_lang.CHqgZIDF.js"></script> </body> </html>
